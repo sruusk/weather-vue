@@ -2,11 +2,11 @@
   <div class="main">
     <div class="header">
       <div class="location-details">
-        <span>Weather station</span>
+        <span>{{ $t('home.weatherStation') }}</span>
         <span class="dot">●</span>
         <span>{{ formattedTime }}</span>
         <span class="dot">●</span>
-        <span>Distance {{ Math.round(station.location.distance / 100) / 10 }} km</span>
+        <span>{{ $t('home.distance') }} {{ Math.round(station.location.distance / 100) / 10 }} km</span>
       </div>
       <div class="station-name">
         {{ station.location.name }}, {{ station.location.region }}

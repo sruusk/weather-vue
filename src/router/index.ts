@@ -4,31 +4,31 @@ import HomeView from '../views/HomeView.vue'
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: HomeView,
     showInMenu: false
   },
   {
     path: '/favourites',
-    name: 'Favourites',
+    name: 'favourites',
     component: () => import('../views/FavouritesView.vue'),
     showInMenu: true
   },
   {
     path: '/warnings',
-    name: 'Warnings',
+    name: 'warnings',
     component: () => import('../views/WarningsView.vue'),
     showInMenu: true
   },
   {
     path: '/settings',
-    name: 'Settings',
+    name: 'settings',
     component: () => import('../views/SettingsView.vue'),
     showInMenu: true
   },
   {
     path: '/about',
-    name: 'About and credits',
+    name: 'about',
     component: () => import('../views/AboutView.vue'),
     showInMenu: true
   }

@@ -7,7 +7,7 @@
          :id="'ten-day-slider-' + day.getDate()"
          :class="day.toDateString() === selectedDay.toDateString() ? 'selected' : ''">
       <div class="day-header">{{ getShortDayName(day) }}</div>
-      <img :src="getWeatherIcon(day)" />
+      <img :src="getWeatherIcon(day)" alt="Weather icon" />
       <div class="day-temp">{{ tempPrefix(getDayTemp(day)) + getDayTemp(day) }} °C</div>
     </div>
   </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import type { ForecastLocation, Weather, TimeSeriesObservation, HourWeather } from "@/types";
+import type {Weather} from "@/types";
 import {defineComponent} from 'vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
@@ -30,7 +30,7 @@ export default defineComponent({
   },
   props: {
     weather: {
-      type: Object,
+      type: Object as () => Weather,
       required: true
     },
     goToDay: {
@@ -72,7 +72,7 @@ export default defineComponent({
   },
   methods: {
     getShortDayName(date: Date) {
-      return date.toLocaleDateString('en-US', { weekday: 'short' });
+      return date.toLocaleDateString(this.$t('meta.localeString'), { weekday: 'short' });
     },
     getWeatherIcon(date: Date) {
       const weather = this.getWeatherForDay(date);
@@ -125,6 +125,7 @@ export default defineComponent({
   font-weight: 400;
   color: #fff;
   margin-top: 7px;
+  text-transform: capitalize;
 }
 .day-temp {
   font-size: 12px;
@@ -132,6 +133,7 @@ export default defineComponent({
   margin-top: -5px;
   margin-bottom: 10px;
 }
+/*noinspection CssUnusedSymbol*/
 .selected {
   background-color: #243f82;
 }

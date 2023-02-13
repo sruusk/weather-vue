@@ -1,5 +1,5 @@
 <template>
-  <div class="header" v-if="observationStations.length">Weather observations</div>
+  <div class="header" v-if="observationStations.length">{{ $t('home.weatherObservations') }}</div>
   <div class="observations-carousel" v-if="observationStations.length">
     <Carousel ref="carousel">
       <Slide v-for="station in observationStations" :key="station.location.name">
@@ -92,6 +92,8 @@ export default defineComponent({
   width: 100%;
   align-self: flex-start;
 }
+
+/*noinspection ALL*/
 .carousel__pagination {
   top: -20px; /* Make gap for the page indicators */
   position: absolute;

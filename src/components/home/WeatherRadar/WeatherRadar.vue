@@ -1,6 +1,6 @@
 <template>
   <div class="weather-radar-container">
-    <div class="header">Weather radar</div>
+    <div class="header">{{ $t('home.weatherRadar') }}</div>
     <div class="radar">
       <div id="fmi-animation-time" ref="animationTime" />
       <div id="fmi-animator" class="fmi-animator" ref="animator" />
@@ -28,7 +28,7 @@ import type { ForecastLocation } from "@/types";
 import { defineComponent, ref } from 'vue';
 import MarkerIcon from "@/components/icons/MarkerIcon.vue";
 import MetOClient from "@fmidev/metoclient";
-import config from "@/components/WeatherRadar/config.json";
+import config from "@/components/home/WeatherRadar/config.json";
 
 export default defineComponent({
   name: "WeatherRadar.vue",
@@ -197,6 +197,7 @@ export default defineComponent({
   background-color: rgba(53, 89, 185, 0.8);
 }
 
+/*noinspection CssUnusedSymbol*/
 #fmi-animation-time,#fmi-fullscreen-animation-time {
   z-index: 1000;
   position: absolute;
@@ -211,6 +212,7 @@ export default defineComponent({
   text-align: center;
 }
 
+/*noinspection CssUnusedSymbol*/
 #fmi-fullscreen-animation-time {
   top: 16px;
 }

@@ -1,8 +1,8 @@
 <template>
   <div class="main">
     <div class="header">
-      <div class="title">10 days forecast</div>
-      <div class="update-time">Forecast updated {{ updateTime }}</div>
+      <div class="title">10 {{ $t('home.days') }} {{ $t('home.forecast').toLowerCase() }}</div>
+      <div class="update-time">{{ $t('home.forecast') }} {{ $t('home.updated') }} {{ updateTime }}</div>
     </div>
     <TenDaySlider
         :weather="weather"

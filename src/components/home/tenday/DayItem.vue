@@ -5,7 +5,7 @@
     <div class="header">{{ formattedDate }}</div>
     <div class="weather">
       <div v-for="hour in hours" :key="hour.getTime()">
-        <div class="hour">{{ hour.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false }) }}</div>
+        <div class="hour">{{ hour.toLocaleTimeString($t('meta.localeString'), { hour: 'numeric', minute: 'numeric', hour12: false }) }}</div>
         <WeatherColumn :weather="getWeatherForHour(hour.getHours(), weather)" />
       </div>
     </div>
@@ -54,12 +54,12 @@ export default defineComponent({
   },
   computed: {
     formattedDate() {
-      if(this.hours.length <= 1) return this.day.toLocaleDateString('en-GB', { weekday: 'short' });
-      return this.day.toLocaleDateString('en-GB', { weekday: 'long' })
+      if(this.hours.length <= 1) return this.day.toLocaleDateString(this.$t('meta.localeString'), { weekday: 'short' });
+      return this.day.toLocaleDateString(this.$t('meta.localeString'), { weekday: 'long' })
           + ' '
           + this.day.toLocaleDateString('fi-FI', { day: 'numeric', month: 'numeric' });
-    },
-    hours() {
+      },
+      hours() {
       return this.weather.temperature.map((hour: TimeSeriesObservation) => {
         return hour.time;
       });
@@ -76,6 +76,7 @@ export default defineComponent({
   background-color: #1d2e5d;
   padding: 5px 0 0 10px;
   height: 20px;
+  text-transform: capitalize;
 }
 .weather {
   display: flex;

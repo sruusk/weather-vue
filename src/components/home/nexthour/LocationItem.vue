@@ -12,7 +12,7 @@
     <div class="details">
       <div class="feelslike-row">
         <div class="time">
-          <ShareButton>Share</ShareButton>
+          <ShareButton>{{ $t('home.share') }}</ShareButton>
           <ClockIcon class="timeIcon" />
           <span class="time-value">{{ weather.time }}</span>
         </div>

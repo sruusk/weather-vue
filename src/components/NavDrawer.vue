@@ -1,7 +1,7 @@
 <template>
   <div class="nav-drawer" :class="open ? 'open' : 'closed'">
     <IconFMIOpenData class="logo" />
-    <NavItem v-for="route in routes" :to="route.path" @click="close">{{ route.name }}</NavItem>
+    <NavItem v-for="route in routes" :to="route.path" @click="close">{{ $t(`routes.${route.name}`) }}</NavItem>
   </div>
 </template>
 
@@ -37,6 +37,7 @@ export default defineComponent({
 });
 </script>
 
+<!--suppress CssUnusedSymbol -->
 <style scoped>
 .nav-drawer {
   position: relative;

@@ -1,6 +1,6 @@
 <template>
   <div class="warnings">
-    <div>Warnings - 5 days</div>
+    <div>{{ $t('home.warnings') }} - 5 {{ $t('home.days') }}</div>
     <div class="warning-list">
       <WarningItem class="warning-item" v-for="day in nextDays" :key="day">
         {{ getShortDayName(day) }}
@@ -35,7 +35,7 @@ export default defineComponent({
       return days;
     },
     getShortDayName(date: Date) {
-      return date.toLocaleDateString('en-US', { weekday: 'short' });
+      return date.toLocaleDateString(this.$t('meta.localeString'), { weekday: 'short' });
     }
   }
 })
@@ -58,5 +58,8 @@ export default defineComponent({
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+.warning-item {
+  text-transform: capitalize;
 }
 </style>

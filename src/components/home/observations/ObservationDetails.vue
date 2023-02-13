@@ -21,20 +21,20 @@ export default defineComponent({
   },
   computed: {
     measurements() {
-      return this.filterUndefined({
-        "Temperature": `${this.station.temperature} °C`,
-        "Dew point": `${this.station.dewPoint} °C`,
-        "Humidity": `${this.station.humidity} %`,
-        "Wind": `${this.station.windSpeed} m/s`,
-        "Wind gust": `${this.station.windGust} m/s`,
-        "Pressure": `${this.station.pressure} hPa`,
-        "Snow depth": `${this.station.snowDepth} cm`,
-        "Cloudiness": `${this.cloudinessText} (${this.station.cloudiness}/8)`,
-        "Visibility": this.formattedVisibility,
-        "Precipitation rate": `${this.station.precipitation} mm/h`,
-        "Weather": this.weatherText,
-        "Cloud base": `${this.station.cloudBase} m`,
-      });
+      const measurements = {} as any;
+      measurements[this.$t('home.temperature')] = `${this.station.temperature} °C`;
+      measurements[this.$t('home.dewPoint')] = `${this.station.dewPoint} °C`;
+      measurements[this.$t('home.humidity')] = `${this.station.humidity} %`;
+      measurements[this.$t('home.wind')] = `${this.station.windSpeed} m/s`;
+      measurements[this.$t('home.windGust')] = `${this.station.windGust} m/s`;
+      measurements[this.$t('home.pressure')] = `${this.station.pressure} hPa`;
+      measurements[this.$t('home.snowDepth')] = `${this.station.snowDepth} cm`;
+      measurements[this.$t('home.cloudiness')] = `${this.cloudinessText} (${this.station.cloudiness}/8)`;
+      measurements[this.$t('home.visibility')] = this.formattedVisibility;
+      measurements[this.$t('home.precipitationRate')] = `${this.station.precipitation} mm/h`;
+      measurements[this.$t('home.weather')] = this.weatherText;
+      measurements[this.$t('home.cloudBase')] = `${this.station.cloudBase} m`;
+      return this.filterUndefined(measurements);
     },
     formattedVisibility() {
       if (this.station.visibility === undefined) return undefined;
@@ -42,57 +42,57 @@ export default defineComponent({
         return `${this.station.visibility} m`;
       } else if(this.station.visibility >= 1000 && this.station.visibility < 5000) {
         return `${Math.round(this.station.visibility / 100) / 10} km`;
-      } else return `over 50 km`;
+      } else return `${this.$t('home.over')} 50 km`;
     },
     cloudinessText() {
       const cloudiness = this.station.cloudiness;
       if(cloudiness === undefined) return undefined;
 
-      if(cloudiness < 1) return 'sky clear';
-      if(cloudiness === 1 || cloudiness === 2) return 'almost clear';
-      if(cloudiness >= 3 && cloudiness <= 5) return 'partly cloudy';
-      if(cloudiness === 6 || cloudiness === 7) return 'almost cloudy';
-      if(cloudiness === 8) return 'cloudy';
-      if(cloudiness === 9) return 'sky obscured';
+      if(cloudiness < 1) return this.$t('home.cloudinessText.clear');
+      if(cloudiness === 1 || cloudiness === 2) return this.$t('home.cloudinessText.almostClear');
+      if(cloudiness >= 3 && cloudiness <= 5) return this.$t('home.cloudinessText.partlyCloudy');
+      if(cloudiness === 6 || cloudiness === 7) return this.$t('home.cloudinessText.almostCloudy');
+      if(cloudiness === 8) return this.$t('home.cloudinessText.cloudy');
+      if(cloudiness === 9) return this.$t('home.cloudinessText.skyObscured');
       return '';
     },
     weatherText() {
       const code = this.station.weather;
       if(code === undefined) return undefined;
 
-      if (code === 0 || (code >= 20 && code <= 29)) return 'clear';
-      if (code === 4 || code === 5) return 'haze, smoke or dust';
-      if (code === 10) return 'mist';
-      if (code >= 30 && code <= 34) return 'fog';
-      if (code === 40) return 'precipitation';
-      if (code >= 50 && code <= 53) return 'drizzle'
-      if (code === 60) return 'rain'
-      if (code === 41) return 'light or moderate precipitation'
-      if (code === 42) return 'heavy precipitation'
-      if (code >= 54 && code <= 56) return 'freezing drizzle'
-      if (code === 61) return 'light rain'
-      if (code === 62) return 'moderate rain'
-      if (code === 63) return 'heavy rain'
-      if (code === 64) return 'light freezing rain'
-      if (code === 65) return 'moderate freezing rain'
-      if (code === 66) return 'heavy freezing rain'
-      if (code === 67) return 'light sleet'
-      if (code === 68) return 'moderate sleet'
-      if (code === 70) return 'snow'
-      if (code === 71) return 'light snow'
-      if (code === 72) return 'moderate snow'
-      if (code === 73) return 'heavy snow'
-      if (code >= 74 && code <= 76) return 'ice pellets'
-      if (code === 78) return 'ice crystals'
-      if (code === 80) return 'showers or intermittent precipitation'
-      if (code === 81) return 'light rain showers'
-      if (code === 82) return 'moderate rain showers'
-      if (code === 83) return 'heavy rain showers'
-      if (code === 84) return 'violent rain showers'
-      if (code === 85) return 'light snow showers'
-      if (code === 86) return 'moderate snow showers'
-      if (code === 87) return 'heavy snow showers'
-      if (code === 89) return 'hail showers'
+      if (code === 0 || (code >= 20 && code <= 29)) return this.$t('home.weatherText.clear');
+      if (code === 4 || code === 5) return this.$t('home.weatherText.hazeSmokeDusk');
+      if (code === 10) return this.$t('home.weatherText.mist');
+      if (code >= 30 && code <= 34) return this.$t('home.weatherText.fog');
+      if (code === 40) return this.$t('home.weatherText.precipitation');
+      if (code >= 50 && code <= 53) return this.$t('home.weatherText.drizzle');
+      if (code === 60) return this.$t('home.weatherText.rain');
+      if (code === 41) return this.$t('home.weatherText.lightPrecipitation');
+      if (code === 42) return this.$t('home.weatherText.heavyPrecipitation');
+      if (code >= 54 && code <= 56) return this.$t('home.weatherText.freezingDrizzle');
+      if (code === 61) return this.$t('home.weatherText.lightRain');
+      if (code === 62) return this.$t('home.weatherText.moderateRain');
+      if (code === 63) return this.$t('home.weatherText.heavyRain');
+      if (code === 64) return this.$t('home.weatherText.lightFreezingRain');
+      if (code === 65) return this.$t('home.weatherText.moderateFreezingRain');
+      if (code === 66) return this.$t('home.weatherText.heavyFreezingRain');
+      if (code === 67) return this.$t('home.weatherText.lightSleet');
+      if (code === 68) return this.$t('home.weatherText.moderateSleet');
+      if (code === 70) return this.$t('home.weatherText.snow');
+      if (code === 71) return this.$t('home.weatherText.lightSnow');
+      if (code === 72) return this.$t('home.weatherText.moderateSnow');
+      if (code === 73) return this.$t('home.weatherText.heavySnow');
+      if (code >= 74 && code <= 76) return this.$t('home.weatherText.icePellets');
+      if (code === 78) return this.$t('home.weatherText.iceCrystals');
+      if (code === 80) return this.$t('home.weatherText.showers');
+      if (code === 81) return this.$t('home.weatherText.lightShowers');
+      if (code === 82) return this.$t('home.weatherText.moderateShowers');
+      if (code === 83) return this.$t('home.weatherText.heavyShowers');
+      if (code === 84) return this.$t('home.weatherText.violetShowers');
+      if (code === 85) return this.$t('home.weatherText.lightSnowShowers');
+      if (code === 86) return this.$t('home.weatherText.moderateSnowShowers');
+      if (code === 87) return this.$t('home.weatherText.heavySnowShowers');
+      if (code === 89) return this.$t('home.weatherText.hailShowers');
 
       return '';
     }
