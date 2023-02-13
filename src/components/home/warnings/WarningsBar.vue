@@ -1,0 +1,62 @@
+<template>
+  <div class="warnings">
+    <div>Warnings - 5 days</div>
+    <div class="warning-list">
+      <WarningItem class="warning-item" v-for="day in nextDays" :key="day">
+        {{ getShortDayName(day) }}
+      </WarningItem>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import {defineComponent} from 'vue';
+import WarningItem from "@/components/home/warnings/WarningItem.vue";
+
+export default defineComponent({
+  name: "WarningsBar.vue",
+  components: {
+    WarningItem
+  },
+  data() {
+    return {
+      warnings: [],
+      nextDays: this.nextFiveDays()
+    }
+  },
+  computed: {
+  },
+  methods: {
+    nextFiveDays() {
+      let days = [];
+      for (let i = 0; i < 5; i++) {
+        days.push(new Date(new Date().setDate(new Date().getDate() + i)));
+      }
+      return days;
+    },
+    getShortDayName(date: Date) {
+      return date.toLocaleDateString('en-US', { weekday: 'short' });
+    }
+  }
+})
+</script>
+
+<style scoped>
+.warnings {
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 9px 0 14px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.warning-list {
+  padding: 0 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+</style>

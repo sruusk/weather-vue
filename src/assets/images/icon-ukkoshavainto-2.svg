@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-ukkoshavainto-2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-ukkoshavainto-2">
+            <g>
+                <circle id="bg" fill="#F1740E" cx="25" cy="25" r="25"></circle>
+                <g id="icon" transform="translate(13.000000, 12.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                    <polygon id="ukkoshavainto" points="2.90903959 0 0 9.90614043 5.0952502 9.90614043 2.21477154 22 12 6.28303646 6.70493608 6.28303646 9.59009963 0"></polygon>
+                    <polygon id="ukkoshavainto" points="15.9090396 7 13 16.9061404 18.0952502 16.9061404 15.2147715 29 25 13.2830365 19.7049361 13.2830365 22.5900996 7"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

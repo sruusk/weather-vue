@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>loacation-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="loacation-icon">
+            <rect id="bg" fill="#FFFFFF" x="0" y="0" width="50" height="50" rx="25"></rect>
+            <g id="icon" transform="translate(13.000000, 13.000000)">
+                <circle id="Oval-3" stroke="#3559B9" stroke-width="2" cx="12" cy="12" r="8.71467391"></circle>
+                <path d="M3.0326087,12 L0.0434782609,12" id="Line" stroke="#3559B9" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M23.9565217,12 L20.9673913,12" id="Line-Copy" stroke="#3559B9" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M12,0.0434782609 L12,3.0326087" id="Line-Copy" stroke="#3559B9" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M12,20.9673913 L12,23.9565217" id="Line-Copy-2" stroke="#3559B9" stroke-width="2" stroke-linecap="round"></path>
+                <circle id="Oval-3" fill="#3559B9" cx="12" cy="12" r="3.73641304"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>icon-selkeaa</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icon-selkeaa" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g>
+            <circle id="bg" fill="#F8BA1C" cx="25" cy="25" r="25"/>
+            <g id="lines" transform="translate(24.000000, 10.000000)" fill="#FFFFFF">
+                <rect id="Fill-08" x="0" y="25" width="2" height="5" rx="1"/>
+                <rect id="Fill-07" x="0" y="0" width="2" height="5" rx="1"/>
+            </g>
+            <g id="lines" transform="translate(25.000000, 25.000000) rotate(90.000000) translate(-25.000000, -25.000000) translate(24.000000, 10.000000)" fill="#FFFFFF">
+                <rect id="Fill-06" x="0" y="25" width="2" height="5" rx="1"/>
+                <rect id="Fill-05" x="0" y="0" width="2" height="5" rx="1"/>
+            </g>
+            <g id="lines" transform="translate(25.000000, 25.000000) rotate(45.000000) translate(-25.000000, -25.000000) translate(24.000000, 10.000000)" fill="#FFFFFF">
+                <rect id="Fill-04" x="2.72848411e-12" y="25" width="2" height="5" rx="1"/>
+                <rect id="Fill-03" x="9.09494702e-13" y="-9.09494702e-13" width="2" height="5" rx="1"/>
+            </g>
+            <g id="lines" transform="translate(25.000000, 25.000000) scale(-1, 1) rotate(45.000000) translate(-25.000000, -25.000000) translate(24.000000, 10.000000)" fill="#FFFFFF">
+                <rect id="Fill-02" x="-4.54747351e-13" y="25" width="2" height="5" rx="1"/>
+                <rect id="Fill-01" x="0" y="0" width="2" height="5" rx="1"/>
+            </g>
+            <path d="M25,32 C21.1340068,32 18,28.8659932 18,25 C18,21.1340068 21.1340068,18 25,18 C28.8659932,18 32,21.1340068 32,25 C32,28.8659932 28.8659932,32 25,32 Z M25,30 C27.7614237,30 30,27.7614237 30,25 C30,22.2385763 27.7614237,20 25,20 C22.2385763,20 20,22.2385763 20,25 C20,27.7614237 22.2385763,30 25,30 Z" id="aurinko" fill="#FFFFFF" fill-rule="nonzero"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,25 @@
+<template>
+  <svg width="10px" height="12px" viewBox="0 0 10 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+      <polyline id="path-1" points="0 0 9.66666667 0 9.66666667 13.8550675 0 13.8550675"></polyline>
+    </defs>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g transform="translate(-235.000000, -253.000000)">
+        <g>
+          <g transform="translate(211.000000, 251.000000)">
+            <g transform="translate(24.000000, 1.000000)">
+              <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+              </mask>
+              <g></g>
+              <path d="M5.37155686,1.25105955 C5.15798402,0.870331253 4.81124224,0.872182658 4.60137221,1.25476236 C4.60137221,1.25476236 1.86221791,6.08468234 1.47646437,6.96648029 C1.08965288,7.85065861 0.966666667,8.22093969 0.966666667,8.93597891 C0.966666667,11.1781631 2.78435005,12.9957142 5.02653424,12.9957142 C7.26885067,12.9957142 9.0866663,11.1781631 9.0866663,8.93597891 C9.0866663,8.20546723 8.95653895,7.89112504 8.55504846,6.92852648 C8.15369022,5.96619239 5.37155686,1.25105955 5.37155686,1.25105955 Z" fill="#62B8E8FF" mask="url(#mask-2)"></path>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </svg>
+</template>

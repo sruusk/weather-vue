@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-jaatavasade</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-jaatavasade">
+            <g id="icon-jaatava-sade">
+                <circle id="bg" fill="#D20606" cx="25" cy="25" r="25"></circle>
+                <path d="M32.1236877,19.3054663 L30.4645813,19.5717834 L29.9162077,17.9834366 C29.0963769,15.6088225 26.9124033,14 24.4425999,14 C21.4296,14 18.9086296,16.3860656 18.6546332,19.4840035 L18.5040549,21.3205742 L16.2134668,21.3205742 C14.4491417,21.3205742 13,22.8049493 13,24.6602871 C13,26.515716 14.4493128,28 16.2134668,28 L32.7777778,28 C35.0987724,28 37,26.0526387 37,23.6267943 C37,21.2009498 35.0987724,19.2535885 32.7777778,19.2535885 C32.5565196,19.2535885 32.3381666,19.2710385 32.1236877,19.3054663 Z M31.8067086,17.330745 C32.1231217,17.2799548 32.4474436,17.2535885 32.7777778,17.2535885 C36.2142162,17.2535885 39,20.1069699 39,23.6267943 C39,27.1466186 36.2142162,30 32.7777778,30 L16.2134668,30 C13.3341486,30 11,27.6099775 11,24.6602871 C11,21.7112451 13.3334272,19.3205742 16.2134668,19.3205742 L16.6613217,19.3205742 C16.997492,15.2203788 20.3531375,12 24.4425999,12 C27.8421311,12 30.7342939,14.2245295 31.8067086,17.330745 Z" id="pilvi" fill="#FFFFFF" fill-rule="nonzero"></path>
+                <g id="jaatava-sade" transform="translate(17.000000, 33.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                    <polyline id="jaatava-pisara" points="3 0 0 7 0 0"></polyline>
+                    <polyline id="jaatava-pisara" points="9 0 6 7 6 0"></polyline>
+                    <polyline id="jaatava-pisara" points="15 0 12 7 12 0"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

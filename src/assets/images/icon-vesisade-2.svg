@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-vesisade-2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-vesisade-2">
+            <g>
+                <circle id="bg" fill="#12A2DC" cx="25" cy="25" r="25"></circle>
+                <path d="M20.5049012,25.4220171 C20.8221612,26.116037 21,26.8945376 21,27.7169262 C21,30.6346873 18.7614237,33 16,33 C13.2385762,33 11,30.6346873 11,27.7169262 C11,26.9085019 11.1718506,26.1424879 11.4790582,25.4574439 L14.2858491,17.908448 C15.2317563,15.3643861 16.7649769,15.3633153 17.7112822,17.908448 L20.5049012,25.4220171 L20.5049012,25.4220171 Z" id="pisara-2" fill="#FFFFFF" fill-rule="nonzero"></path>
+                <path d="M38.5049012,25.4220171 C38.8221612,26.116037 39,26.8945376 39,27.7169262 C39,30.6346873 36.7614237,33 34,33 C31.2385762,33 29,30.6346873 29,27.7169262 C29,26.9085019 29.1718506,26.1424879 29.4790582,25.4574439 L32.2858491,17.908448 C33.2317563,15.3643861 34.7649769,15.3633153 35.7112822,17.908448 L38.5049012,25.4220171 L38.5049012,25.4220171 Z" id="pisara-2" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

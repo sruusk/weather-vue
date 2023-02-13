@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>icon-ei-sadetta</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icon-ei-sadetta" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-vesisade">
+            <circle id="bg" fill="#2AB8F1" cx="25" cy="25" r="25"/>
+            <path d="M31.3068617,26.3016713 C31.7510257,27.281464 32,28.3805236 32,29.5415429 C32,33.660735 28.8659931,37 25,37 C21.1340067,37 18,33.660735 18,29.5415429 C18,28.400238 18.2405909,27.3188065 18.6706815,26.3516855 L22.6001888,15.6942795 C23.9244589,12.1026627 26.0709676,12.101151 27.3957951,15.6942795 L31.3068617,26.3016713 L31.3068617,26.3016713 Z" id="pisara-2" fill="#FFFFFF" fill-rule="nonzero"/>
+        </g>
+        <g id="ruksi" transform="translate(4.000000, 4.000000)" fill-rule="nonzero">
+            <polygon id="Path" fill="#2AB8F1" points="7.5 39.7426407 39.6348749 7.60776574 35.3922343 3.36512505 3.25735931 35.5"/>
+            <polygon id="Path" fill="#FFFFFF" points="7.5 36.9142136 6.08578644 35.5 35.3922343 6.19355218 36.8064478 7.60776574"/>
+            <path d="M21,42 C32.5979797,42 42,32.5979797 42,21 C42,9.40202025 32.5979797,0 21,0 C9.40202025,0 0,9.40202025 0,21 C0,32.5979797 9.40202025,42 21,42 Z M21,40 C10.5065898,40 2,31.4934102 2,21 C2,10.5065898 10.5065898,2 21,2 C31.4934102,2 40,10.5065898 40,21 C40,31.4934102 31.4934102,40 21,40 Z" id="Oval" fill="#FFFFFF"/>
+        </g>
+    </g>
+</svg>

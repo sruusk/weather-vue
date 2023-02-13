@@ -1,0 +1,102 @@
+<template>
+  <div class="weather-column">
+    <div class="weather-column__icon">
+      <img :src="getIconUrl(weather.weatherSymbol)" />
+    </div>
+    <div class="weather-column__temp">
+      {{ tempPrefix(weather.temperature) }}{{ Math.round(Math.abs(weather.temperature)) }} °C
+    </div>
+    <div class="weather-column__feelslike">
+      <Feelslike10dIcon />
+      <div class="weather-column__feelslike-value">
+        {{ tempPrefix(weather.feelsLike) }}{{ Math.round(Math.abs(weather.feelsLike)) }}°
+      </div>
+    </div>
+    <WindIndicator
+        :wind-speed="weather.windSpeed"
+        :wind-direction="weather.windDirection"
+        :negative="false" />
+    <RainItem
+        class="weather-column__rain"
+        :rain-amount="weather.precipitation"
+        :rain-probability="weather.humidity"
+        :negative="false" />
+  </div>
+</template>
+
+<script lang="ts">
+import {defineComponent} from 'vue';
+import type { HourWeather } from '@/types';
+import Feelslike10dIcon from "@/components/icons/feelslike/Feelslike10dIcon.vue";
+import WindIndicator from "@/components/home/WindIndicator.vue";
+import RainItem from "@/components/home/RainItem.vue";
+
+export default defineComponent({
+  name: "WeatherColumn.vue",
+  components: {
+    Feelslike10dIcon,
+    WindIndicator,
+    RainItem,
+  },
+  props: {
+    weather: {
+      type: Object as () => HourWeather,
+      required: true
+    },
+  },
+  methods: {
+    getIconUrl(icon: number) {
+      return `/symbols/${icon}.svg`;
+    },
+    tempPrefix(temp: number) {
+      return temp > 0 ? "+" : "-";
+    },
+  },
+})
+</script>
+
+<style scoped>
+.weather-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 210px;
+  border-right: #1d2e5d 1px solid;
+  border-bottom: #1d2e5d 2px solid;
+  font-size: 12px;
+}
+.weather-column__icon {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: -5px;
+}
+.weather-column__icon img {
+  width: 50px;
+  height: 50px;
+}
+.weather-column__feelslike {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.weather-column__feelslike svg {
+  width: 30px;
+  height: 30px;
+}
+.weather-column__feelslike-value {
+  margin-top: -17px;
+  color: black;
+}
+.weather-column__rain {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+</style>
