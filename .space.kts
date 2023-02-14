@@ -25,6 +25,7 @@ job("Deploy") {
                 syncWithAutomationJob = true
             )
         }
+        env["SSHKEY"] = Secrets("openssh-key")
         shellScript {
             interpreter = "/bin/sh"
             content = """
@@ -34,17 +35,11 @@ job("Deploy") {
                 npm run type-check
                 echo Run build ...
                 npm run build
+                echo Deploying...
+                echo ${'$'}SSHKEY > ~/.ssh/id_rsa
+                scp -i ~/.ssh/id_rsa ./dist/* weather@weather.a32.fi:/opt/www/weather/
+                echo Deployment complete!
             """
-          }
-          env["SSHKEY"] = Secrets("openssh-key")
-          shellScript {
-            interpreter = "/bin/bash"
-            content = """
-                  echo Deploying...
-                  echo ${'$'}SSHKEY > ~/.ssh/id_rsa
-                  scp -i ~/.ssh/id_rsa * weather@weather.a32.fi:/opt/www/weather/
-                  echo Deployment complete!
-            """"
-          }
+        }
     }
 }
