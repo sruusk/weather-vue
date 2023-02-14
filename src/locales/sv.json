@@ -77,7 +77,8 @@
       "moderateSnowShowers": "måttlig snöskur",
       "heavySnowShowers": "kraftig snöskur",
       "hailShowers": "hagelskur"
-    }
+    },
+    "weatherProvider": "Väder- och prognosdata tillhandahålls av Finlands meteorologiska institut (FMI) Open Data API."
   },
   "settings": {
     "settings": "Inställningar",

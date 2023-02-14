@@ -78,7 +78,7 @@
       "heavySnowShowers": "heavy snow showers",
       "hailShowers": "hail showers"
     },
-    "weatherProvider": "Väder- och prognosdata tillhandahålls av Finlands meteorologiska institut (FMI) Open Data API."
+    "weatherProvider": "Weather and forecast data provided by the Finnish Meteorological Institute (FMI) Open Data API"
   },
   "settings": {
     "settings": "Settings",
