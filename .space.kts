@@ -28,7 +28,7 @@ job("Deploy") {
     
 
     container("Run deploy script", image = "node:16") {
-        env["SSHKEY"] = Secrets("openssh-key")
+        env["passwd"] = Secrets("weather-pass")
         shellScript {
             interpreter = "/bin/sh"
             content = """
@@ -39,9 +39,9 @@ job("Deploy") {
                 echo Run build ...
                 npm run build
                 echo Deploying...
-                mkdir ~/.ssh
-                echo ${'$'}SSHKEY > ~/.ssh/id_rsa
-                scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ./dist/* weather@weather.a32.fi:/opt/www/weather/
+                apt update
+                apt install -y sshpass
+                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* weather@weather.a32.fi:/opt/www/weather/
                 echo Deployment complete!
             """
         }
