@@ -19,7 +19,7 @@ job("Deploy") {
           api.space().projects.automation.deployments.start(
                 project = api.projectIdentifier(),
                 targetIdentifier = TargetIdentifier.Key("hetzner-vps"),
-                version = "1.0.0",
+                version = api.executionId(),
               	// automatically update deployment status based on a status of a job
 				syncWithAutomationJob = true
 			)
