@@ -1,5 +1,5 @@
 <template>
-  <NavDrawer :open="drawerOpen" :is-installed="isInstalled()" @close="closeDrawer" @install="installPWA" />
+  <NavDrawer :open="drawerOpen" :is-installed="installed" @close="closeDrawer" @install="installPWA" />
   <RouterView @open="openDrawer" @click="handleClick" />
 </template>
 
@@ -18,7 +18,8 @@ export default defineComponent({
   data() {
     return {
       drawerOpen: false,
-      deferredPrompt: null as any
+      deferredPrompt: null as any,
+      installed: false
     }
   },
   beforeCreate() {
@@ -31,6 +32,9 @@ export default defineComponent({
     if (language) {
       this.$i18n.locale = language;
     }
+  },
+  mounted() {
+    this.installed = this.isInstalled();
   },
   methods: {
     closeDrawer() {

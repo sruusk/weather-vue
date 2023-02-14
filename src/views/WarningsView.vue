@@ -1,6 +1,6 @@
 <template>
   <div class="warnings">
-    moi
+    Not implemented yet
   </div>
 </template>
 

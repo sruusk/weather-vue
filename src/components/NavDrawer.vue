@@ -47,7 +47,7 @@ export default defineComponent({
 <!--suppress CssUnusedSymbol -->
 <style scoped>
 .nav-drawer {
-  position: relative;
+  position: absolute; /* Absolute instead of relative to improve sliding animation performance */
   top: 0;
   left: 0;
   bottom: 0;
@@ -57,10 +57,10 @@ export default defineComponent({
   flex-direction: column;
   background-color: #1f2566;
   box-shadow: inset 0 0 20px #161e4d;
-  z-index: 100;
   transition: min-width 0.3s ease-in-out;
   overflow: hidden;
   text-wrap: none;
+  z-index: 10000;
 }
 .nav-drawer.open {
   min-width: 80vw;
@@ -79,6 +79,7 @@ export default defineComponent({
   height: 80px;
 }
 .logo {
+  min-width: 200px;
   width: 200px;
   height: 30px;
 }
