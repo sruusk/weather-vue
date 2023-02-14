@@ -19,7 +19,7 @@ job("Deploy") {
           api.space().projects.automation.deployments.start(
                 project = api.projectIdentifier(),
                 targetIdentifier = TargetIdentifier.Key("hetzner-vps"),
-                version = "1.0.0",
+                version = api.executionId(),
               	// automatically update deployment status based on a status of a job
 				syncWithAutomationJob = true
 			)
@@ -27,8 +27,8 @@ job("Deploy") {
     }
     
 
-    container("Run deploy script", image = "node:16-alpine") {
-        env["SSHKEY"] = Secrets("openssh-key")
+    container("Run deploy script", image = "node:16") {
+        env["passwd"] = Secrets("weather-pass")
         shellScript {
             interpreter = "/bin/sh"
             content = """
@@ -39,8 +39,9 @@ job("Deploy") {
                 echo Run build ...
                 npm run build
                 echo Deploying...
-                echo ${'$'}SSHKEY > ~/.ssh/id_rsa
-                scp -i ~/.ssh/id_rsa ./dist/* weather@weather.a32.fi:/opt/www/weather/
+                apt update
+                apt install -y sshpass
+                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* weather@weather.a32.fi:/opt/www/weather/
                 echo Deployment complete!
             """
         }
