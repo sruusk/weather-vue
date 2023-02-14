@@ -14,17 +14,20 @@ job("Deploy") {
         }
     }
 
-    container("Run deploy script", image = "node:16-alpine") {
-        kotlinScript { api ->
-            // create and start deployment
-            api.space().projects.automation.deployments.start(
+    container("openjdk:11") {
+      kotlinScript { api ->
+          api.space().projects.automation.deployments.start(
                 project = api.projectIdentifier(),
-                targetIdentifier = TargetIdentifier.Id("hetzner-vps"),
-                version = System.getenv("JB_SPACE_EXECUTION_NUMBER"),
-                // sync the job and deployment states
-                syncWithAutomationJob = true
-            )
-        }
+                targetIdentifier = TargetIdentifier.Key("hetzner-vps"),
+                version = "1.0.0",
+              	// automatically update deployment status based on a status of a job
+				syncWithAutomationJob = true
+			)
+		}
+    }
+    
+
+    container("Run deploy script", image = "node:16-alpine") {
         env["SSHKEY"] = Secrets("openssh-key")
         shellScript {
             interpreter = "/bin/sh"
