@@ -1,7 +1,7 @@
 <template>
-  <router-link :to="to" :exact="false" active-class="activeClass" class="link">
+  <router-link :to="{ name: to }" :exact="false" active-class="activeClass" class="link">
     <slot />
-    <MenuArrowIcon />
+    <MenuArrowIcon class="icon" />
   </router-link>
 </template>
 
@@ -27,15 +27,23 @@ export default defineComponent({
 .link {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 20px 0;
-  margin: 0 20px -1px 20px;
+  margin: 0 20px;
   color: #fff;
   text-decoration: none;
   font-weight: 300;
-  font-size: 1.2rem;
+  font-size: 20px;
   transition: background-color 0.3s ease-in-out;
   border-top: #2b4294 solid 1px;
-  border-bottom: #2b4294 solid 1px;
   white-space: nowrap;
+}
+.link:last-of-type {
+  border-bottom: #2b4294 solid 1px;
+}
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px; /* align with text because the icon is not perfectly centered */
 }
 </style>

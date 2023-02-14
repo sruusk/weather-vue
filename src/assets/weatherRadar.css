@@ -90,6 +90,7 @@
     top: .5em;
 }
 
+/*noinspection ALL*/
 .ol-control button {
     display: block;
     margin: 1px;
@@ -154,7 +155,7 @@
 }
 
 .fmi-title {
-    font-family: fmi-bold;
+    font-family: fmi-bold, serif;
 }
 
 .fmi-title-action {
@@ -174,7 +175,7 @@
 #fmi-settings .fmi-title {
     padding-left: 15px;
     text-transform: uppercase;
-    font-family: fmi-bold;
+    font-family: fmi-bold, serif;
     font-size: 12px;
 }
 
@@ -258,7 +259,7 @@
 }
 
 #fmi-search-content .fmi-title {
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 ::-webkit-input-placeholder {
@@ -295,7 +296,7 @@
 }
 
 .fmi-setting-group .fmi-setting:first-child {
-    border-top: 0px;
+    border-top: 0;
 }
 
 .fmi-info,.fmi-info-no-margin {
@@ -306,8 +307,8 @@
 }
 
 .fmi-info-no-margin {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .fmi-details {
@@ -337,7 +338,7 @@
     text-align: center;
     color: black;
     font-size: 16px;
-    font-family: fmi-light;
+    font-family: fmi-light, serif;
 }
 
 #fmi-animator-error {
@@ -350,6 +351,7 @@
     margin-bottom: 20px;
 }
 
+/*noinspection ALL*/
 .fmi-lightblue-button {
     margin-top: 20px;
     display: block;
@@ -370,6 +372,7 @@
     color: black !important;
 }
 
+/*noinspection ALL*/
 .fmi-input,.fmi-small-input {
     margin-top: 20px;
     display: block;
@@ -383,7 +386,7 @@
     height: 44px;
     cursor: pointer;
     width: 100%;
-    border: 0px;
+    border: 0;
     box-sizing: border-box;
     -webkit-user-select: initial !important;
 }
@@ -453,6 +456,7 @@ input[type="text"] {
     text-align: center;
 }
 
+/*noinspection ALL*/
 .fmi-white-button {
     margin-top: 20px;
     width: 200px;
@@ -486,6 +490,7 @@ input[type="text"] {
     height: 42px;
 }
 
+/*noinspection ALL*/
 #fmi-animation-time-select {
     position: relative;
     top: 4px;
@@ -546,11 +551,11 @@ input[type="text"] {
 }
 
 .fmi-button-group button:first-child {
-    border-radius: 4px 0px 0px 4px;
+    border-radius: 4px 0 0 4px;
 }
 
 .fmi-button-group button:last-child {
-    border-radius: 0px 4px 4px 0px;
+    border-radius: 0 4px 4px 0;
 }
 
 .fmi-button-group button:not(:last-child) {
@@ -647,7 +652,7 @@ div.fmi-metoclient-timeslider-pre-tools {
     width: 55px;
     height: 55px;
     border: none;
-    background-image: url('@/assets/images/play.svg');
+    background-image: url('/images/play.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -657,7 +662,7 @@ div.fmi-metoclient-timeslider-pre-tools {
 }
 
 .ol-control button.fmi-metoclient-timeslider-play-button.playing {
-    background-image: url('@/assets/images/pause.svg');
+    background-image: url('/images/pause.svg');
     border: none;
 }
 
@@ -723,6 +728,7 @@ div.fmi-metoclient-timeslider-frame-tick {
     display: none;
 }
 
+/*noinspection ALL*/
 div.fmi-metoclient-timeslider-frame-text-wrapper {
     box-sizing: border-box;
     position: absolute;
@@ -761,7 +767,7 @@ div.fmi-metoclient-timeslider-post-tools {
     top: 0;
     width: 55px;
     height: 55px;
-    background-image: url('@/assets/images/time-steps.svg');
+    background-image: url('/images/time-steps.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -800,6 +806,7 @@ div.fmi-metoclient-timeslider-handle {
     display: block;
 }
 
+/*noinspection ALL*/
 div.fmi-metoclient-timeslider-pointer {
     box-sizing: border-box;
     position: absolute;
@@ -860,6 +867,7 @@ div.fmi-metoclient-timeslider-pointer-handle {
     display: block;
 }
 
+/*noinspection ALL*/
 span.fmi-metoclient-timeslider-pointer-text {
     box-sizing: border-box;
     color: #000;

@@ -1,8 +1,7 @@
 <template>
-  <svg width="19px" height="26px" viewBox="0 0 19 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.2 (29753) - http://www.bohemiancoding.com/sketch -->
+  <svg width="19px" height="26px" viewBox="0 0 19 26" xmlns="http://www.w3.org/2000/svg">
     <title>location-icon</title>
-    <desc>Created with Sketch.</desc>
+    <desc></desc>
     <defs></defs>
     <g id="layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.900000036">
       <g id="etusivu-mobile-portrait" transform="translate(-176.000000, -986.000000)" fill="#15124E">

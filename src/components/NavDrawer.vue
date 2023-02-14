@@ -1,7 +1,7 @@
 <template>
   <div class="nav-drawer" :class="open ? 'open' : 'closed'">
     <FMIOpenDataIcon class="logo" />
-    <NavItem v-for="route in routes" :to="route.path" @click="close">{{ $t(`routes.${route.name}`) }}</NavItem>
+    <NavItem v-for="route in routes" :to="route.name" @click="close">{{ $t(`routes.${route.name}`) }}</NavItem>
   </div>
 </template>
 

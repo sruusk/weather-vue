@@ -1,8 +1,8 @@
+<!--suppress ALL -->
 <template>
-  <svg width="15px" height="21px" viewBox="0 0 15 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
-    <title>nuoli</title>
-    <desc>Created with Sketch.</desc>
+  <svg width="15px" height="21px" viewBox="0 0 15 21" xmlns="http://www.w3.org/2000/svg">
+    <title>icon</title>
+    <desc></desc>
     <defs>
       <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
         <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>

@@ -8,12 +8,14 @@ import router from './router'
 // Import locales
 import en from './locales/en.json'
 import fi from './locales/fi.json'
+import sv from './locales/sv.json'
 
 const i18n = createI18n({
     locale: 'fi',
     messages: {
         en,
-        fi
+        fi,
+        sv
     }
 })
 

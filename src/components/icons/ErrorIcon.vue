@@ -1,8 +1,7 @@
 <template>
-  <svg width="178px" height="138px" viewBox="0 0 178 138" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.1 (29687) - http://www.bohemiancoding.com/sketch -->
+  <svg width="178px" height="138px" viewBox="0 0 178 138" xmlns="http://www.w3.org/2000/svg">
     <title>icon</title>
-    <desc>Created with Sketch.</desc>
+    <desc></desc>
     <defs></defs>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g transform="translate(-99.000000, -110.000000)" fill="#FFFFFF">

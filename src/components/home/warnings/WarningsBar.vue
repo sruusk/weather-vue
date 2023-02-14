@@ -2,7 +2,11 @@
   <div class="warnings">
     <div>{{ $t('home.warnings') }} - 5 {{ $t('home.days') }}</div>
     <div class="warning-list">
-      <WarningItem class="warning-item" v-for="day in nextDays" :key="day">
+      <WarningItem
+          class="warning-item"
+          v-for="day in nextDays"
+          @click="() => $router.push({ name: 'warnings', params: { day: nextDays.indexOf(day) } })"
+          :key="day">
         {{ getShortDayName(day) }}
       </WarningItem>
     </div>

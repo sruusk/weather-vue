@@ -15,10 +15,10 @@ const routes = [
     showInMenu: true
   },
   {
-    path: '/warnings',
+    path: '/warnings/:id?',
     name: 'warnings',
     component: () => import('../views/WarningsView.vue'),
-    showInMenu: true
+    showInMenu: true,
   },
   {
     path: '/settings',

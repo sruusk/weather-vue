@@ -76,7 +76,8 @@
       "moderateSnowShowers": "kohtalaisia lumikuuroja",
       "heavySnowShowers": "voimakkaita lumikuuroja",
       "hailShowers": "raekuuroja"
-    }
+    },
+    "weatherProvider": "Säähavainnot ja ennusteet tarjoaa Ilmatieteen laitoksen Avoin data -palvelu"
   },
   "settings": {
     "settings": "Asetukset",

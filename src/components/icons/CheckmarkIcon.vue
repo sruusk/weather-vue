@@ -1,8 +1,7 @@
 <template>
   <svg width="13px" height="9px" viewBox="0 0 13 9" xmlns="http://www.w3.org/2000/svg">
-    <!-- Generator: Sketch 3.7.1 (28215) - http://www.bohemiancoding.com/sketch -->
-    <title>Shape</title>
-    <desc>Created with Sketch.</desc>
+    <title>icon</title>
+    <desc></desc>
     <defs></defs>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g transform="translate(-335.000000, -389.000000)" stroke="#FFFFFF">

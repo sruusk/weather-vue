@@ -1,8 +1,7 @@
 <template>
-  <svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.6.1 (26313) - http://www.bohemiancoding.com/sketch -->
-    <title>ikoni</title>
-    <desc>Created with Sketch.</desc>
+  <svg width="17px" height="17px" viewBox="0 0 17 17" xmlns="http://www.w3.org/2000/svg">
+    <title>icon</title>
+    <desc></desc>
     <defs></defs>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
       <g transform="translate(-33.000000, -211.000000)" stroke="#FFFFFF">

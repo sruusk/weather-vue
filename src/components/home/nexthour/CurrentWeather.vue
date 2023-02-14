@@ -199,7 +199,7 @@ export default defineComponent({
   background-color: #fdfdfe;
 }
 .isLocation :deep(.carousel__pagination-item:nth-of-type(1) .carousel__pagination-button) {
-  background-image: url("@/assets/images/location.svg");
+  background-image: url("/images/location.svg");
   filter: brightness(0.8);
   background-size: 40%;
   background-repeat: no-repeat;
@@ -208,7 +208,7 @@ export default defineComponent({
   height: 20px;
 }
 .isLocation :deep(.carousel__pagination-item:nth-of-type(1) .carousel__pagination-button--active) {
-  background-image: url("@/assets/images/location.svg");
+  background-image: url("/images/location.svg");
   filter: brightness(1);
   background-size: 40%;
   background-repeat: no-repeat;
