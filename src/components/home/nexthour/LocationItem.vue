@@ -81,7 +81,7 @@ h2 {
 .weather img {
   width: 150px;
   height: 150px;
-  margin: 10px 0 0 20px;
+  margin: 10px 0 0 0;
 }
 .temperature {
   display: flex;

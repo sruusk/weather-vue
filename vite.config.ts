@@ -25,10 +25,13 @@ export default defineConfig({
             manifest: {
                 name: 'Weather',
                 short_name: 'Weather',
+                start_url: '/',
+                description: 'Weather',
                 theme_color: '#191c1f',
                 background_color: '#191c1f',
                 display: 'standalone',
                 orientation: 'portrait',
+                categories: ['weather'],
                 icons: [
                     {
                         src: 'icons/pwa-144x144.png',
@@ -55,6 +58,43 @@ export default defineConfig({
                         sizes: '512x512',
                         type: 'image/png'
                     }
+                ],
+                screenshots: [
+                    {
+                        src: 'screenshots/screenshot-1.webp',
+                        type: 'image/webp',
+                        sizes: '1080x2400',
+                        platform: 'narrow',
+                        label: 'Home screen of the app'
+                    },
+                    {
+                        src: 'screenshots/screenshot-1.webp',
+                        type: 'image/webp',
+                        sizes: '1080x2400',
+                        platform: 'android',
+                        label: 'Home screen of the app'
+                    },
+                    {
+                        src: 'screenshots/screenshot-2.webp',
+                        type: 'image/webp',
+                        sizes: '1440x2960',
+                        platform: 'narrow',
+                        label: 'Home screen of the app'
+                    },
+                    {
+                        src: 'screenshots/screenshot-3.webp',
+                        type: 'image/webp',
+                        sizes: '1170x2532',
+                        platform: 'narrow',
+                        label: 'Home screen of the app'
+                    },
+                    {
+                        src: 'screenshots/screenshot-3.webp',
+                        type: 'image/webp',
+                        sizes: '1170x2532',
+                        platform: 'ios',
+                        label: 'Home screen of the app'
+                    }
                 ]
             },
             workbox: {
@@ -62,6 +102,7 @@ export default defineConfig({
                 skipWaiting: true,
                 sourcemap: false,
                 navigateFallbackDenylist: [],
+                maximumFileSizeToCacheInBytes: 30000000, // 30 MB (default: 2 MB)
                 globPatterns: [
                     '**/*.{js,css,html,webp,jpg,svg,png,ico,webmanifest,txt,ttf,woff,woff2,otf,eot}'
                 ],

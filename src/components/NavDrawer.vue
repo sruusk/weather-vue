@@ -1,7 +1,10 @@
 <template>
   <div class="nav-drawer" :class="open ? 'open' : 'closed'">
-    <FMIOpenDataIcon class="logo" />
+    <div class="header">
+      <FMIOpenDataIcon class="logo" />
+    </div>
     <NavItem v-for="route in routes" :to="route.name" @click="close">{{ $t(`routes.${route.name}`) }}</NavItem>
+    <NavItem to="home" @click="$emit('install')">{{ $t("routes.install") }}</NavItem>
   </div>
 </template>
 
@@ -23,7 +26,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["close"],
+  emits: ["close", "install"],
   computed: {
     routes() {
       return routes.filter(route => route.showInMenu)
@@ -32,7 +35,7 @@ export default defineComponent({
   methods: {
     close() {
       this.$emit("close");
-    },
+    }
   },
 });
 </script>
@@ -61,12 +64,18 @@ export default defineComponent({
 .nav-drawer.closed {
   min-width: 0;
 }
-.logo {
-  width: 80vw;
-  height: 50px;
-  padding: 20px 0 20px 0;
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 10px 0 10px;
   background: #253478;
   box-shadow: #161e4d 0 0 20px;
   margin-bottom: 40px;
+  height: 80px;
+}
+.logo {
+  width: 200px;
+  height: 30px;
 }
 </style>

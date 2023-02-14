@@ -1,7 +1,8 @@
+import type { Router } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
-const routes = [
+export const routes = [
   {
     path: '/',
     name: 'home',
@@ -39,5 +40,17 @@ const router = createRouter({
   routes: routes
 })
 
+export const registerPWA = (router: Router) => {
+  router.isReady().then(async () => {
+    // @ts-ignore
+    const { registerSW } = await import('virtual:pwa-register')
+    registerSW({
+      immediate: true,
+      onOfflineReady() {
+        console.log('App is ready for offline usage.')
+      }
+    })
+  })
+}
+
 export default router
-export { routes }

@@ -28,12 +28,12 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
+  padding: 17px 0;
   margin: 0 20px;
   color: #fff;
   text-decoration: none;
-  font-weight: 300;
-  font-size: 20px;
+  font-weight: 400;
+  font-size: 16px;
   transition: background-color 0.3s ease-in-out;
   border-top: #2b4294 solid 1px;
   white-space: nowrap;

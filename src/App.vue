@@ -1,5 +1,5 @@
 <template>
-  <NavDrawer :open="drawerOpen" @close="closeDrawer" />
+  <NavDrawer :open="drawerOpen" @close="closeDrawer" @install="installPWA" />
   <RouterView @open="openDrawer" @click="handleClick" />
 </template>
 
@@ -37,6 +37,9 @@ export default defineComponent({
       if(this.drawerOpen) {
         this.closeDrawer()
       }
+    },
+    installPWA() {
+      console.log('installing PWA');
     }
   }
 })

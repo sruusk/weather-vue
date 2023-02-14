@@ -58,6 +58,7 @@ export default defineComponent({
 }
 .warning-list {
   padding: 0 10px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
