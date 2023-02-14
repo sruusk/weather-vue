@@ -47,7 +47,7 @@ export default defineComponent({
 <!--suppress CssUnusedSymbol -->
 <style scoped>
 .nav-drawer {
-  position: absolute; /* Absolute instead of relative to improve sliding animation performance */
+  position: relative; /* Absolute instead of relative to improve sliding animation performance */
   top: 0;
   left: 0;
   bottom: 0;
@@ -57,7 +57,7 @@ export default defineComponent({
   flex-direction: column;
   background-color: #1f2566;
   box-shadow: inset 0 0 20px #161e4d;
-  transition: min-width 0.3s ease-in-out;
+  transition: min-width 0.5s ease-in-out;
   overflow: hidden;
   text-wrap: none;
   z-index: 10000;
