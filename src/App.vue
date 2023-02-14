@@ -1,5 +1,5 @@
 <template>
-  <NavDrawer :open="drawerOpen" @close="closeDrawer" @install="installPWA" />
+  <NavDrawer :open="drawerOpen" :is-installed="isInstalled()" @close="closeDrawer" @install="installPWA" />
   <RouterView @open="openDrawer" @click="handleClick" />
 </template>
 
@@ -17,8 +17,14 @@ export default defineComponent({
   },
   data() {
     return {
-      drawerOpen: false
+      drawerOpen: false,
+      deferredPrompt: null as any
     }
+  },
+  beforeCreate() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      this.deferredPrompt = e;
+    });
   },
   created() {
     const language = localStorage.getItem('language');
@@ -40,6 +46,27 @@ export default defineComponent({
     },
     installPWA() {
       console.log('installing PWA');
+      if(this.deferredPrompt && !this.isInstalled()) {
+        this.deferredPrompt.prompt();
+        this.deferredPrompt.userChoice.then((choiceResult: any) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          this.deferredPrompt = null;
+        });
+      }
+    },
+    isInstalled() {
+      //@ts-ignore For iOS
+      if(window.navigator.standalone) return true
+
+      // For Android
+      if(window.matchMedia('(display-mode: standalone)').matches) return true
+
+      // If neither is true, it's not installed
+      return false
     }
   }
 })
