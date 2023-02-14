@@ -1,6 +1,6 @@
 <template>
   <div class="nav-drawer" :class="open ? 'open' : 'closed'">
-    <IconFMIOpenData class="logo" />
+    <FMIOpenDataIcon class="logo" />
     <NavItem v-for="route in routes" :to="route.path" @click="close">{{ $t(`routes.${route.name}`) }}</NavItem>
   </div>
 </template>
@@ -9,13 +9,13 @@
 import { defineComponent } from "vue";
 import NavItem from "@/components/NavItem.vue";
 import { routes } from '@/router';
-import IconFMIOpenData from "@/components/icons/IconFMIOpenData.vue";
+import FMIOpenDataIcon from "@/components/icons/FMIOpenDataIcon.vue";
 
 export default defineComponent({
   name: "NavDrawer",
   components: {
     NavItem,
-    IconFMIOpenData,
+    FMIOpenDataIcon,
   },
   props: {
     open: {
@@ -53,6 +53,7 @@ export default defineComponent({
   z-index: 100;
   transition: min-width 0.3s ease-in-out;
   overflow: hidden;
+  text-wrap: none;
 }
 .nav-drawer.open {
   min-width: 80vw;
@@ -61,7 +62,7 @@ export default defineComponent({
   min-width: 0;
 }
 .logo {
-  width: 100%;
+  width: 80vw;
   height: 50px;
   padding: 20px 0 20px 0;
   background: #253478;

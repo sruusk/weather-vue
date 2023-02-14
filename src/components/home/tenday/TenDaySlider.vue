@@ -62,6 +62,9 @@ export default defineComponent({
   computed: {
 
   },
+  created() {
+    this.days = this.getDaysFromWeather();
+  },
   watch: {
     weather: {
       handler: function () {

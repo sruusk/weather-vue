@@ -20,6 +20,12 @@ export default defineComponent({
       drawerOpen: false
     }
   },
+  created() {
+    const language = localStorage.getItem('language');
+    if (language) {
+      this.$i18n.locale = language;
+    }
+  },
   methods: {
     closeDrawer() {
       this.drawerOpen = false
@@ -68,6 +74,7 @@ export default defineComponent({
   src: local("Roboto Bold"), url("@/fonts/Roboto-Bold.ttf") format("truetype");
 }
 
+/*noinspection CssUnusedSymbol*/
 #app {
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;

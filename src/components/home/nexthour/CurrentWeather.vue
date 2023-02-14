@@ -1,7 +1,10 @@
 <template>
   <div class="main">
     <div class="header" :class="isLocation ? 'isLocation' : ''">
-      <Carousel @slide-end="handleSlide" v-if="favouriteLocations.length === favouritesWeather.length">
+      <Carousel
+          @slide-end="handleSlide"
+          :wrapAround="true"
+          v-if="favouriteLocations.length === favouritesWeather.length">
         <Slide
             v-for="fav in locations"
             :key="fav.name">
@@ -23,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import type { ForecastLocation, Weather, TimeSeriesObservation, HourWeather } from "@/types";
+import type { ForecastLocation, Weather, HourWeather } from "@/types";
 import { defineComponent } from 'vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
@@ -84,6 +87,10 @@ export default defineComponent({
     this.favouriteLocations.forEach((location) => {
       this.getFavouriteLocation(location);
     })
+    if(this.locatingComplete && !this.isLocation) {
+      console.log("Setting location to first favourite location", this.locatingComplete, this.isLocation)
+      this.setLocation(`${this.favouriteLocations[0].name},${this.favouriteLocations[0].region}`)
+    }
   },
   computed: {
     isLocation() {
@@ -140,7 +147,7 @@ export default defineComponent({
       });
     },
     handleSlide(data : { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
-      const { currentSlideIndex, prevSlideIndex, slidesCount } = data;
+      const { currentSlideIndex } = data;
       if(currentSlideIndex === 0) {
         if(this.isLocation) this.setLocation(`${this.currentLocation.name},${this.currentLocation.region}`);
         else this.setLocation(`${this.favouriteLocations[0].name},${this.favouriteLocations[0].region}`);
@@ -170,6 +177,7 @@ export default defineComponent({
   width: 100%;
 }
 
+/*noinspection CssUnusedSymbol*/
 .carousel__pagination {
   top: -30px;
   position: absolute;

@@ -1,17 +1,17 @@
 <template>
   <div class="footer">
-    <IconFMIOpenData class="logo" />
+    <FMIOpenDataIcon class="logo" />
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import IconFMIOpenData from "@/components/icons/IconFMIOpenData.vue";
+import FMIOpenDataIcon from "@/components/icons/FMIOpenDataIcon.vue";
 
 export default defineComponent({
   name: "Footer.vue",
   components: {
-    IconFMIOpenData
+    FMIOpenDataIcon
   }
 })
 </script>

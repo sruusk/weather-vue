@@ -1,18 +1,18 @@
 <template>
   <router-link :to="to" :exact="false" active-class="activeClass" class="link">
     <slot />
-    <IconMenuArrow />
+    <MenuArrowIcon />
   </router-link>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import IconMenuArrow from "@/components/icons/IconMenuArrow.vue";
+import MenuArrowIcon from "@/components/icons/MenuArrowIcon.vue";
 
 export default defineComponent({
   name: "NavItem.vue",
   components: {
-    IconMenuArrow
+    MenuArrowIcon
   },
   props: {
     to: {
@@ -36,5 +36,6 @@ export default defineComponent({
   transition: background-color 0.3s ease-in-out;
   border-top: #2b4294 solid 1px;
   border-bottom: #2b4294 solid 1px;
+  white-space: nowrap;
 }
 </style>

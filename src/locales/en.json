@@ -15,6 +15,7 @@
     "warnings": "Warnings",
     "days": "days",
     "forecast": "Forecast",
+    "tenDayForecast": "10-day forecast",
     "updated": "updated",
     "weatherRadar": "Weather radar",
     "weatherObservations": "Weather observations",
@@ -76,5 +77,13 @@
       "heavySnowShowers": "heavy snow showers",
       "hailShowers": "hail showers"
     }
+  },
+  "settings": {
+    "settings": "Settings",
+    "language": "Language",
+    "location": "Location",
+    "on": "On",
+    "off": "Off",
+    "weatherRadar": "Weather radar"
   }
 }

@@ -63,6 +63,9 @@ export default defineComponent({
       scrolling: false
     }
   },
+  created() {
+    this.days = this.getDaysFromWeather();
+  },
   watch: {
     weather: {
       handler: function () {
@@ -114,6 +117,7 @@ export default defineComponent({
 })
 </script>
 
+<!--suppress CssUnusedSymbol -->
 <style scoped>
 .slider {
   display: flex;

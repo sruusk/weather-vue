@@ -73,6 +73,9 @@ export default defineComponent({
       console.error(error);
     });
   },
+  beforeUnmount() {
+    if(this.metoclient) this.metoclient.destroy();
+  },
   watch: {
     timeStep() {
       this.showTimeOptions = false;

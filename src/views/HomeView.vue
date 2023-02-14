@@ -1,7 +1,7 @@
 <template>
   <main v-if="currentWeather">
     <div class="navigation">
-      <IconHamburger class="menu" @click.stop="open" />
+      <HamburgerIcon class="menu" @click.stop="open" />
       <SearchIcon class="search" @click.stop="openSearch"/>
     </div>
     <CurrentWeather
@@ -11,9 +11,9 @@
         :get-weather-by-place="getWeatherPlace"
         :locating-complete="locatingComplete" />
     <WarningsBar />
-    <TenDayForecast :weather="currentWeather" />
-    <WeatherRadar v-if="isWeatherLoaded" :location="currentWeather.location" />
-    <Observations :location="currentWeather.location" />
+    <TenDayForecast v-if="isWeatherLoaded" :weather="currentWeather" />
+    <WeatherRadar v-if="isWeatherLoaded && enableWeatherRadar" :location="currentWeather.location" />
+    <Observations v-if="isWeatherLoaded" :location="currentWeather.location" />
     <Footer />
   </main>
 </template>
@@ -21,7 +21,8 @@
 <script lang="ts">
 import type { ForecastLocation, Weather as WeatherType} from "@/types";
 import { defineComponent } from "vue";
-import IconHamburger from "@/components/icons/IconHamburger.vue";
+import settings from "@/settings";
+import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 import CurrentWeather from "@/components/home/nexthour/CurrentWeather.vue";
 import WarningsBar from "@/components/home/warnings/WarningsBar.vue";
@@ -34,7 +35,7 @@ import Weather from "@/weather";
 export default defineComponent({
   name: "HomeView",
   components: {
-    IconHamburger,
+    HamburgerIcon,
     CurrentWeather,
     WarningsBar,
     TenDayForecast,
@@ -47,12 +48,22 @@ export default defineComponent({
     return {
       currentWeather: {} as WeatherType,
       currentLocation: {} as ForecastLocation,
-      locatingComplete: false
+      locatingComplete: false,
+      enableWeatherRadar: settings.weatherRadar
     };
   },
   emits: ["open"],
+  beforeCreate() {
+    if(!settings.location) {
+      console.log("Location disabled in settings");
+      this.locatingComplete = true;
+    }
+    this.$i18n.locale = settings.language;
+  },
   created() {
-    this.getLocation();
+    if(!this.locatingComplete) {
+      this.getLocation();
+    }
   },
   computed: {
     isWeatherLoaded() {

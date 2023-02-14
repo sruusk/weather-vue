@@ -46,6 +46,9 @@ export default defineComponent({
       observationStations: [] as ObservationStation[],
     }
   },
+  created() {
+    this.getObservationStations();
+  },
   watch: {
     location: {
       handler() {
