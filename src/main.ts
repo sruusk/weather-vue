@@ -4,6 +4,7 @@ import VueMobileDetection from "vue-mobile-detection";
 import { createI18n } from 'vue-i18n'
 import App from './App.vue'
 import router from './router'
+import './registerServiceWorker';
 
 // Import locales
 import en from './locales/en.json'
