@@ -26,6 +26,7 @@ export default defineConfig({
                 name: 'Weather',
                 short_name: 'Weather',
                 start_url: '/',
+                id: 'fi.a32.weather',
                 description: 'Weather',
                 theme_color: '#191c1f',
                 background_color: '#191c1f',
