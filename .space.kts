@@ -27,7 +27,7 @@ job("Deploy") {
     }
     
 
-    container("Run deploy script", image = "node:16-alpine") {
+    container("Run deploy script", image = "node:16") {
         env["SSHKEY"] = Secrets("openssh-key")
         shellScript {
             interpreter = "/bin/sh"
