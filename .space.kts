@@ -41,7 +41,7 @@ job("Deploy") {
                 echo Deploying...
                 mkdir ~/.ssh
                 echo ${'$'}SSHKEY > ~/.ssh/id_rsa
-                scp -i ~/.ssh/id_rsa ./dist/* weather@weather.a32.fi:/opt/www/weather/
+                scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ./dist/* weather@weather.a32.fi:/opt/www/weather/
                 echo Deployment complete!
             """
         }
