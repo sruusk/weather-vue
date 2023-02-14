@@ -3,7 +3,6 @@
     <div class="header" :class="isLocation ? 'isLocation' : ''">
       <Carousel
           @slide-end="handleSlide"
-          :wrapAround="true"
           v-if="favouriteLocations.length === favouritesWeather.length">
         <Slide
             v-for="fav in locations"
