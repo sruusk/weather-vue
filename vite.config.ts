@@ -63,14 +63,14 @@ export default defineConfig({
                     {
                         src: 'screenshots/screenshot-1.webp',
                         type: 'image/webp',
-                        sizes: '1080x2400',
+                        sizes: '1084x2069',
                         platform: 'narrow',
                         label: 'Home screen of the app'
                     },
                     {
                         src: 'screenshots/screenshot-1.webp',
                         type: 'image/webp',
-                        sizes: '1080x2400',
+                        sizes: '1084x2069',
                         platform: 'android',
                         label: 'Home screen of the app'
                     },
