@@ -1,5 +1,5 @@
 // @ts-ignore
-// noinspection JSUnusedLocalSymbols
+// noinspection JSUnusedLocalSymbols,JSDeprecatedSymbols
 
 import { registerSW } from 'virtual:pwa-register';
 

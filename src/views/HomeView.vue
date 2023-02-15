@@ -21,7 +21,7 @@
 <script lang="ts">
 import type { ForecastLocation, Weather as WeatherType} from "@/types";
 import { defineComponent } from "vue";
-import settings from "@/settings";
+import Settings from "@/settings";
 import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 import CurrentWeather from "@/components/home/nexthour/CurrentWeather.vue";
@@ -50,16 +50,16 @@ export default defineComponent({
       currentLocation: {} as ForecastLocation,
       currentLocationWeather: {} as WeatherType,
       locatingComplete: false,
-      enableWeatherRadar: settings.weatherRadar
+      enableWeatherRadar: Settings.weatherRadar
     };
   },
   emits: ["open"],
   beforeCreate() {
-    if(!settings.location) {
+    if(!Settings.location) {
       console.log("Location disabled in settings");
       this.locatingComplete = true;
     }
-    this.$i18n.locale = settings.language;
+    this.$i18n.locale = Settings.language;
   },
   created() {
     if(!this.locatingComplete) {

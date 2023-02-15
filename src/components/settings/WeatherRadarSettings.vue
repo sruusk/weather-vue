@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import settings from "@/settings";
+import Settings from "@/settings";
 import SettingsItem from "@/components/settings/SettingsItem.vue";
 import CheckboxItem from "@/components/settings/CheckboxItem.vue";
 
@@ -29,12 +29,12 @@ export default defineComponent({
   },
   data() {
     return {
-      weatherRadarEnabled: settings.weatherRadar,
+      weatherRadarEnabled: Settings.weatherRadar,
     }
   },
   watch: {
     weatherRadarEnabled() {
-      settings.weatherRadar = this.weatherRadarEnabled;
+      Settings.weatherRadar = this.weatherRadarEnabled;
     }
   },
 })

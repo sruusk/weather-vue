@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import settings from "@/settings";
+import Settings from "@/settings";
 import SettingsItem from "@/components/settings/SettingsItem.vue";
 import CheckboxItem from "@/components/settings/CheckboxItem.vue";
 
@@ -35,14 +35,14 @@ export default defineComponent({
   },
   data() {
     return {
-      language: settings.language
+      language: Settings.language
     }
   },
   methods: {
     changeLanguage(language: string) {
       this.language = language;
       this.$i18n.locale = language;
-      settings.language = language;
+      Settings.language = language;
     }
   }
 })

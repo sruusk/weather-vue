@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import settings from "@/settings";
+import Settings from "@/settings";
 import SettingsItem from "@/components/settings/SettingsItem.vue";
 import CheckboxItem from "@/components/settings/CheckboxItem.vue";
 
@@ -31,7 +31,7 @@ export default defineComponent({
   },
   data() {
     return {
-      locationEnabled: settings.location,
+      locationEnabled: Settings.location,
     }
   },
   watch: {
@@ -41,7 +41,7 @@ export default defineComponent({
   },
   methods: {
     saveLocationSetting() {
-      settings.location = this.locationEnabled;
+      Settings.location = this.locationEnabled;
     },
   }
 })

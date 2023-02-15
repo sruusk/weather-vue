@@ -3,7 +3,7 @@ class Settings {
 
     }
 
-    get location() {
+    static get location() {
         const location = localStorage.getItem('location');
         if (location) {
             return location === 'true';
@@ -12,11 +12,11 @@ class Settings {
         }
     }
 
-    set location(value: boolean) {
+    static set location(value: boolean) {
         localStorage.setItem('location', value.toString());
     }
 
-    get language() {
+    static get language() {
         const language = localStorage.getItem('language');
         if (language) {
             return language;
@@ -25,11 +25,11 @@ class Settings {
         }
     }
 
-    set language(value: string) {
+    static set language(value: string) {
         localStorage.setItem('language', value);
     }
 
-    get weatherRadar() {
+    static get weatherRadar() {
         const weatherRadar = localStorage.getItem('weatherRadar');
         if (weatherRadar) {
             return weatherRadar === 'true';
@@ -38,9 +38,9 @@ class Settings {
         }
     }
 
-    set weatherRadar(value: boolean) {
+    static set weatherRadar(value: boolean) {
         localStorage.setItem('weatherRadar', value.toString());
     }
 }
 
-export default new Settings();
+export default Settings;
