@@ -1,6 +1,6 @@
 <template>
   <NavDrawer :open="drawerOpen" :is-installed="installed" @close="closeDrawer" @install="installPWA" />
-  <RouterView @open="openDrawer" @click="handleClick" />
+  <RouterView @open="openDrawer" @click="handleClick" :class="{'open' : drawerOpen}" />
 </template>
 
 <script lang="ts">
@@ -114,7 +114,12 @@ export default defineComponent({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: flex;
-  /*max-width: calc(100vh * 9/16);*/
+  overflow-x: hidden;
+}
+
+#app .open { /* Prevent scrolling when navigation is open */
+  overflow-y: hidden;
+  max-height: 100vh;
 }
 
 body {
