@@ -4,7 +4,7 @@
       <FMIOpenDataIcon class="logo" />
     </div>
     <NavItem v-for="route in routes" :to="route.name" @click="close">{{ $t(`routes.${route.name}`) }}</NavItem>
-    <NavItem to="home" @click="$emit('install')">{{ $t("routes.install") }}</NavItem>
+    <NavItem to="home" v-if="!isInstalled" @click="$emit('install')">{{ $t("routes.install") }}</NavItem>
   </div>
 </template>
 
