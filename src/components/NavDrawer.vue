@@ -47,7 +47,7 @@ export default defineComponent({
 <!--suppress CssUnusedSymbol -->
 <style scoped>
 .nav-drawer {
-  position: absolute; /* Absolute instead of relative to improve sliding animation performance */
+  position: relative; /* Absolute instead of relative to improve sliding animation performance */
   top: 0;
   left: 0;
   bottom: 0;
@@ -61,6 +61,7 @@ export default defineComponent({
   overflow: hidden;
   text-wrap: none;
   z-index: 1100;
+  contain: content;
 }
 .nav-drawer.open {
   min-width: 80vw;
