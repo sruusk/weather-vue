@@ -46,9 +46,8 @@ export default defineComponent({
     }
   },
   created() {
-    getDayLength(this.weather.location).then((dayLength) => {
-      this.dayLength = `${dayLength.sunrise} - ${dayLength.sunset}`;
-    });
+    const dayLength = getDayLength(this.weather.location);
+    this.dayLength = `${dayLength.sunrise} - ${dayLength.sunset}`
   }
 })
 </script>

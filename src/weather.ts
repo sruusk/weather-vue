@@ -1,3 +1,5 @@
+// noinspection NonAsciiCharacters
+
 import type {ForecastLocation, TimeSeriesObservation, Weather, ObservationStation, ObservationStationLocation, DayLength} from './types';
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
@@ -342,22 +344,7 @@ function distanceBetweenCoordinates([lat1, lon1]: [number, number], [lat2, lon2]
 }
 
 export function getDayLength(location: ForecastLocation) {
-    return new Promise((resolve, reject) => { // TODO: un-promise this
-        resolve(calculateSunPosition(location));
-    }) as Promise<DayLength>;
-    //TODO: remove this before publishing
-    /*
-    const url = `https://www.ilmatieteenlaitos.fi/api/weather/daylength?place=${location.region.toLowerCase()}`
-    return new Promise((resolve, reject) => {
-        fetch(url).then((response) => {
-            return response.json();
-        }).then((data) => {
-            console.log(location, data, calculateSunPosition(location));
-            resolve(data);
-        }).catch((error) => {
-            reject(error);
-        });
-    }) as Promise<DayLength>;*/
+    return calculateSunPosition(location)
 }
 
 // @ts-ignore
