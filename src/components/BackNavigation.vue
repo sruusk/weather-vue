@@ -35,9 +35,9 @@ export default defineComponent({
   font-weight: normal;
 }
 .icon {
-  padding: 10px;
+  padding: 20px;
 }
 .back-navigation div {
-  width: 20px; /* width of the arrow icon to center the slot */
+  width: 40px; /* width of the arrow icon to center the slot */
 }
 </style>

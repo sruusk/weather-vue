@@ -1,6 +1,7 @@
 <template>
   <div class="main">
-    Not implemented yet
+    <BackNavigation>Favourites</BackNavigation>
+    <h1>Not implemented yet</h1>
     <div class="search">
       <h1>Search</h1>
     </div>
@@ -12,9 +13,13 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
+import BackNavigation from "@/components/BackNavigation.vue";
 
 export default defineComponent({
   name: "FavouritesView.vue",
+  components: {
+    BackNavigation
+  },
   date() {
     return {
       favourites: []
@@ -29,5 +34,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.main {
+  width: 100%;
+}
 </style>

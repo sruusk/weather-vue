@@ -41,16 +41,16 @@ export default defineComponent({
     Navigation,
   },
   props: {
-    weather: {
-      type: Object as () => Weather,
-      required: true
-    },
     setLocation: {
       type: Function,
       required: true
     },
     currentLocation: {
       type: Object as () => ForecastLocation,
+      required: true
+    },
+    currentLocationWeather: {
+      type: Object as () => Weather,
       required: true
     },
     getWeatherByPlace: {
@@ -100,9 +100,9 @@ export default defineComponent({
     }
   },
   watch: {
-    weather: {
+    currentLocationWeather: {
       handler: function () {
-        this.nextHourWeather = this.getNextHourWeather(this.weather);
+        this.nextHourWeather = this.getNextHourWeather(this.currentLocationWeather);
       },
       deep: true
     },

@@ -57,10 +57,10 @@ export default defineComponent({
   flex-direction: column;
   background-color: #1f2566;
   box-shadow: inset 0 0 20px #161e4d;
-  transition: min-width 0.5s ease-in-out;
+  transition: min-width 0.5s ease-out;
   overflow: hidden;
   text-wrap: none;
-  z-index: 10000;
+  z-index: 1100;
 }
 .nav-drawer.open {
   min-width: 80vw;

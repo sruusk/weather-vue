@@ -82,7 +82,7 @@ export default defineComponent({
         this.scrolling = true;
         // @ts-ignore
         this.slider?.querySelector(`#ten-day-detailed-${this.selectedDay.getDate()}`)
-            .scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
+            .scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
       },
       deep: true
     }
@@ -99,7 +99,7 @@ export default defineComponent({
       const scrollLeft = this.slider?.scrollLeft;
       const entries = Object.entries(this.dayPositions).reverse();
       for (const [position, date] of entries) {
-        if (scrollLeft >= parseInt(position)) {
+        if (scrollLeft >= parseInt(position) - 20) {
           if(!this.scrolling && this.selectedDay.getDate() !== date.getDate()) {
             this.ignoreNext = true;
             this.goToDay(date);

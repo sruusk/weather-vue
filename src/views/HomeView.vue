@@ -5,8 +5,8 @@
       <SearchIcon class="search" @click.stop="openSearch"/>
     </div>
     <CurrentWeather
-        :weather="currentWeather"
         :setLocation="setLocation"
+        :current-location-weather="currentLocationWeather"
         :current-location="currentLocation"
         :get-weather-by-place="getWeatherPlace"
         :locating-complete="locatingComplete" />
@@ -48,6 +48,7 @@ export default defineComponent({
     return {
       currentWeather: {} as WeatherType,
       currentLocation: {} as ForecastLocation,
+      currentLocationWeather: {} as WeatherType,
       locatingComplete: false,
       enableWeatherRadar: settings.weatherRadar
     };
@@ -75,7 +76,7 @@ export default defineComponent({
       this.$emit("open");
     },
     openSearch() {
-      this.$router.push("/search");
+      this.$router.push("/favourites");
     },
     getLocation() {
       if (navigator.geolocation) {
@@ -103,6 +104,7 @@ export default defineComponent({
       return new Promise(resolve => {
         Weather.getWeatherByLatLon(lat, lon).then((response) => {
           this.currentWeather = response;
+          this.currentLocationWeather = response;
           this.currentLocation = response.location;
           resolve(response);
           console.log(response);
