@@ -1,5 +1,5 @@
 <template>
-  <div v-if="weather && Object.keys(weather).length">
+  <div v-if="weather && Object.keys(weather).length" ref="item">
     <h2>{{ weather.location.name }}, {{ weather.location.region }}</h2>
     <div class="weather">
       <img :src="weatherIcon" alt="weather icon" />
@@ -12,7 +12,7 @@
     <div class="details">
       <div class="feelslike-row">
         <div class="time">
-          <ShareButton>{{ $t('home.share') }}</ShareButton>
+          <ShareButton @click="share" v-if="canShare">{{ shareButtonText }}</ShareButton>
           <ClockIcon class="timeIcon" />
           <span class="time-value">{{ weather.time }}</span>
         </div>
@@ -25,7 +25,8 @@
 
 <script lang="ts">
 import type { HourWeather } from "@/types";
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import domtoimage from 'dom-to-image';
 import ClockIcon from "@/components/icons/ClockIcon.vue";
 import ShareButton from "@/components/home/nexthour/ShareButton.vue";
 import FeelsLike from "@/components/home/nexthour/FeelsLike.vue";
@@ -45,14 +46,67 @@ export default defineComponent({
     FeelsLike,
     CurrentWeatherBar,
   },
+  setup() {
+    const item = ref(null);
+    return {
+      item,
+    };
+  },
+  data() {
+    return {
+      loading: false,
+      errorLoading: false,
+      canShare: !!navigator.share,
+    };
+  },
   computed: {
     weatherIcon() {
       return `/symbols/${this.weather.weatherSymbol}.svg`;
     },
+    shareButtonText() {
+      if(this.loading) {
+        if(this.errorLoading) {
+          return this.$t('home.error');
+        } else {
+          return this.$t('home.loading');
+        }
+      } else {
+        return this.$t('home.share');
+      }
+    }
   },
   methods: {
     tempPrefix(temp: number) {
       return temp > 0 ? "+" : "-";
+    },
+    share() {
+      this.loading = true;
+      this.captureNodeScreenshot().then((image: any) => {
+        console.log(image);
+        navigator.share({
+          title: 'Weather',
+          text: `${this.$t('home.nextHourForecastFor')} ${this.weather.location.name}, ${this.weather.location.region}`,
+          url: "https://weather.a32.fi",
+          files: [image]
+        }).catch((error: any) => {
+          console.log(error);
+          this.errorLoading = true;
+        });
+        this.loading = false;
+      });
+    },
+    captureNodeScreenshot() {
+      return new Promise(resolve => {
+        domtoimage.toBlob(this.item as any, { bgcolor: '#3a4da5'})
+            .then(function (blob : any) {
+              const file = new File([blob], 'weather.png', { type: 'image/png' });
+              resolve(file);
+            }).catch(function (error: any) {
+              console.error('oops, something went wrong!', error);
+              // @ts-ignore
+              this.errorLoading = true;
+            });
+      });
     }
   }
 })
