@@ -1,9 +1,5 @@
 <template>
-  <svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.7.1 (28215) - http://www.bohemiancoding.com/sketch -->
-    <title>celestial-status-icon</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
+  <svg width="80px" height="80px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="celestial-status-icon">
         <path d="M25,49 C25,40.7157288 31.7157288,34 40,34 C48.2842712,34 55,40.7157288 55,49 L25,49 Z" id="Combined-Shape" fill="#FFDC00"></path>

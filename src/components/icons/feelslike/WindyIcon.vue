@@ -1,9 +1,5 @@
 <template>
-  <svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.2 (29753) - http://www.bohemiancoding.com/sketch -->
-    <title>windy</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
+  <svg width="80px" height="80px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="windy" fill="#FFFFFF">
         <path d="M30.9966283,55 C45.019184,55 56.5367705,65.9439552 58,80 L4,80 C5.46010117,65.9473207 16.9808955,55 30.9966283,55 Z" id="body"></path>

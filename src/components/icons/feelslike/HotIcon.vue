@@ -1,9 +1,5 @@
 <template>
-  <svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.2 (29753) - http://www.bohemiancoding.com/sketch -->
-    <title>hot</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
+  <svg width="80px" height="80px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="hot" fill="#FFFFFF">
         <path d="M56.967939,48.159367 C56.5493528,48.1630034 56.469551,48.3665045 56.7902866,48.6112541 C56.7902866,48.6112541 60.8183587,51.7535714 61.5806675,52.2603566 C62.3450303,52.7685197 62.6743127,52.9585056 63.3660662,53.1864015 C65.5352325,53.9010259 67.7213188,53.4166158 68.2489342,52.1045044 C68.7765807,50.7923156 67.445975,49.1492557 65.2768087,48.4346313 C64.5700866,48.2018041 64.2353604,48.1777673 63.2096334,48.1059194 C62.1841934,48.0340785 56.967939,48.159367 56.967939,48.159367" id="Fill-1" transform="translate(62.478954, 50.800054) rotate(-23.000000) translate(-62.478954, -50.800054) "></path>

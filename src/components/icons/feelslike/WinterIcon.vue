@@ -1,9 +1,5 @@
 <template>
-  <svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.2 (29753) - http://www.bohemiancoding.com/sketch -->
-    <title>winter</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
+  <svg width="80px" height="80px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="winter" fill="#FFFFFF">
         <path d="M30.8607851,50 C27.8888408,47.4130903 26.0069058,43.5765127 26.0069058,39.2879908 C26.0069058,39.0024513 26.0152674,38.7188895 26.031756,38.437544 L26.031756,38.437544 L53.7884954,40.8511735 C53.391476,44.5034729 51.6224199,47.7320685 49.015915,50 L30.8607851,50 L30.8607851,50 Z" id="Combined-Shape"></path>

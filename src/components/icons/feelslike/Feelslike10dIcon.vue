@@ -1,9 +1,5 @@
 <template>
-  <svg width="33px" height="35px" viewBox="0 0 33 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.6.1 (26313) - http://www.bohemiancoding.com/sketch -->
-    <title>Combined Shape</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
+  <svg width="33px" height="35px" viewBox="0 0 33 35" xmlns="http://www.w3.org/2000/svg">
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g transform="translate(-285.000000, -625.000000)" fill="#D9E7F3">
         <g transform="translate(0.000000, 380.000000)">

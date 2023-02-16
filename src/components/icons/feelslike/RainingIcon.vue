@@ -1,9 +1,5 @@
 <template>
-  <svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.2 (29753) - http://www.bohemiancoding.com/sketch -->
-    <title>raining</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
+  <svg width="80px" height="80px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="raining" fill="#FFFFFF">
         <path d="M66.8758907,37.1393379 C68.2428538,39.0834493 69.0468161,41.462638 69.0468161,44.0319922 C69.0468161,50.6057262 63.7957534,55.9184242 57.3158411,55.9184242 C50.8359288,55.9184242 45.5805442,50.6057262 45.5805442,44.0290732 C45.5805442,42.1585008 46.0073991,40.3890489 46.7678025,38.8150119 L66.8758907,37.1393379 L66.8758907,37.1393379 Z" id="Combined-Shape"></path>

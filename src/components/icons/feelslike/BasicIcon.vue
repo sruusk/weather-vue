@@ -1,9 +1,5 @@
 <template>
-  <svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.2 (29753) - http://www.bohemiancoding.com/sketch -->
-    <title>basic</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
+  <svg width="80px" height="80px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="basic" fill="#FFFFFF">
         <path d="M39.9974216,23.0000056 C32.265578,22.993129 26,29.2646326 26,36.9991432 C26,44.7422497 32.265578,51 39.9974216,51 C47.7292651,51 54,44.7422497 54,36.9957049 C54,29.2646326 47.7292651,23.0000056 39.9974216,23.0000056 L39.9974216,23.0000056 Z" id="head"></path>
