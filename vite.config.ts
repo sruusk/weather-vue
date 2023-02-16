@@ -109,16 +109,13 @@ export default defineConfig({
                 ],
                 runtimeCaching: [{
                     urlPattern: ({ url }) => {
-                        // Cache all requests to endpoints that start with /api/git
-                        return url.pathname.startsWith('/api/git');
+                        if(url.hostname === 'geo.stat.fi') return true
+                        if(url.hostname === 'd17g5uoxmlqldj.cloudfront.net') return true
                     },
                     method: 'GET',
-                    handler: 'StaleWhileRevalidate',
+                    handler: 'CacheFirst',
                     options: {
-                        cacheName: 'git-api-cache',
-                        broadcastUpdate: {
-                            options: {}
-                        },
+                        cacheName: 'basemap-cache',
                         cacheableResponse: {
                             statuses: [0, 200]
                         }
