@@ -65,25 +65,13 @@ export default defineComponent({
   },
   data() {
     return {
-      favouriteLocations: [ // TODO: get from local storage
-        {
-          country: "Finland",
-          name: "Paavola",
-          region: "Lahti",
-          identifier: "6930944"
-        },
-        {
-          country: "Finland",
-          name: "Hervanta",
-          region: "Tampere",
-          identifier: "643952"
-        }
-      ] as ForecastLocation[],
+      favouriteLocations: [] as ForecastLocation[],
       favouritesWeather: [] as HourWeather[],
       nextHourWeather: {} as HourWeather
     }
   },
   created() {
+    this.getFavourites();
     this.favouriteLocations.forEach((location) => {
       this.getFavouriteLocation(location);
     })
@@ -140,6 +128,22 @@ export default defineComponent({
         "humidity": weather.humidity[0].value,
         "feelsLike": weather.feelsLike[0].value,
       } as HourWeather
+    },
+    getFavourites() {
+      this.favouriteLocations = localStorage.getItem("favourites")
+          ? JSON.parse(localStorage.getItem("favourites") as string)
+          : this.locatingComplete && !this.isLocation
+              ? [
+                  { // Set default location if no favourites are set and geolocation is not available
+                    name: "Kaivopuisto",
+                    identifier: "843554",
+                    region: "Helsinki",
+                    country: "Finland",
+                    lat: 60.15928,
+                    lon: 24.96119
+                  } as ForecastLocation
+                ] as ForecastLocation[]
+            : [] as ForecastLocation[];
     },
     getFavouriteLocation(location: ForecastLocation) {
       this.getWeatherByPlace(`${location.name},${location.region}`).then((weather: Weather) => {

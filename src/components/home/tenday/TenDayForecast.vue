@@ -111,6 +111,7 @@ export default defineComponent({
   height: 430px;
   overflow: hidden;
   background-color: #111a2d;
+  contain: content;
 }
 .header {
   display: flex;

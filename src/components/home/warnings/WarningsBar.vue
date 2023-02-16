@@ -55,6 +55,7 @@ export default defineComponent({
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  contain: content;
 }
 .warning-list {
   margin: 0 10px;
