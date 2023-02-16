@@ -1,0 +1,10 @@
+<template>
+  <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g id="wind-symbol-north">
+        <circle id="oval" stroke="#FFFFFF" stroke-width="4" cx="40" cy="40" r="20"></circle>
+        <path d="M40,2 L51,24 C51,24 43.6701596,21 40,21 C36.3368263,21 29,24 29,24 L40,2 Z" id="arrow" fill="#FFFFFF"></path>
+      </g>
+    </g>
+  </svg>
+</template>

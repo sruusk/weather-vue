@@ -58,7 +58,7 @@ export default defineComponent({
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  padding: 0;
   height: 58px;
 }
 .side {

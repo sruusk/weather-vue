@@ -149,6 +149,7 @@ export default defineComponent({
   align-items: flex-start;
   justify-content: flex-start;
   background-color: #253e80;
+  contain: content;
 }
 .header {
   height: 45px;

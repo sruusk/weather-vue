@@ -12,7 +12,7 @@
     <div class="details">
       <div class="feelslike-row">
         <div class="time">
-          <ShareButton @click="share" v-if="canShare">{{ shareButtonText }}</ShareButton>
+          <ShareButton @click="share" v-if="canShare">{{ $t('home.share') }}</ShareButton>
           <ClockIcon class="timeIcon" />
           <span class="time-value">{{ weather.time }}</span>
         </div>
@@ -62,17 +62,6 @@ export default defineComponent({
   computed: {
     weatherIcon() {
       return `/symbols/${this.weather.weatherSymbol}.svg`;
-    },
-    shareButtonText() {
-      if(this.loading) {
-        if(this.errorLoading) {
-          return this.$t('home.error');
-        } else {
-          return this.$t('home.loading');
-        }
-      } else {
-        return this.$t('home.share');
-      }
     }
   },
   methods: {
@@ -80,19 +69,15 @@ export default defineComponent({
       return temp > 0 ? "+" : "-";
     },
     share() {
-      this.loading = true;
       this.captureNodeScreenshot().then((image: any) => {
-        console.log(image);
         navigator.share({
           title: 'Weather',
           text: `${this.$t('home.nextHourForecastFor')} ${this.weather.location.name}, ${this.weather.location.region}`,
           url: "https://weather.a32.fi",
           files: [image]
         }).catch((error: any) => {
-          console.log(error);
-          this.errorLoading = true;
+          console.log('Error sharing', error);
         });
-        this.loading = false;
       });
     },
     captureNodeScreenshot() {
@@ -103,8 +88,6 @@ export default defineComponent({
               resolve(file);
             }).catch(function (error: any) {
               console.error('oops, something went wrong!', error);
-              // @ts-ignore
-              this.errorLoading = true;
             });
       });
     }
@@ -128,7 +111,7 @@ h2 {
   color: white;
   align-items: center;
   justify-content: space-between;
-  margin: 15px 10px 0 10px;
+  margin: 15px 0 0 0;
   padding: 0;
   height: 100px;
 }
@@ -162,7 +145,7 @@ h2 {
   padding: 0;
 }
 .details {
-  margin: 10px 10px 0 10px;
+  margin: 10px 0 0 0;
 }
 .feelslike-row {
   display: flex;

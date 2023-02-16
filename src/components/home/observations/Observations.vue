@@ -1,7 +1,7 @@
 <template>
   <div class="header" v-if="observationStations.length">{{ $t('home.weatherObservations') }}</div>
   <div class="observations-carousel" v-if="observationStations.length">
-    <Carousel ref="carousel">
+    <Carousel ref="carousel" :wrap-around="true">
       <Slide v-for="station in observationStations" :key="station.location.name">
         <ObservationItem :station="station" class="item" />
       </Slide>
@@ -90,10 +90,12 @@ export default defineComponent({
   width: 100%;
   background-image: linear-gradient(180deg, #456fc8 0%, #242282 100%);
   padding-top: 30px; /* Make gap for the page indicators */
+  contain: content;
 }
 .item {
   width: 100%;
   align-self: flex-start;
+  contain: content;
 }
 
 /*noinspection ALL*/

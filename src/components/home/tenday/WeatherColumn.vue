@@ -65,6 +65,7 @@ export default defineComponent({
   border-right: #1d2e5d 1px solid;
   border-bottom: #1d2e5d 2px solid;
   font-size: 12px;
+  contain: content;
 }
 .weather-column__icon {
   width: 100%;

@@ -3,6 +3,7 @@
     <div class="header" :class="isLocation ? 'isLocation' : ''">
       <Carousel
           @slide-end="handleSlide"
+          :wrap-around="true"
           v-if="favouriteLocations.length === favouritesWeather.length">
         <Slide
             v-for="fav in locations"
@@ -165,15 +166,18 @@ export default defineComponent({
 
 <style scoped>
 .main {
-  height: 270px;
+  height: 280px;
   width: 100%;
-  padding: 70px 0 0 0;
+  padding: 60px 0 0 0;
   background-image: linear-gradient(200deg, #5582cd 0%, #242282 100%);
   border-bottom: 1px solid rgba(145, 149, 194, 0.2);
   box-shadow: #161e4d 0 0 5px 3px;
+  contain: content;
 }
 .item {
   width: 100%;
+  padding: 10px;
+  contain: content;
 }
 
 /*noinspection CssUnusedSymbol*/

@@ -1,15 +1,28 @@
 <template>
   <div class="wind-indicator">
-    <img :src="getIndicator()" alt=""/>
+    <WindArrow
+        class="wind-arrow"
+        v-if="!negative"
+        :style="`transform: rotate(${windDirection}deg);`"/>
+    <WindArrowNegative
+        class="wind-arrow"
+        v-if="negative"
+        :style="`transform: rotate(${windDirection}deg);`"/>
     <span class="wind-speed" v-if="roundedWindSpeed !== 0">{{ roundedWindSpeed }}</span>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue';
+import WindArrow from "@/components/icons/WindArrow.vue";
+import WindArrowNegative from "@/components/icons/WindArrowNegative.vue";
 
 export default defineComponent({
   name: "WindIndicator.vue",
+  components: {
+    WindArrow,
+    WindArrowNegative,
+  },
   props: {
     windDirection: {
       type: Number,
@@ -66,27 +79,27 @@ export default defineComponent({
 
 <style scoped>
 .wind-indicator {
-  height: 20px;
+  height: 45px;
+  width: 45px;
+  line-height: 45px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  line-height: 50px;
   text-align: center;
   font-size: 12px;
   color: white;
   font-weight: 400;
-  margin-top: 15px;
   justify-content: flex-start;
-  width: 45px;
+  contain: content;
 }
-.wind-indicator img {
+.wind-arrow {
   width: 45px;
   height: 45px;
 }
 .wind-speed {
   position: relative;
   width: 30px;
-  margin-left: -37px;
+  margin-left: -37.5px;
   text-align: center;
 }
 </style>
