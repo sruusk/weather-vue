@@ -56,7 +56,10 @@ job("Deploy") {
                 echo Deploying...
                 apt update
                 apt install -y sshpass
-                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* weather@weather.a32.fi:/opt/www/weather/
+                Echo Removing previous deployment
+                sshpass -p ${'$'}passwd ssh weather@weather.a32.fi "rm -R dist && mkdir dist"
+                Echo Transferring files to server
+                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* weather@weather.a32.fi:/opt/www/weather/dist/
                 echo Deployment complete!
             """
         }
