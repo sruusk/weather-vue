@@ -37,6 +37,16 @@ function getBaseWithDays(offset: number, days: number) {
     return baseUrl + getStartAndEndTimeQuery(start, end);
 }
 
+function getWeatherNextHour(place: string) {
+    const url = baseUrl + getStartAndEndTimeQuery(new Date(), new Date(Date.now() + 60 * 60 * 1000)) // Next hour
+        + `&place=${place}`
+        + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
+        + `&parameters=${params.join(',')}`;
+
+    const xml = getXml(url);
+    return parseWeather(xml);
+}
+
 function getWeather(place: string) {
     // https://opendata.fmi.fi/wfs
     // ?request=getFeature
@@ -361,4 +371,5 @@ function calculateSunPosition(location: ForecastLocation) {
 export default {
     getWeather,
     getWeatherByLatLon,
+    getWeatherNextHour
 }

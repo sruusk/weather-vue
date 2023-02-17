@@ -8,7 +8,7 @@
         :setLocation="setLocation"
         :current-location-weather="currentLocationWeather"
         :current-location="currentLocation"
-        :get-weather-by-place="getWeatherPlace"
+        :get-weather-by-place="getWeatherNextHour"
         :locating-complete="locatingComplete" />
     <WarningsBar />
     <TenDayForecast v-if="isWeatherLoaded" :weather="currentWeather" />
@@ -96,6 +96,9 @@ export default defineComponent({
         console.log("Geolocation is not supported by this browser.");
         //this.loadWeatherLatLon(60.159279, 24.961194) // Kaivopuisto, Helsinki as fallback
       }
+    },
+    getWeatherNextHour( place: string) {
+      return Weather.getWeatherNextHour(place);
     },
     getWeatherPlace(place: string) {
       return Weather.getWeather(place);
