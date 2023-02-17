@@ -5,6 +5,7 @@
           type="text"
           placeholder="Input location, for example: Kaivopuisto Helsinki"
           class="input"
+          ref="searchInput"
           @keydown.enter="search"
           v-model="searchString" />
     </BackNavigation>
@@ -25,7 +26,7 @@
 
 <script lang="ts">
 import type { ForecastLocation } from "@/types";
-import {defineComponent} from 'vue';
+import {defineComponent, ref} from 'vue';
 import Weather from "@/weather";
 import Settings from "@/settings";
 import BackNavigation from "@/components/BackNavigation.vue";
@@ -34,6 +35,10 @@ export default defineComponent({
   name: "FavouritesView",
   components: {
     BackNavigation
+  },
+  setup() {
+    const searchInput = ref(null) as any
+    return { searchInput };
   },
   data() {
     return {
@@ -55,6 +60,7 @@ export default defineComponent({
       Settings.favourites = this.favourites;
     },
     search() {
+      this.searchInput.blur();
       this.searchString = this.searchString.trim();
       if(this.searchString.includes(",")) {
         const parts = this.searchString.split(",");
