@@ -15,7 +15,7 @@ import LocationSettings from "@/components/settings/LocationSettings.vue";
 import WeatherRadarSettings from "@/components/settings/WeatherRadarSettings.vue";
 
 export default defineComponent({
-  name: "SettingsView.vue",
+  name: "SettingsView",
   components: {
     BackNavigation,
     LanguageSettings,
@@ -28,5 +28,6 @@ export default defineComponent({
 <style scoped>
 .settings {
   width: 100%;
+  contain: content;
 }
 </style>

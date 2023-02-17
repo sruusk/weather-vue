@@ -1,6 +1,19 @@
 <template>
-  <NavDrawer :open="drawerOpen" :is-installed="installed" @close="closeDrawer" @install="installPWA" />
-  <RouterView @open="openDrawer" @click="handleClick" :class="{'open' : drawerOpen}" id="router-view" />
+  <NavDrawer
+      :open="drawerOpen"
+      :is-installed="installed"
+      @close="closeDrawer"
+      @install="installPWA" />
+  <RouterView
+      @open="openDrawer"
+      @click="handleClick"
+      :class="{'open' : drawerOpen}"
+      v-slot="{ Component }"
+      id="router-view" >
+    <keep-alive include="HomeView">
+      <component :is="Component" />
+    </keep-alive>
+  </RouterView>
 </template>
 
 <script lang="ts">

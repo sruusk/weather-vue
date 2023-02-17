@@ -3,8 +3,9 @@
     <BackNavigation class="navigation">
       <input
           type="text"
-          placeholder="Search location"
+          placeholder="Input location, for example: Kaivopuisto Helsinki"
           class="input"
+          @keydown.enter="search"
           v-model="searchString" />
     </BackNavigation>
     <div class="favourites-list">
@@ -25,30 +26,55 @@
 <script lang="ts">
 import type { ForecastLocation } from "@/types";
 import {defineComponent} from 'vue';
+import Weather from "@/weather";
+import Settings from "@/settings";
 import BackNavigation from "@/components/BackNavigation.vue";
 
 export default defineComponent({
-  name: "FavouritesView.vue",
+  name: "FavouritesView",
   components: {
     BackNavigation
   },
   data() {
     return {
-      favourites: [] as ForecastLocation[],
+      favourites: Settings.favourites,
       searchString: ""
     }
-  },
-  created() {
-    this.favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
   },
   methods: {
     removeFavourite(favourite: ForecastLocation) {
       this.favourites = this.favourites.filter(fav => fav.name !== favourite.name);
-      localStorage.setItem("favourites", JSON.stringify(this.favourites));
+      Settings.favourites = this.favourites;
     },
     clearFavourites() {
       this.favourites = [];
-      localStorage.setItem("favourites", "[]");
+      Settings.favourites = [];
+    },
+    addFavourite(favourite: ForecastLocation) {
+      this.favourites.push(favourite);
+      Settings.favourites = this.favourites;
+    },
+    search() {
+      this.searchString = this.searchString.trim();
+      if(this.searchString.includes(",")) {
+        const parts = this.searchString.split(",");
+        if(parts.length === 2) {
+          this.searchString = `${parts[0].trim()},${parts[1].trim()}`;
+        } else this.searchString = "Error!, Invalid input";
+      } else if(this.searchString.includes(" ")) {
+        const parts = this.searchString.split(" ");
+        if(parts.length === 2) {
+          this.searchString = `${parts[0].trim()},${parts[1].trim()}`;
+        } else this.searchString = "Error!, Invalid input";
+      }
+
+      Weather.getWeather(this.searchString).then((weather) => {
+        this.addFavourite(weather.location);
+        this.searchString = "";
+      }).catch((error) => {
+        console.error("Error while searching for location", error);
+        this.searchString = "Error! Location not found";
+      });
     }
   }
 })
@@ -75,13 +101,17 @@ export default defineComponent({
   color: white;
   font-size: 12px;
 }
+.favourites-list > div {
+  border-bottom: #2e499d 1px solid;
+}
 .favourites-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 20px;
+  height: 25px;
   font-weight: 400;
-  padding: 10px 20px;
+  margin: 10px 20px 0 20px;
+  padding: 0 0 10px 0;
 }
 .favourites-header-text {
   font-weight: 600;
@@ -93,20 +123,23 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
-  height: 40px;
-  background-color: #253478;
-  color: white;
-  font-weight: 400;
+  margin: 0 20px;
+  height: 50px;
 }
 .favourite-name {
-  font-weight: 600;
+  font-weight: 400;
 }
 .favourite-button {
   cursor: pointer;
 }
 .remove-button {
-  font-size: 20px;
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
   font-weight: 600;
+  line-height: 21px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: darkred;
 }
 </style>

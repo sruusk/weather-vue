@@ -31,6 +31,7 @@ import { defineComponent } from 'vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import LocationItem from "@/components/home/nexthour/LocationItem.vue";
+import Settings from "@/settings";
 
 export default defineComponent({
   name: "CurrentWeather.vue",
@@ -71,13 +72,36 @@ export default defineComponent({
     }
   },
   created() {
-    this.getFavourites();
+    this.favouriteLocations = this.getFavourites();
     this.favouriteLocations.forEach((location) => {
       this.getFavouriteLocation(location);
     })
     if(this.locatingComplete && !this.isLocation) {
       console.log("Setting location to first favourite location", this.locatingComplete, this.isLocation)
       this.setLocation(`${this.favouriteLocations[0].name},${this.favouriteLocations[0].region}`)
+    }
+  },
+  activated() {
+    const favorites = this.getFavourites();
+    const newFavorites = favorites.filter((fav) => {
+      return !this.favouriteLocations.find((f) => f.name === fav.name && f.region === fav.region && f.identifier === fav.identifier)
+    })
+    const removedFavorites = this.favouriteLocations.filter((fav) => {
+      return !favorites.find((f) => f.name === fav.name && f.region === fav.region && f.identifier === fav.identifier)
+    }) as ForecastLocation[]
+    if(newFavorites.length) {
+      console.log("Adding new favourites", newFavorites);
+      this.favouriteLocations = favorites;
+      newFavorites.forEach((location) => {
+        this.getFavouriteLocation(location);
+      })
+    }
+    if(removedFavorites.length) {
+      console.log("Removing favourites", removedFavorites);
+      this.favouriteLocations = favorites;
+      removedFavorites.forEach((location) => {
+        this.favouritesWeather = this.favouritesWeather.filter((fav) => fav.location.name !== location.name && fav.location.region !== location.region && fav.location.identifier !== location.identifier)
+      })
     }
   },
   computed: {
@@ -130,8 +154,9 @@ export default defineComponent({
       } as HourWeather
     },
     getFavourites() {
-      this.favouriteLocations = localStorage.getItem("favourites")
-          ? JSON.parse(localStorage.getItem("favourites") as string)
+      const favourites = Settings.favourites;
+      return favourites.length
+          ? favourites
           : this.locatingComplete && !this.isLocation
               ? [
                   { // Set default location if no favourites are set and geolocation is not available
@@ -163,7 +188,7 @@ export default defineComponent({
     },
     getFavouriteWeather(fav: ForecastLocation) {
       return this.favouritesWeather.find(f => f.location.name === fav.name && f.location.region === fav.region) as HourWeather;
-    }
+    },
   }
 })
 </script>

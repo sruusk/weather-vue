@@ -9,7 +9,7 @@
 import {defineComponent} from 'vue';
 import BackNavigation from "@/components/BackNavigation.vue";
 export default defineComponent({
-  name: "WarningsView.vue",
+  name: "WarningsView",
   components: {
     BackNavigation
   },
