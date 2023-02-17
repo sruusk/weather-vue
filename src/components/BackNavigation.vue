@@ -1,6 +1,6 @@
 <template>
   <div class="back-navigation">
-    <router-link to="/">
+    <router-link to="/" class="link">
       <BackArrowIcon class="icon" />
     </router-link>
     <slot />
@@ -26,7 +26,7 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 15px 0;
+  padding: 15px 0;
   line-height: 20px;
   height: 40px;
   text-transform: uppercase;
@@ -34,8 +34,13 @@ export default defineComponent({
   font-size: 12px;
   font-weight: normal;
 }
-.icon {
-  padding: 20px;
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 40px;
+  max-width: 40px;
+  height: 40px;
 }
 .back-navigation div {
   width: 40px; /* width of the arrow icon to center the slot */
