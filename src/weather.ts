@@ -38,7 +38,7 @@ function getBaseWithDays(offset: number, days: number) {
 }
 
 function getWeatherNextHour(place: string) {
-    const url = baseUrl + getStartAndEndTimeQuery(new Date(), new Date(Date.now() + 60 * 60 * 1000)) // Next hour
+    const url = baseUrl + getStartAndEndTimeQuery(new Date(), new Date(Date.now() + 2 * 60 * 60 * 1000)) // Get next 2 hours to make sure we get anything
         + `&place=${place}`
         + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
         + `&parameters=${params.join(',')}`;
