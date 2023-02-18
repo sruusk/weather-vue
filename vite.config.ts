@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue'
 import {VitePWA} from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
+
 export default defineConfig({
     plugins: [
         vue(),
@@ -14,13 +15,14 @@ export default defineConfig({
             defaultSFCLang: 'json'
         }),
         VitePWA({
+            integration: undefined,
             base: '/',
             srcDir: 'src',
             filename: 'sw.js',
             strategies: 'generateSW',
             registerType: 'autoUpdate',
             includeAssets: [
-                'icon.svg'
+                'logo.svg', 'weather-logo.svg'
             ],
             manifest: {
                 name: 'Weather',
@@ -35,24 +37,9 @@ export default defineConfig({
                 categories: ['weather'],
                 icons: [
                     {
-                        src: 'icons/pwa-144x144.png',
-                        sizes: '144x144',
-                        type: 'image/png'
-                    },
-                    {
-                        src: 'icons/pwa-192x192.png',
-                        sizes: '192x192',
-                        type: 'image/png'
-                    },
-                    {
-                        src: 'icons/pwa-256x256.png',
-                        sizes: '256x256',
-                        type: 'image/png'
-                    },
-                    {
-                        src: 'icons/pwa-384x384.png',
-                        sizes: '384x384',
-                        type: 'image/png'
+                        src: "icons/pwa-192x192.png",
+                        sizes: "192x192",
+                        type: "image/png"
                     },
                     {
                         src: 'icons/pwa-512x512.png',
@@ -96,7 +83,46 @@ export default defineConfig({
                         platform: 'ios',
                         label: 'Home screen of the app'
                     }
-                ]
+                ],
+                // https://developer.mozilla.org/en-US/docs/Web/Manifest/shortcuts
+                shortcuts: [
+                    {
+                        name: "Favourites",
+                        url: "/favourites",
+                        icons: [
+                            {
+                                src: "icons/pwa-192x192.png",
+                                sizes: "192x192",
+                                type: "image/png"
+                            },
+                            {
+                                src: 'icons/pwa-512x512.png',
+                                sizes: '512x512',
+                                type: 'image/png'
+                            }
+                        ]
+                    },
+                    {
+                        name : "Settings",
+                        url: "/settings",
+                        icons: [
+                            {
+                                src: "icons/pwa-192x192.png",
+                                sizes: "192x192",
+                                type: "image/png"
+                            },
+                            {
+                                src: 'icons/pwa-512x512.png',
+                                sizes: '512x512',
+                                type: 'image/png'
+                            }
+                        ]
+                    }
+                ],
+                // @ts-ignore
+                launch_handler: {
+                    client_mode: ['navigate-existing', 'focus-existing', 'auto']
+                }
             },
             workbox: {
                 mode: 'production',
