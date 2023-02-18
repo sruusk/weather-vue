@@ -89,6 +89,7 @@
     "location": "Location",
     "on": "On",
     "off": "Off",
-    "weatherRadar": "Weather radar"
+    "weatherRadar": "Weather radar",
+    "apiKey": "API key"
   }
 }

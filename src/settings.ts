@@ -56,6 +56,32 @@ class Settings {
     static set favourites(value: ForecastLocation[]) {
         localStorage.setItem('favourites', JSON.stringify(value));
     }
+
+    static set useOpenWeather(value: boolean) {
+        localStorage.setItem('useOpenWeather', value.toString());
+    }
+
+    static get useOpenWeather() {
+        const useOpenWeather = localStorage.getItem('useOpenWeather');
+        if (useOpenWeather) {
+            return useOpenWeather === 'true';
+        } else {
+            return false; // Default to false, because by default there is no API key
+        }
+    }
+
+    static set openWeatherApiKey(value: string) {
+        localStorage.setItem('openWeatherApiKey', value);
+    }
+
+    static get openWeatherApiKey() {
+        const openWeatherApiKey = localStorage.getItem('openWeatherApiKey');
+        if (openWeatherApiKey) {
+            return openWeatherApiKey;
+        } else {
+            return '';
+        }
+    }
 }
 
 export default Settings;

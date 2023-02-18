@@ -4,6 +4,7 @@
     <LanguageSettings />
     <LocationSettings />
     <WeatherRadarSettings />
+    <OpenWeatherSettings />
   </div>
 </template>
 
@@ -13,6 +14,7 @@ import BackNavigation from "@/components/BackNavigation.vue";
 import LanguageSettings from "@/components/settings/LanguageSettings.vue";
 import LocationSettings from "@/components/settings/LocationSettings.vue";
 import WeatherRadarSettings from "@/components/settings/WeatherRadarSettings.vue";
+import OpenWeatherSettings from "@/components/settings/OpenWeatherSettings.vue";
 
 export default defineComponent({
   name: "SettingsView",
@@ -20,7 +22,8 @@ export default defineComponent({
     BackNavigation,
     LanguageSettings,
     LocationSettings,
-    WeatherRadarSettings
+    WeatherRadarSettings,
+    OpenWeatherSettings
   }
 })
 </script>

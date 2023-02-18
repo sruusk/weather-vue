@@ -89,6 +89,7 @@
     "location": "Paikannus",
     "on": "Päällä",
     "off": "Pois",
-    "weatherRadar": "Sadetutka"
+    "weatherRadar": "Sadetutka",
+    "apiKey": "API avain"
   }
 }

@@ -89,6 +89,7 @@
     "location": "Plats",
     "on": "På",
     "off": "Av",
-    "weatherRadar": "Radar"
+    "weatherRadar": "Radar",
+    "apiKey": "API key"
   }
 }
