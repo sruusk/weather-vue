@@ -67,3 +67,9 @@ export type DayLength = {
     sunset: string,
     lengthofday: string
 }
+
+export type Warning = {
+    severity: string
+}
+
+

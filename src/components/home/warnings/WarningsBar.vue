@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
+import type {Warning} from "@/types";
 import WarningItem from "@/components/home/warnings/WarningItem.vue";
 
 export default defineComponent({
@@ -22,9 +23,14 @@ export default defineComponent({
   components: {
     WarningItem
   },
+  props: {
+    warnings: {
+      type: Array as () => Warning[],
+      required: true
+    }
+  },
   data() {
     return {
-      warnings: [],
       nextDays: this.nextFiveDays()
     }
   },

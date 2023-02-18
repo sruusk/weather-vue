@@ -10,7 +10,7 @@
         :current-location="currentLocation"
         :get-weather-by-place="getWeatherNextHour"
         :locating-complete="locatingComplete" />
-    <WarningsBar />
+    <!-- <WarningsBar :warnings="warnings" /> -->
     <TenDayForecast v-if="isWeatherLoaded" :weather="currentWeather" />
     <WeatherRadar v-if="isWeatherLoaded && enableWeatherRadar" :location="currentWeather.location" />
     <Observations v-if="isWeatherLoaded" :location="currentWeather.location" />
@@ -19,9 +19,10 @@
 </template>
 
 <script lang="ts">
-import type { ForecastLocation, Weather as WeatherType} from "@/types";
+import type { ForecastLocation, Weather as WeatherType, Warning} from "@/types";
 import { defineComponent } from "vue";
 import Settings from "@/settings";
+import { getAlertsForLocation } from "@/warnings";
 import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 import CurrentWeather from "@/components/home/nexthour/CurrentWeather.vue";
@@ -50,6 +51,7 @@ export default defineComponent({
       currentLocation: {} as ForecastLocation,
       currentLocationWeather: {} as WeatherType,
       locatingComplete: false,
+      warnings: [] as Warning[],
       enableWeatherRadar: Settings.weatherRadar
     };
   },
@@ -109,14 +111,21 @@ export default defineComponent({
           this.currentWeather = response;
           this.currentLocationWeather = response;
           this.currentLocation = response.location;
+          //this.loadWarnings(response.location);
           resolve(response);
           console.log(response);
         });
       });
     },
+    loadWarnings(location: ForecastLocation) {
+      getAlertsForLocation(location).then((response) => {
+        this.warnings = response;
+      });
+    },
     loadWeather(location: string) {
       Weather.getWeather(location).then((response) => {
         this.currentWeather = response;
+        //this.loadWarnings(response.location);
         console.log(response);
       });
     },

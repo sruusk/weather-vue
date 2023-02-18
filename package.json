@@ -16,6 +16,7 @@
     "chart.js": "^4.2.1",
     "dom-to-image": "^2.6.0",
     "fast-xml-parser": "^4.1.1",
+    "point-in-polygon": "^1.1.0",
     "suncalc": "^1.9.0",
     "vue": "^3.2.45",
     "vue-mobile-detection": "^2.0.1",
