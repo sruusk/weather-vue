@@ -17,9 +17,21 @@ export type Weather = {
     windSpeed: TimeSeriesObservation[],
     windGust: TimeSeriesObservation[],
     precipitation: TimeSeriesObservation[],
+    probabilityOfPrecipitation: TimeSeriesObservation[] | undefined,
     weatherSymbol: TimeSeriesObservation[],
     feelsLike: TimeSeriesObservation[],
     location: ForecastLocation,
+}
+export type OpenWeather = {
+    humidity: TimeSeriesObservation[],
+    temperature: TimeSeriesObservation[],
+    windDirection: TimeSeriesObservation[],
+    windSpeed: TimeSeriesObservation[],
+    windGust: TimeSeriesObservation[],
+    precipitation: TimeSeriesObservation[],
+    probabilityOfPrecipitation: TimeSeriesObservation[],
+    weatherSymbol: TimeSeriesObservation[],
+    feelsLike: TimeSeriesObservation[]
 }
 export type HourWeather = {
     time: string | Date | undefined,
@@ -29,6 +41,7 @@ export type HourWeather = {
     windSpeed: number,
     windGust: number,
     precipitation: number,
+    probabilityOfPrecipitation: number | undefined,
     weatherSymbol: number,
     feelsLike: number,
     location: ForecastLocation,

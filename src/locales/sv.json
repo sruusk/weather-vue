@@ -90,6 +90,9 @@
     "on": "På",
     "off": "Av",
     "weatherRadar": "Radar",
-    "apiKey": "API key"
+    "apiKey": "API key",
+    "getPop": "Get probability of precipitation",
+    "getLongerForecast": "Get longer forecast",
+    "getWarnings": "Get warnings"
   }
 }

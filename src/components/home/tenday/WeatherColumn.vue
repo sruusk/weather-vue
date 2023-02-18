@@ -1,7 +1,7 @@
 <template>
   <div class="weather-column">
     <div class="weather-column__icon">
-      <img :src="getIconUrl(weather.weatherSymbol)" />
+      <img :src="getIconUrl(weather.weatherSymbol)"  alt=""/>
     </div>
     <div class="weather-column__temp">
       {{ tempPrefix(weather.temperature) }}{{ Math.round(Math.abs(weather.temperature)) }} °C
@@ -19,7 +19,7 @@
     <RainItem
         class="weather-column__rain"
         :rain-amount="weather.precipitation"
-        :rain-probability="weather.humidity"
+        :rain-probability="weather.probabilityOfPrecipitation || -1"
         :negative="false" />
   </div>
 </template>

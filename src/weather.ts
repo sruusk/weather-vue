@@ -1,6 +1,8 @@
 // noinspection NonAsciiCharacters
 
-import type {ForecastLocation, TimeSeriesObservation, Weather, ObservationStation, ObservationStationLocation, DayLength} from './types';
+import type {ForecastLocation, TimeSeriesObservation, Weather, ObservationStation, ObservationStationLocation, DayLength, OpenWeather} from './types';
+import { get5DayForecastLatLon, get5DayForecastPlace } from "@/openweather";
+import Settings from "@/settings";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
 const parser = new XMLParser({
@@ -62,8 +64,8 @@ function getWeather(place: string) {
     + `&parameters=${params.join(',')}`;
 
     const xml = getXml(url);
-    return parseWeather(xml);
-    //return mergeWeather(parseWeather(xml), getLongForecast(place));
+    if(!Settings.getLongerForecast || !Settings.useOpenWeather) return parseWeather(xml);
+    return mergeWeather(parseWeather(xml), get5DayForecastPlace(place));
 }
 
 function getWeatherByLatLon(lat: number, lon: number) {
@@ -73,49 +75,29 @@ function getWeatherByLatLon(lat: number, lon: number) {
     + `&parameters=${params.join(',')}`;
 
     const xml = getXml(url);
-    return parseWeather(xml);
-    //return mergeWeather(parseWeather(xml), getLongForecastByLatLon(lat, lon));
+    if(!Settings.getLongerForecast || !Settings.useOpenWeather) return parseWeather(xml);
+    return mergeWeather(parseWeather(xml), get5DayForecastLatLon(lat, lon));
 }
-
-function getLongForecast(place: string) {
-    const url = getBaseWithDays(3, 7)
-    + `&place=${place}`
-    + '&timestep=60'
-    + `&storedquery_id=ecmwf::forecast::surface::point::timevaluepair`
-    + `&parameters=${params.join(',')}`;
-
-    const xml = getXml(url);
-    return parseWeather(xml);
-}
-
-function getLongForecastByLatLon(lat: number, lon: number) {
-    const url = getBaseWithDays(3, 7)
-    + `&latlon=${lat},${lon}`
-    + '&timestep=60'
-    + `&storedquery_id=ecmwf::forecast::surface::point::timevaluepair`
-    + `&parameters=${params.join(',')}`;
-
-    const xml = getXml(url);
-    return parseWeather(xml);
-}
-
-function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<Weather>) {
+function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenWeather>) {
     return new Promise((resolve, reject) => {
         Promise.all([shortWeather, longWeather]).then((values) => {
             const short = values[0];
             let long = values[1];
-            // Take every third value from long forecast
+            if(Object.keys(long).length === 0) resolve(short);
+            // Clip long forecast to start and short forecast end
+            const shortEndTime = short.temperature[short.temperature.length - 1].time;
             long = {
-                humidity: long.humidity.filter((_, i) => i % 3 === 0),
-                temperature: long.temperature.filter((_, i) => i % 3 === 0),
-                windDirection: long.windDirection.filter((_, i) => i % 3 === 0),
-                windSpeed: long.windSpeed.filter((_, i) => i % 3 === 0),
-                windGust: long.windGust.filter((_, i) => i % 3 === 0),
-                precipitation: long.precipitation.filter((_, i) => i % 3 === 0),
-                weatherSymbol: long.weatherSymbol.filter((_, i) => i % 3 === 0),
-                feelsLike: long.feelsLike.filter((_, i) => i % 3 === 0),
-                location: long.location
-            }
+                humidity: long.humidity.filter((value) => value.time <= shortEndTime),
+                temperature: long.temperature.filter((value) => value.time <= shortEndTime),
+                windDirection: long.windDirection.filter((value) => value.time <= shortEndTime),
+                windSpeed: long.windSpeed.filter((value) => value.time <= shortEndTime),
+                windGust: long.windGust.filter((value) => value.time <= shortEndTime),
+                precipitation: long.precipitation.filter((value) => value.time <= shortEndTime),
+                probabilityOfPrecipitation: long.probabilityOfPrecipitation.filter((value) => value.time <= shortEndTime),
+                weatherSymbol: long.weatherSymbol.filter((value) => value.time <= shortEndTime),
+                feelsLike: long.feelsLike.filter((value) => value.time <= shortEndTime)
+            } as OpenWeather;
+
             const weather = {
                 humidity: short.humidity.concat(long.humidity),
                 temperature: short.temperature.concat(long.temperature),
@@ -123,6 +105,9 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<Weath
                 windSpeed: short.windSpeed.concat(long.windSpeed),
                 windGust: short.windGust.concat(long.windGust),
                 precipitation: short.precipitation.concat(long.precipitation),
+                probabilityOfPrecipitation: short.probabilityOfPrecipitation
+                    ? short.probabilityOfPrecipitation.concat(long.probabilityOfPrecipitation)
+                    : long.probabilityOfPrecipitation ? long.probabilityOfPrecipitation : undefined,
                 weatherSymbol: short.weatherSymbol.concat(long.weatherSymbol),
                 feelsLike: short.feelsLike.concat(long.feelsLike),
                 location: short.location
@@ -165,6 +150,7 @@ function parseWeather(xml: Promise<any>) {
                 windSpeed: parseTimeSeriesObservation(data[3]),
                 windGust: parseTimeSeriesObservation(data[4]),
                 precipitation: parseTimeSeriesObservation(data[5]),
+                probabilityOfPrecipitation: undefined, // TODO: Get from OpenWeather depending on settings
                 weatherSymbol: parseTimeSeriesObservation(data[6]),
                 feelsLike: parseTimeSeriesObservation(data[7]),
                 location: parseLocation(data[0])

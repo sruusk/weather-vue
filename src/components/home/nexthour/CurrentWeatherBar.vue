@@ -3,7 +3,7 @@
     <div class="side">
       <RainItem
           :rain-amount="weather.precipitation"
-          :rain-probability="weather.humidity"
+          :rain-probability="weather.probabilityOfPrecipitation || -1"
           :negative="true" />
     </div>
     <div class="center">

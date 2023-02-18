@@ -4,7 +4,7 @@
       <div class="rain-probability">
         <RainIconNegative v-if="negative" />
         <RainIcon v-else />
-        <div class="rain-probability-value">{{ roundedRainProbability }} %</div>
+        <div class="rain-probability-value">{{ rainProbability === -1 ? '' : roundedRainProbability }} %</div>
       </div>
       <div class="rain-amount">{{ roundedRainAmount }} mm</div>
     </div>

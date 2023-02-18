@@ -8,7 +8,7 @@
         class="wind-arrow"
         v-if="negative"
         :style="`transform: rotate(${windDirection}deg);`"/>
-    <span class="wind-speed" v-if="roundedWindSpeed !== 0">{{ roundedWindSpeed }}</span>
+    <span class="wind-speed">{{ roundedWindSpeed }}</span>
   </div>
 </template>
 

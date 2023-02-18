@@ -90,6 +90,9 @@
     "on": "Päällä",
     "off": "Pois",
     "weatherRadar": "Sadetutka",
-    "apiKey": "API avain"
+    "apiKey": "API avain",
+    "getPop": "Hae sateen todennäköisyys",
+    "getLongerForecast": "Hae pidempi ennuste",
+    "getWarnings": "Hae varoitukset"
   }
 }

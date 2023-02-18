@@ -82,6 +82,71 @@ class Settings {
             return '';
         }
     }
+
+    static set oneCallApiKey(value: string) {
+        localStorage.setItem('oneCallApiKey', value);
+    }
+
+    static get oneCallApiKey() {
+        const oneCallApiKey = localStorage.getItem('oneCallApiKey');
+        if (oneCallApiKey) {
+            return oneCallApiKey;
+        } else {
+            return '';
+        }
+    }
+
+    static set useOneCall(value: boolean) {
+        localStorage.setItem('useOneCall', value.toString());
+    }
+
+    static get useOneCall() {
+        const useOneCall = localStorage.getItem('useOneCall');
+        if (useOneCall) {
+            return useOneCall === 'true';
+        } else {
+            return false;
+        }
+    }
+
+    static set getWarnings(value: boolean) {
+        localStorage.setItem('getWarnings', value.toString());
+    }
+
+    static get getWarnings() {
+        const getWarnings = localStorage.getItem('getWarnings');
+        if (getWarnings) {
+            return getWarnings === 'true';
+        } else {
+            return true;
+        }
+    }
+
+    static set getPop(value: boolean) {
+        localStorage.setItem('getPop', value.toString());
+    }
+
+    static get getPop() {
+        const getPop = localStorage.getItem('getPop');
+        if (getPop) {
+            return getPop === 'true';
+        } else {
+            return true;
+        }
+    }
+
+    static set getLongerForecast(value: boolean) {
+        localStorage.setItem('getLongerForecast', value.toString());
+    }
+
+    static get getLongerForecast() {
+        const getLongerForecast = localStorage.getItem('getLongerForecast');
+        if (getLongerForecast) {
+            return getLongerForecast === 'true';
+        } else {
+            return true;
+        }
+    }
 }
 
 export default Settings;
