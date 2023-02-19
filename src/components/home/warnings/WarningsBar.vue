@@ -6,6 +6,7 @@
           class="warning-item"
           v-for="day in nextDays"
           @click="() => $router.push({ name: 'warnings', params: { day: nextDays.indexOf(day) } })"
+          :severity="warnings[nextDays.indexOf(day)]?.severity"
           :key="day">
         {{ getShortDayName(day) }}
       </WarningItem>
@@ -15,7 +16,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import type {Warning} from "@/types";
+import type {Warnings} from "@/types";
 import WarningItem from "@/components/home/warnings/WarningItem.vue";
 
 export default defineComponent({
@@ -25,7 +26,7 @@ export default defineComponent({
   },
   props: {
     warnings: {
-      type: Array as () => Warning[],
+      type: Object as () => Warnings,
       required: true
     }
   },

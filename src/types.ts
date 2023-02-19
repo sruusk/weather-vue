@@ -11,6 +11,7 @@ export type ForecastLocation = {
     lon: number,
 }
 export type Weather = {
+    warnings: Warnings | undefined,
     humidity: TimeSeriesObservation[],
     temperature: TimeSeriesObservation[],
     windDirection: TimeSeriesObservation[],
@@ -23,6 +24,7 @@ export type Weather = {
     location: ForecastLocation,
 }
 export type OpenWeather = {
+    warnings: Warnings | undefined;
     humidity: TimeSeriesObservation[],
     temperature: TimeSeriesObservation[],
     windDirection: TimeSeriesObservation[],
@@ -81,8 +83,16 @@ export type DayLength = {
     lengthofday: string
 }
 
+export type Warnings = {
+    0: Warning,
+    1: Warning,
+    2: Warning,
+    3: Warning,
+    4: Warning
+}
+
 export type Warning = {
-    severity: string
+    severity: "Moderate" | "Severe"
 }
 
 

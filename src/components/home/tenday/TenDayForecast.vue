@@ -85,7 +85,7 @@ export default defineComponent({
             } else if(over && !isNaN(item.value)) weatherForHour[key] = item.value;
             if(weatherForHour[key]) return;
           })
-          if(!weatherForHour[key]) weatherForHour[key] = value[0].value;
+          if(!weatherForHour[key]) weatherForHour[key] = value[0]?.value;
         } else weatherForHour[key] = value;
       })
       return weatherForHour as HourWeather;

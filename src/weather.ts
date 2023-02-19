@@ -1,7 +1,7 @@
 // noinspection NonAsciiCharacters
 
 import type {ForecastLocation, TimeSeriesObservation, Weather, ObservationStation, ObservationStationLocation, DayLength, OpenWeather} from './types';
-import { get5DayForecastLatLon, get5DayForecastPlace } from "@/openweather";
+import { get5DayForecastLatLon, get5DayForecastPlace, getHourlyForecastLatLon } from "@/openweather";
 import Settings from "@/settings";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
@@ -84,21 +84,21 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
             const short = values[0];
             let long = values[1];
             if(Object.keys(long).length === 0) resolve(short);
-            // Clip long forecast to start and short forecast end
+            // Clip long forecast to start at short forecast end
             const shortEndTime = short.temperature[short.temperature.length - 1].time;
             long = {
-                humidity: long.humidity.filter((value) => value.time <= shortEndTime),
-                temperature: long.temperature.filter((value) => value.time <= shortEndTime),
-                windDirection: long.windDirection.filter((value) => value.time <= shortEndTime),
-                windSpeed: long.windSpeed.filter((value) => value.time <= shortEndTime),
-                windGust: long.windGust.filter((value) => value.time <= shortEndTime),
-                precipitation: long.precipitation.filter((value) => value.time <= shortEndTime),
-                probabilityOfPrecipitation: long.probabilityOfPrecipitation.filter((value) => value.time <= shortEndTime),
-                weatherSymbol: long.weatherSymbol.filter((value) => value.time <= shortEndTime),
-                feelsLike: long.feelsLike.filter((value) => value.time <= shortEndTime)
+                humidity: long.humidity.filter((value) => value.time > shortEndTime),
+                temperature: long.temperature.filter((value) => value.time > shortEndTime),
+                windDirection: long.windDirection.filter((value) => value.time > shortEndTime),
+                windSpeed: long.windSpeed.filter((value) => value.time > shortEndTime),
+                windGust: long.windGust.filter((value) => value.time > shortEndTime),
+                precipitation: long.precipitation.filter((value) => value.time > shortEndTime),
+                probabilityOfPrecipitation: long.probabilityOfPrecipitation.filter((value) => value.time > shortEndTime),
+                weatherSymbol: long.weatherSymbol.filter((value) => value.time > shortEndTime),
+                feelsLike: long.feelsLike.filter((value) => value.time > shortEndTime)
             } as OpenWeather;
-
-            const weather = {
+            const weather: Weather = {
+                warnings: short.warnings,
                 humidity: short.humidity.concat(long.humidity),
                 temperature: short.temperature.concat(long.temperature),
                 windDirection: short.windDirection.concat(long.windDirection),
@@ -141,20 +141,38 @@ function getXml(url: string) {
 
 function parseWeather(xml: Promise<any>) {
     return new Promise((resolve, reject) => {
-        xml.then((json) => {
+        xml.then(async (json) => {
             const data = json['wfs:FeatureCollection']['wfs:member'];
-            const weather = {
+            const weather: Weather = {
+                warnings: undefined,
                 humidity: parseTimeSeriesObservation(data[0]),
                 temperature: parseTimeSeriesObservation(data[1]),
                 windDirection: parseTimeSeriesObservation(data[2]),
                 windSpeed: parseTimeSeriesObservation(data[3]),
                 windGust: parseTimeSeriesObservation(data[4]),
                 precipitation: parseTimeSeriesObservation(data[5]),
-                probabilityOfPrecipitation: undefined, // TODO: Get from OpenWeather depending on settings
+                probabilityOfPrecipitation: undefined,
                 weatherSymbol: parseTimeSeriesObservation(data[6]),
                 feelsLike: parseTimeSeriesObservation(data[7]),
                 location: parseLocation(data[0])
             }
+            if(Settings.useOneCall && (Settings.getPop || Settings.getWarnings)) {
+                const oneCall = await getHourlyForecastLatLon(weather.location.lat, weather.location.lon);
+                // @ts-ignore
+                if(Settings.getPop) weather.probabilityOfPrecipitation = oneCall.probabilityOfPrecipitation;
+                if(Settings.getWarnings) weather.warnings = oneCall.warnings;
+            }
+
+            // remove NaN values
+            weather.humidity = weather.humidity.filter((value) => !isNaN(value.value));
+            weather.temperature = weather.temperature.filter((value) => !isNaN(value.value));
+            weather.windDirection = weather.windDirection.filter((value) => !isNaN(value.value));
+            weather.windSpeed = weather.windSpeed.filter((value) => !isNaN(value.value));
+            weather.windGust = weather.windGust.filter((value) => !isNaN(value.value));
+            weather.precipitation = weather.precipitation.filter((value) => !isNaN(value.value));
+            weather.weatherSymbol = weather.weatherSymbol.filter((value) => !isNaN(value.value));
+            weather.feelsLike = weather.feelsLike.filter((value) => !isNaN(value.value));
+
             resolve(weather);
         }).catch((error) => {
             reject(error);

@@ -1,7 +1,7 @@
 <template>
   <div
       class="warning-item"
-      :class="warning ? 'yellow-warning' : ''">
+      :class="severity">
     <slot />
   </div>
 </template>
@@ -12,10 +12,10 @@ import {defineComponent} from 'vue';
 export default defineComponent({
   name: "WarningItem.vue",
   props: {
-    warning: {
-      type: Boolean,
+    severity: {
+      type: String,
       required: false,
-      default: false
+      default: ""
     }
   }
 })
@@ -33,7 +33,7 @@ export default defineComponent({
 }
 
 /*noinspection ALL*/
-.yellow-warning {
+.Moderate {
   border-bottom: #f6e71d 3px solid;
   background-image: linear-gradient(0deg, #999237 0%, rgba(35, 34, 130, 0) 100%);
 }

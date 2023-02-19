@@ -17,12 +17,6 @@
       <TextInputItem v-model:value="apiKey" />
     </div>
     <div>
-      {{ $t('settings.getPop') }}
-      <CheckboxItem
-        @click="getPop = !getPop"
-        :checked="getPop" />
-    </div>
-    <div>
       {{ $t('settings.getLongerForecast') }}
       <CheckboxItem
         @click="getLongerForecast = !getLongerForecast"
@@ -41,6 +35,12 @@
       <CheckboxItem
           @click="oneCallEnabled = false"
           :checked="!oneCallEnabled" />
+    </div>
+    <div>
+      {{ $t('settings.getPop') }}
+      <CheckboxItem
+          @click="getPop = !getPop"
+          :checked="getPop" />
     </div>
     <div>
       {{ $t('settings.getWarnings') }}

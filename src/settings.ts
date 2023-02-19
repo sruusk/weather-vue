@@ -135,6 +135,10 @@ class Settings {
         }
     }
 
+    static set getHourlyPop(value: boolean) {
+        localStorage.setItem('getHourlyPop', value.toString());
+    }
+
     static set getLongerForecast(value: boolean) {
         localStorage.setItem('getLongerForecast', value.toString());
     }

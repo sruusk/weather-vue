@@ -20,6 +20,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { defineComponent } from 'vue'
 import NavDrawer from "@/components/NavDrawer.vue";
+import Settings from "@/settings";
 
 export default defineComponent({
   name: 'App',
@@ -41,10 +42,7 @@ export default defineComponent({
     });
   },
   created() {
-    const language = localStorage.getItem('language');
-    if (language) {
-      this.$i18n.locale = language;
-    }
+    this.$i18n.locale = Settings.language;
   },
   mounted() {
     this.installed = this.isInstalled();

@@ -97,7 +97,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
-  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-top: 0;
 }
 </style>
