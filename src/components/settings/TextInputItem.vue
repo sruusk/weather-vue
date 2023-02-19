@@ -1,6 +1,6 @@
 <template>
   <div class="input-item">
-    <input type="text" :value="value" @input="$emit('update:value', $event.target.value)" />
+    <input type="text" :value="value" @input="updateValue" />
   </div>
 </template>
 
@@ -14,6 +14,12 @@ export default defineComponent({
     value: {
       type: String,
       required: true
+    }
+  },
+  methods: {
+    updateValue(event: any) {
+      // @ts-ignore
+      this.$emit('update:value', event.target.value)
     }
   }
 })

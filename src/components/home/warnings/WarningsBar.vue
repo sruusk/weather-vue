@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import type {Warnings} from "@/types";
+import type {Warning, Warnings} from "@/types";
 import WarningItem from "@/components/home/warnings/WarningItem.vue";
 
 export default defineComponent({
@@ -26,7 +26,7 @@ export default defineComponent({
   },
   props: {
     warnings: {
-      type: Object as () => Warnings,
+      type: Object as () => any,
       required: true
     }
   },
