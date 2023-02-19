@@ -55,14 +55,11 @@ export default defineComponent({
     };
   },
   emits: ["open"],
-  beforeCreate() {
+  created() {
     if(!Settings.location) {
       console.log("Location disabled in settings");
       this.locatingComplete = true;
-    }
-  },
-  created() {
-    if(!this.locatingComplete) {
+    } else {
       this.getLocation();
     }
   },
@@ -121,13 +118,13 @@ export default defineComponent({
         });
       });
     },
-    loadWeather(location: string) {
-      Weather.getWeather(location).then((response) => {
+    loadWeather(location: ForecastLocation) {
+      Weather.getWeatherByLatLon(location.lat, location.lon).then((response) => {
         this.currentWeather = response;
         console.log(response);
       });
     },
-    setLocation(location: string) {
+    setLocation(location: ForecastLocation) {
       console.log("Setting location:", location);
       this.loadWeather(location);
     },

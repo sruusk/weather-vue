@@ -1,33 +1,18 @@
-import { OpenWeatherAPI } from 'openweather-api-node';
 import Settings from "@/settings";
 import type {TimeSeriesObservation, OpenWeather, Warnings} from "@/types";
 
 export function get5DayForecastLatLon(lat: number, lon: number) {
-    let weather = new OpenWeatherAPI({
-        key: Settings.openWeatherApiKey,
-        units: 'metric'
-    });
-    return new Promise((resolve) => {
-        weather.setLocationByCoordinates(lat, lon);
-        weather.getForecast().then(forecast => {
-            const weather = toWeather(forecast);
-            resolve(weather);
-        }).catch((error) => {
-            console.error(error);
-            resolve({} as OpenWeather);
-        });
-    }) as Promise<OpenWeather>;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${Settings.openWeatherApiKey}`;
+    return fetchOpenWeather(url);
 }
 
-export function get5DayForecastPlace(place: string) {
-    let weather = new OpenWeatherAPI({
-        key: Settings.openWeatherApiKey,
-        units: 'metric'
-    });
+function fetchOpenWeather(url: string): Promise<OpenWeather> {
     return new Promise((resolve) => {
-        weather.setLocationByName(place)
-        weather.getForecast().then(forecast => {
-            const weather = toWeather(forecast);
+        fetch(url).then(response => {
+            return response.json();
+        }).then(data => {
+            console.log("openWeather", data);
+            const weather = toWeather(data.list);
             resolve(weather);
         }).catch((error) => {
             console.error(error);
@@ -42,7 +27,6 @@ export function getHourlyForecastLatLon(lat: number, lon: number): Promise<OpenW
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
-            console.log("openWeather", data);
             const weather = oneCallToWeather(data.hourly)
             if(Settings.getWarnings && data.alerts) weather.warnings = parseAlerts(data.alerts);
             resolve(weather);
@@ -67,7 +51,7 @@ function parseAlerts(alerts: any): Warnings {
             }
         }
     });
-    console.log("Warnings", warnings);
+    console.log("Warnings", warnings, alerts);
     return warnings;
 }
 
@@ -85,22 +69,28 @@ function oneCallToWeather(forecastList: any): OpenWeather {
         weather.weatherSymbol.push({ time, value: forecast.weather.description }); // TODO: Convert to FMI symbol numbers
         weather.feelsLike.push({ time, value: forecast.feels_like });
     });
+    // Remove current hour weather
+    const currentTime = new Date();
+    Object.keys(weather).forEach(key => {
+        // @ts-ignore
+        weather[key] = weather[key]?.filter((item: TimeSeriesObservation) => item.time.getTime() > currentTime.getTime());
+    });
     return weather;
 }
 
 function toWeather(forecastList: any): OpenWeather {
     const weather: OpenWeather = getEmptyOpenWeather();
     forecastList.forEach((forecast: any) => {
-        const time = new Date(forecast.dt);
-        weather.humidity.push({ time, value: forecast.weather.humidity });
-        weather.temperature.push({ time, value: forecast.weather.temp.cur });
-        weather.probabilityOfPrecipitation.push({ time, value: forecast.weather.pop });
-        weather.windDirection.push({ time, value: forecast.weather.wind.deg });
-        weather.windSpeed.push({ time, value: forecast.weather.wind.speed });
-        weather.windGust.push({ time, value: forecast.weather.wind.gust });
-        weather.precipitation.push({ time, value: Object.values(forecast.weather.rain || {"1h": 0})[0] as number });
+        const time = new Date(forecast.dt * 1000);
+        weather.humidity.push({ time, value: forecast.main.humidity });
+        weather.temperature.push({ time, value: forecast.main.temp });
+        weather.probabilityOfPrecipitation.push({ time, value: forecast.pop });
+        weather.windDirection.push({ time, value: forecast.wind.deg });
+        weather.windSpeed.push({ time, value: forecast.wind.speed });
+        weather.windGust.push({ time, value: forecast.wind.gust });
+        weather.precipitation.push({ time, value: Object.values(forecast.rain || forecast.snow || {"1h": 0})[0] as number });
         weather.weatherSymbol.push({ time, value: forecast.weather.description }); // TODO: Convert to FMI symbol numbers
-        weather.feelsLike.push({ time, value: forecast.weather.feelsLike.cur });
+        weather.feelsLike.push({ time, value: forecast.main.feels_like });
     });
     return weather;
 }

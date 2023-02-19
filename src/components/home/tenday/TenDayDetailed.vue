@@ -105,6 +105,9 @@ export default defineComponent({
             this.goToDay(date);
           } else if(this.scrolling && this.selectedDay.getDate() === date.getDate()) {
             this.scrolling = false;
+            // @ts-ignore
+          } else if(this.scrolling && this.slider?.scrollWidth - this.slider?.clientWidth === scrollLeft) {
+            this.scrolling = false;
           }
           break;
         }

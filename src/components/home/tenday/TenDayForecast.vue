@@ -99,7 +99,7 @@ export default defineComponent({
           i.push(item.time.toDateString());
         }
       })
-      days.pop();
+      //days.pop(); Don't know why this was here? ;D
       return days;
     },
   }

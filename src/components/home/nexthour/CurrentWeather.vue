@@ -1,3 +1,4 @@
+<!--suppress CssUnknownTarget -->
 <template>
   <div class="main">
     <div class="header" :class="isLocation ? 'isLocation' : ''">
@@ -71,14 +72,14 @@ export default defineComponent({
       nextHourWeather: {} as HourWeather
     }
   },
-  created() {
+  beforeMount() {
     this.favouriteLocations = this.getFavourites();
     this.favouriteLocations.forEach((location) => {
       this.getFavouriteLocation(location);
     })
     if(this.locatingComplete && !this.isLocation) {
       console.log("Setting location to first favourite location", this.locatingComplete, this.isLocation)
-      this.setLocation(`${this.favouriteLocations[0].name},${this.favouriteLocations[0].region}`)
+      this.setLocation(this.favouriteLocations[0])
     }
   },
   activated() {
@@ -129,7 +130,7 @@ export default defineComponent({
       handler: function () {
         console.log("Locating Complete!", this.locatingComplete)
         if(!this.isLocation) {
-          this.setLocation(`${this.favouriteLocations[0].name},${this.favouriteLocations[0].region}`)
+          this.setLocation(this.favouriteLocations[0])
         }
       },
       deep: true
@@ -149,6 +150,7 @@ export default defineComponent({
         "windGust": weather.windGust[0].value,
         "weatherSymbol": weather.weatherSymbol[0].value,
         "precipitation": weather.precipitation[0].value,
+        "probabilityOfPrecipitation": weather.probabilityOfPrecipitation ? weather.probabilityOfPrecipitation[0].value : undefined,
         "humidity": weather.humidity[0].value,
         "feelsLike": weather.feelsLike[0].value,
       } as HourWeather
@@ -178,12 +180,12 @@ export default defineComponent({
     handleSlide(data : { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
       const { currentSlideIndex } = data;
       if(currentSlideIndex === 0) {
-        if(this.isLocation) this.setLocation(`${this.currentLocation.name},${this.currentLocation.region}`);
-        else this.setLocation(`${this.favouriteLocations[0].name},${this.favouriteLocations[0].region}`);
+        if(this.isLocation) this.setLocation(this.currentLocation);
+        else this.setLocation(this.favouriteLocations[0]);
       }
       else {
         const fav = this.favouriteLocations[this.isLocation ? currentSlideIndex - 1 : currentSlideIndex];
-        this.setLocation(`${fav.name},${fav.region}`);
+        this.setLocation(fav);
       }
     },
     getFavouriteWeather(fav: ForecastLocation) {

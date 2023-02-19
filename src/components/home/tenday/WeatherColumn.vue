@@ -19,7 +19,7 @@
     <RainItem
         class="weather-column__rain"
         :rain-amount="weather.precipitation"
-        :rain-probability="weather.probabilityOfPrecipitation || -1"
+        :rain-probability="weather.probabilityOfPrecipitation !== undefined ? weather.probabilityOfPrecipitation : -1"
         :negative="false" />
   </div>
 </template>

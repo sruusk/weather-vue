@@ -1,7 +1,7 @@
 // noinspection NonAsciiCharacters
 
 import type {ForecastLocation, TimeSeriesObservation, Weather, ObservationStation, ObservationStationLocation, DayLength, OpenWeather} from './types';
-import { get5DayForecastLatLon, get5DayForecastPlace, getHourlyForecastLatLon } from "@/openweather";
+import { get5DayForecastLatLon, getHourlyForecastLatLon } from "@/openweather";
 import Settings from "@/settings";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
@@ -64,8 +64,7 @@ function getWeather(place: string) {
     + `&parameters=${params.join(',')}`;
 
     const xml = getXml(url);
-    if(!Settings.getLongerForecast || !Settings.useOpenWeather) return parseWeather(xml);
-    return mergeWeather(parseWeather(xml), get5DayForecastPlace(place));
+    return parseWeather(xml);
 }
 
 function getWeatherByLatLon(lat: number, lon: number) {
@@ -158,8 +157,10 @@ function parseWeather(xml: Promise<any>) {
             }
             if(Settings.useOneCall && (Settings.getPop || Settings.getWarnings)) {
                 const oneCall = await getHourlyForecastLatLon(weather.location.lat, weather.location.lon);
-                // @ts-ignore
-                if(Settings.getPop) weather.probabilityOfPrecipitation = oneCall.probabilityOfPrecipitation;
+                if(Settings.getPop) {
+                    const lastTime = weather.temperature[weather.temperature.length - 1].time;
+                    weather.probabilityOfPrecipitation = oneCall.probabilityOfPrecipitation.filter((value) => value.time <= lastTime);
+                }
                 if(Settings.getWarnings) weather.warnings = oneCall.warnings;
             }
 

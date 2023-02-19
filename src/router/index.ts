@@ -15,7 +15,7 @@ export const routes = [
     showInMenu: true
   },
   {
-    path: '/warnings/:id?',
+    path: '/warnings/:day?',
     name: 'warnings',
     component: () => import('../views/WarningsView.vue'),
     showInMenu: true,
