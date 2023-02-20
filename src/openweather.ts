@@ -11,7 +11,7 @@ function fetchOpenWeather(url: string): Promise<OpenWeather> {
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
-            console.log("openWeather", data);
+            console.log("OpenWeather", data);
             const weather = toWeather(data.list);
             resolve(weather);
         }).catch((error) => {
@@ -27,6 +27,7 @@ export function getHourlyForecastLatLon(lat: number, lon: number): Promise<OpenW
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
+            console.log("OpenWeather OneCall", data);
             const weather = oneCallToWeather(data.hourly)
             if(Settings.getWarnings && data.alerts) weather.warnings = parseAlerts(data.alerts);
             resolve(weather);
