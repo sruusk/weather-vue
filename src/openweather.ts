@@ -29,7 +29,10 @@ export function getHourlyForecastLatLon(lat: number, lon: number): Promise<OpenW
         }).then(data => {
             console.log("OpenWeather OneCall", data);
             const weather = oneCallToWeather(data.hourly)
-            if(Settings.getWarnings && data.alerts) weather.warnings = parseAlerts(data.alerts);
+            if(Settings.getWarnings) {
+                if(data.alerts) weather.warnings = parseAlerts(data.alerts);
+                else weather.warnings = {} as Warnings;
+            }
             resolve(weather);
         }).catch((error) => {
             console.error(error);
