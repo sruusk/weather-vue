@@ -86,7 +86,7 @@ export default defineComponent({
     getDayTemp(date: Date) {
       const weather = this.getWeatherForDay(date);
       const weatherForHour = this.getWeatherForHour(15, weather) as any;
-      return Math.round(Math.abs(weatherForHour.temperature));
+      return Math.round(weatherForHour.temperature);
     },
     tempPrefix(temp: number) {
       return temp > 0 ? "+" : "-";
