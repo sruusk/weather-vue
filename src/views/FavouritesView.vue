@@ -3,7 +3,7 @@
     <BackNavigation class="navigation">
       <input
           type="text"
-          placeholder="Input location, for example: Kaivopuisto Helsinki"
+          :placeholder="`${$t('settings.inputLocation')}, ${$t('settings.forExample')}: Kaivopuisto Helsinki`"
           class="input"
           ref="searchInput"
           @keydown.enter="search"
@@ -11,8 +11,8 @@
     </BackNavigation>
     <div class="favourites-list">
       <div class="favourites-header">
-        <div class="favourites-header-text">Favourites</div>
-        <div class="favourites-header-button" @click="clearFavourites">Delete all</div>
+        <div class="favourites-header-text">{{ $t("settings.favourites") }}</div>
+        <div class="favourites-header-button" @click="clearFavourites">{{ $t("settings.deleteAll") }}</div>
       </div>
       <div class="favourite" v-for="fav in favourites" :key="fav.name">
         <div class="favourite-name">{{fav.name}}, {{fav.region}}</div>

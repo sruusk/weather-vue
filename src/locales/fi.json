@@ -93,6 +93,10 @@
     "apiKey": "API avain",
     "getPop": "Hae sateen todennäköisyys",
     "getLongerForecast": "Hae pidempi ennuste",
-    "getWarnings": "Hae varoitukset"
+    "getWarnings": "Hae varoitukset",
+    "favorites": "Suosikit",
+    "deleteAll": "Poista kaikki",
+    "inputLocation": "Syötä sijainti",
+    "forExample": "esimerkiksi"
   }
 }

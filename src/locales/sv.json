@@ -93,6 +93,10 @@
     "apiKey": "API key",
     "getPop": "Get probability of precipitation",
     "getLongerForecast": "Get longer forecast",
-    "getWarnings": "Get warnings"
+    "getWarnings": "Get warnings",
+    "favourites": "Favorites",
+    "deleteAll": "Delete all",
+    "inputLocation": "Input location",
+    "forExample": "for example"
   }
 }
