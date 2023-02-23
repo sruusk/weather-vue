@@ -14,7 +14,7 @@
     <TenDayDetailed
         :weather="weather"
         :selected-day="selectedDay"
-        :go-to-day="(date) => { displayedDay = date; }"
+        :go-to-day="(date: Date) => { displayedDay = date; }"
         :get-weather-for-hour="getWeatherForHour"
         :get-weather-for-day="getWeatherForDay"
         :get-days-from-weather="getDaysFromWeather" />
