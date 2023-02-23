@@ -6,7 +6,7 @@
     </div>
     <TenDaySlider
         :weather="weather"
-        :selected-day="selectedDay"
+        :selected-day="displayedDay"
         :go-to-day="goToDay"
         :get-days-from-weather="getDaysFromWeather"
         :get-weather-for-day="getWeatherForDay"
@@ -14,7 +14,7 @@
     <TenDayDetailed
         :weather="weather"
         :selected-day="selectedDay"
-        :go-to-day="goToDay"
+        :go-to-day="(date) => { displayedDay = date; }"
         :get-weather-for-hour="getWeatherForHour"
         :get-weather-for-day="getWeatherForDay"
         :get-days-from-weather="getDaysFromWeather" />
@@ -41,7 +41,8 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedDay: new Date(),
+      selectedDay: new Date(),  // This is the day when the detailed view is to be focused
+      displayedDay: new Date(), // This is the day that shows as selected in the day selector
     }
   },
   computed: {
