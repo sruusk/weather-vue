@@ -94,7 +94,7 @@
     "getPop": "Get probability of precipitation",
     "getLongerForecast": "Get longer forecast",
     "getWarnings": "Get warnings",
-    "favorites": "Favorites",
+    "favourites": "Favorites",
     "deleteAll": "Delete all",
     "inputLocation": "Input location",
     "forExample": "for example"

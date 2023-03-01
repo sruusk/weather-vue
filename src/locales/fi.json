@@ -94,7 +94,7 @@
     "getPop": "Hae sateen todennäköisyys",
     "getLongerForecast": "Hae pidempi ennuste",
     "getWarnings": "Hae varoitukset",
-    "favorites": "Suosikit",
+    "favourites": "Suosikit",
     "deleteAll": "Poista kaikki",
     "inputLocation": "Syötä sijainti",
     "forExample": "esimerkiksi"

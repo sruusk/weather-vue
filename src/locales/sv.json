@@ -91,12 +91,12 @@
     "off": "Av",
     "weatherRadar": "Radar",
     "apiKey": "API key",
-    "getPop": "Get probability of precipitation",
-    "getLongerForecast": "Get longer forecast",
-    "getWarnings": "Get warnings",
-    "favourites": "Favorites",
-    "deleteAll": "Delete all",
-    "inputLocation": "Input location",
-    "forExample": "for example"
+    "getPop": "Få sannolikheten för nederbörd",
+    "getLongerForecast": "Få längre prognos",
+    "getWarnings": "Få varningar",
+    "favourites": "Favoriter",
+    "deleteAll": "Radera alla",
+    "inputLocation": "Ange plats",
+    "forExample": "till exempel"
   }
 }
