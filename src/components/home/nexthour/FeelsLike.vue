@@ -10,9 +10,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import BasicIcon from "@/components/icons/feelslike/BasicIcon.vue";
-import RainingIcon from "@/components/icons/feelslike/RainingIcon.vue";
-import WindyIcon from "@/components/icons/feelslike/WindyIcon.vue";
-import WinterIcon from "@/components/icons/feelslike/WinterIcon.vue";
 
 export default defineComponent({
   name: "FeelsLike.vue",
@@ -23,10 +20,7 @@ export default defineComponent({
     },
   },
   components: {
-    BasicIcon,
-    RainingIcon,
-    WindyIcon,
-    WinterIcon
+    BasicIcon
   },
   methods: {
     tempPrefix(temp: number) {

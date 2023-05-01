@@ -1,23 +1,40 @@
 <!--suppress ALL -->
 <template>
-  <svg width="15px" height="21px" viewBox="0 0 15 21" xmlns="http://www.w3.org/2000/svg">
-    <title>icon</title>
-    <desc></desc>
-    <defs>
-      <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
-        <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-        <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-        <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
-        <feMerge>
-          <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
-          <feMergeNode in="SourceGraphic"></feMergeNode>
-        </feMerge>
-      </filter>
-    </defs>
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-      <g transform="translate(-333.000000, -365.000000)" stroke="#63B9E9">
-        <g filter="url(#filter-1)" transform="translate(50.000000, 0.000000)">
-          <polyline points="287 367 293 373.5 287 380"></polyline>
+  <svg
+      width="8px"
+      height="13px"
+      viewBox="0 0 8 13"
+      version="1.1"
+      id="svg4201"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:svg="http://www.w3.org/2000/svg">
+    <g
+        stroke="none"
+        stroke-width="1"
+        fill="none"
+        fill-rule="evenodd"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        id="g4199"
+        transform="matrix(0.9380071,0,0,1.0023502,0.04766278,-0.01605235)"
+        style="stroke-width:0.97973992;stroke-dasharray:none">
+      <g
+          transform="translate(-336,-323)"
+          stroke="#3559b9"
+          id="g4197"
+          style="stroke-width:0.97973992;stroke-dasharray:none;stroke:#3170df;stroke-opacity:1">
+        <g
+            id="g4195"
+            style="stroke-width:0.97973992;stroke-dasharray:none;stroke:#3170df;stroke-opacity:1">
+          <g
+              transform="translate(15,297)"
+              id="g4193"
+              style="stroke-width:0.97973992;stroke-dasharray:none;stroke:#3170df;stroke-opacity:1">
+            <path
+                d="m 322,26 6,6.5 -6,6.5"
+                id="path4191"
+                style="stroke-width:0.97973992;stroke-dasharray:none;stroke:#3170df;stroke-opacity:1" />
+          </g>
         </g>
       </g>
     </g>
