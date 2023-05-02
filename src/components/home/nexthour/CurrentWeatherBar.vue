@@ -81,8 +81,8 @@ export default defineComponent({
   font-size: 14px;
 }
 .sun-icon {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   margin: 0 5px;
 }
 #main div {

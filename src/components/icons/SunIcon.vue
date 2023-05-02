@@ -22,7 +22,7 @@
         <g clip-path="url(#b)">
             <use height="384" transform="translate(64 100)" width="384" xlink:href="#c"/>
         </g>
-        <path d="M128 332h256" fill="none" stroke="#374151" stroke-linecap="round" stroke-linejoin="round"
+        <path d="M100 332h300" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"
               stroke-width="18"/>
     </svg>
 </template>
