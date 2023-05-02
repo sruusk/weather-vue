@@ -25,7 +25,7 @@ import {defineComponent} from 'vue';
 import { getDayLength } from "@/weather";
 import WindIndicator from "@/components/home/WindIndicator.vue";
 import RainItem from "@/components/home/RainItem.vue";
-import SunIcon from "@/components/icons/feelslike/SunIcon.vue";
+import SunIcon from "@/components/icons/SunIcon.vue";
 
 export default defineComponent({
   name: "CurrentWeatherBar.vue",
