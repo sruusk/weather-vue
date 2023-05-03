@@ -1,25 +1,19 @@
 <template>
-  <main v-if="currentWeather">
+  <main v-if="weatherStore.hasWeather">
     <div class="navigation">
       <HamburgerIcon class="menu" @click.stop="open" />
       <SearchIcon class="search" @click.stop="openSearch"/>
     </div>
-    <CurrentWeather
-        :setLocation="setLocation"
-        :current-location-weather="currentLocationWeather"
-        :current-location="currentLocation"
-        :get-weather-by-place="getWeatherNextHour"
-        :locating-complete="locatingComplete" />
-    <WarningsBar v-if="showWarnings" :warnings="currentWeather.warnings" />
-    <TenDayForecast v-if="isWeatherLoaded" :weather="currentWeather" />
-    <WeatherRadar v-if="isWeatherLoaded && enableWeatherRadar" :location="currentWeather.location" />
-    <Observations v-if="isWeatherLoaded" :location="currentWeather.location" />
+    <CurrentWeather />
+    <WarningsBar v-if="showWarnings" :warnings="weatherStore.currentWeather?.warnings" />
+    <TenDayForecast v-if="weatherStore.currentWeather" :weather="weatherStore.currentWeather" />
+    <WeatherRadar v-if="weatherStore.currentWeather && enableWeatherRadar" :location="weatherStore.currentWeather.location" />
+    <Observations v-if="weatherStore.currentWeather" :location="weatherStore.currentWeather.location" />
     <Footer />
   </main>
 </template>
 
 <script lang="ts">
-import type { ForecastLocation, Weather as WeatherType} from "@/types";
 import { defineComponent } from "vue";
 import Settings from "@/settings";
 import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
@@ -31,6 +25,7 @@ import WeatherRadar from "@/components/home/WeatherRadar/WeatherRadar.vue";
 import Observations from "@/components/home/observations/Observations.vue";
 import Footer from "@/components/home/Footer.vue";
 import Weather from "@/weather";
+import { useWeatherStore } from "@/stores";
 
 export default defineComponent({
   name: "HomeView",
@@ -44,35 +39,27 @@ export default defineComponent({
     Footer,
     SearchIcon,
   },
+  setup() {
+    const weatherStore = useWeatherStore();
+    return { weatherStore };
+  },
   data() {
     return {
-      currentWeather: {} as WeatherType,
-      currentLocation: {} as ForecastLocation,
-      currentLocationWeather: {} as WeatherType,
-      locatingComplete: false,
       enableWeatherRadar: Settings.weatherRadar,
       getWarnings: Settings.getWarnings
     };
   },
   emits: ["open"],
   created() {
-    if(!Settings.location) {
-      console.log("Location disabled in settings");
-      this.locatingComplete = true;
-    } else {
-      this.getLocation();
-    }
+    this.weatherStore.init();
   },
   activated() {
     this.getWarnings = Settings.getWarnings;
     this.enableWeatherRadar = Settings.weatherRadar
   },
   computed: {
-    isWeatherLoaded() {
-      return Object.keys(this.currentWeather).length > 0;
-    },
     showWarnings() {
-      return this.currentWeather.warnings && this.getWarnings;
+      return this.weatherStore.currentWeather?.warnings && this.getWarnings;
     }
   },
   methods: {
@@ -82,52 +69,9 @@ export default defineComponent({
     openSearch() {
       this.$router.push("/favourites");
     },
-    getLocation() {
-      if (navigator.geolocation) {
-        console.log("Getting location...");
-        navigator.geolocation.getCurrentPosition((position) => {
-          console.log("Got location:", position);
-          this.loadWeatherLatLon(position.coords.latitude, position.coords.longitude).then(() => {
-            this.locatingComplete = true;
-          });
-        }, (error) => {
-          this.locatingComplete = true;
-          console.log("Error getting location:", error);
-          //this.loadWeatherLatLon(60.159279, 24.961194) // Kaivopuisto, Helsinki as fallback
-        });
-      } else {
-        this.locatingComplete = true;
-        console.log("Geolocation is not supported by this browser.");
-        //this.loadWeatherLatLon(60.159279, 24.961194) // Kaivopuisto, Helsinki as fallback
-      }
-    },
     getWeatherNextHour( place: string) {
       return Weather.getWeatherNextHour(place);
-    },
-    getWeatherPlace(place: string) {
-      return Weather.getWeather(place);
-    },
-    loadWeatherLatLon(lat: number, lon: number) {
-      return new Promise(resolve => {
-        Weather.getWeatherByLatLon(lat, lon).then((response) => {
-          this.currentWeather = response;
-          this.currentLocationWeather = response;
-          this.currentLocation = response.location;
-          resolve(response);
-          console.log(response);
-        });
-      });
-    },
-    loadWeather(location: ForecastLocation) {
-      Weather.getWeatherByLatLon(location.lat, location.lon).then((response) => {
-        this.currentWeather = response;
-        console.log(response);
-      });
-    },
-    setLocation(location: ForecastLocation) {
-      console.log("Setting location:", location);
-      this.loadWeather(location);
-    },
+    }
   },
 });
 </script>

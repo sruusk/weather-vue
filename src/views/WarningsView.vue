@@ -1,7 +1,7 @@
 <template>
   <div class="warnings">
     <BackNavigation>Warnings</BackNavigation>
-    <h1>Not implemented yet</h1>
+    <h1>INOP</h1>
   </div>
 </template>
 
@@ -19,5 +19,12 @@ export default defineComponent({
 <style scoped>
 .warnings {
   width: 100%;
+}
+.warnings h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 </style>

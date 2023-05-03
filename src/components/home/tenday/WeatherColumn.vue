@@ -7,7 +7,7 @@
       {{ tempPrefix(weather.temperature) }}{{ Math.round(Math.abs(weather.temperature)) }} °C
     </div>
     <div class="weather-column__feelslike">
-      <Feelslike10dIcon />
+      <FeelslikeIcon />
       <div class="weather-column__feelslike-value">
         {{ tempPrefix(weather.feelsLike) }}{{ Math.round(Math.abs(weather.feelsLike)) }}°
       </div>
@@ -27,14 +27,14 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import type { HourWeather } from '@/types';
-import Feelslike10dIcon from "@/components/icons/feelslike/Feelslike10dIcon.vue";
+import FeelslikeIcon from "@/components/icons/feelslike/FeelslikeIcon.vue";
 import WindIndicator from "@/components/home/WindIndicator.vue";
 import RainItem from "@/components/home/RainItem.vue";
 
 export default defineComponent({
   name: "WeatherColumn.vue",
   components: {
-    Feelslike10dIcon,
+    FeelslikeIcon,
     WindIndicator,
     RainItem,
   },

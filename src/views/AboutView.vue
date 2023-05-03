@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <BackNavigation>About</BackNavigation>
-    <h1>This is an about page that has not been implemented yet.</h1>
+    <h1>INOP</h1>
   </div>
 </template>
 
@@ -20,5 +20,12 @@ export default defineComponent({
 <style>
 .about {
   width: 100%;
+}
+.about h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 </style>

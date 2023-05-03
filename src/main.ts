@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import VueMobileDetection from "vue-mobile-detection";
 import { createI18n } from 'vue-i18n'
 import App from './App.vue'
+import { createPinia } from "pinia";
 import router from './router'
 import './registerServiceWorker';
 
@@ -20,7 +21,13 @@ const i18n = createI18n({
     }
 })
 
+const pinia = createPinia();
+pinia.use(({ store }) => {
+    store.$router = router;
+});
+
 const app = createApp(App)
+app.use(pinia)
 app.use(router)
 app.use(VueMobileDetection);
 app.use(i18n);

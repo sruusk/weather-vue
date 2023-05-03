@@ -12,11 +12,11 @@
           <LocationItem
               class="item"
               :weather="getFavouriteWeather(fav)"
-              v-if="fav.name !== currentLocation.name" />
+              v-if="fav.name !== weatherStore.gpsLocation.name" />
           <LocationItem
               class="item current-location"
               :weather="nextHourWeather"
-              v-if="isLocation && fav.name === currentLocation.name" />
+              v-if="isLocation && fav.name === weatherStore.gpsLocation.name" />
         </Slide>
         <template #addons>
           <Pagination />
@@ -27,11 +27,13 @@
 </template>
 
 <script lang="ts">
-import type { ForecastLocation, Weather, HourWeather } from "@/types";
+import type { ForecastLocation, Weather as WeatherType, HourWeather } from "@/types";
 import { defineComponent } from 'vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import LocationItem from "@/components/home/nexthour/LocationItem.vue";
+import { useWeatherStore } from "@/stores";
+import Weather from "@/weather";
 import Settings from "@/settings";
 
 export default defineComponent({
@@ -43,33 +45,14 @@ export default defineComponent({
     Pagination,
     Navigation,
   },
-  props: {
-    setLocation: {
-      type: Function,
-      required: true
-    },
-    currentLocation: {
-      type: Object as () => ForecastLocation,
-      required: true
-    },
-    currentLocationWeather: {
-      type: Object as () => Weather,
-      required: true
-    },
-    getWeatherByPlace: {
-      type: Function,
-      required: true
-    },
-    locatingComplete: {
-      type: Boolean,
-      required: true
-    }
+  setup() {
+    const weatherStore = useWeatherStore();
+    return { weatherStore };
   },
   data() {
     return {
       favouriteLocations: [] as ForecastLocation[],
       favouritesWeather: [] as HourWeather[],
-      nextHourWeather: {} as HourWeather
     }
   },
   beforeMount() {
@@ -77,9 +60,9 @@ export default defineComponent({
     this.favouriteLocations.forEach((location) => {
       this.getFavouriteLocation(location);
     })
-    if(this.locatingComplete && !this.isLocation) {
-      console.log("Setting location to first favourite location", this.locatingComplete, this.isLocation)
-      this.setLocation(this.favouriteLocations[0])
+    if(this.weatherStore.locatingComplete && !this.isLocation) {
+      console.log("Setting location to first favourite location", this.weatherStore.locatingComplete, this.isLocation)
+      this.weatherStore.changeLocation(this.favouriteLocations[0])
     }
   },
   activated() {
@@ -107,40 +90,35 @@ export default defineComponent({
   },
   computed: {
     isLocation() {
-      return this.currentLocation && Object.keys(this.currentLocation).length
+      return this.weatherStore.locationWeather && Object.keys(this.weatherStore.locationWeather).length
     },
     locations() {
-      return this.isLocation ? [this.currentLocation, ...this.favouriteLocations] : this.favouriteLocations
-    }
-  },
-  watch: {
-    currentLocationWeather: {
-      handler: function () {
-        this.nextHourWeather = this.getNextHourWeather(this.currentLocationWeather);
-      },
-      deep: true
+      if(this.isLocation) {
+        return [this.weatherStore.gpsLocation, ...this.favouriteLocations]
+      } else if(!this.favouriteLocations.length && this.weatherStore.locatingComplete) {
+        return [
+            { // Set default location if no favourites are set and geolocation is not available
+                name: "Kaivopuisto",
+                identifier: "843554",
+                region: "Helsinki",
+                country: "Finland",
+                lat: 60.15928,
+                lon: 24.96119
+            } as ForecastLocation
+        ] as ForecastLocation[]
+      } else {
+        return this.favouriteLocations
+      }
     },
-    currentLocation: {
-      handler: function () {
-        console.log("currentLocation changed", this.currentLocation)
-      },
-      deep: true
+    nextHourWeather() {
+      return this.getNextHourWeather(this.weatherStore.gpsWeather);
     },
-    locatingComplete: {
-      handler: function () {
-        console.log("Locating Complete!", this.locatingComplete)
-        if(!this.isLocation) {
-          this.setLocation(this.favouriteLocations[0])
-        }
-      },
-      deep: true
-    }
   },
   methods: {
     nextHour(){
       return new Date(new Date().setHours(new Date().getHours() + 1))
     },
-    getNextHourWeather(weather: Weather) {
+    getNextHourWeather(weather: WeatherType) {
       return {
         "time": `${this.nextHour().getHours()}:00`,
         "location": weather.location,
@@ -159,33 +137,22 @@ export default defineComponent({
       const favourites = Settings.favourites;
       return favourites.length
           ? favourites
-          : this.locatingComplete && !this.isLocation
-              ? [
-                  { // Set default location if no favourites are set and geolocation is not available
-                    name: "Kaivopuisto",
-                    identifier: "843554",
-                    region: "Helsinki",
-                    country: "Finland",
-                    lat: 60.15928,
-                    lon: 24.96119
-                  } as ForecastLocation
-                ] as ForecastLocation[]
-            : [] as ForecastLocation[];
+          : [] as ForecastLocation[];
     },
     getFavouriteLocation(location: ForecastLocation) {
-      this.getWeatherByPlace(`${location.name},${location.region}`).then((weather: Weather) => {
+      Weather.getWeatherNextHour(`${location.name},${location.region}`).then((weather: WeatherType) => {
         this.favouritesWeather.push(this.getNextHourWeather(weather));
       });
     },
     handleSlide(data : { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
       const { currentSlideIndex } = data;
       if(currentSlideIndex === 0) {
-        if(this.isLocation) this.setLocation(this.currentLocation);
-        else this.setLocation(this.favouriteLocations[0]);
+        if(this.isLocation) this.weatherStore.changeLocation(this.weatherStore.gpsLocation);
+        else this.weatherStore.changeLocation(this.favouriteLocations[0]);
       }
       else {
         const fav = this.favouriteLocations[this.isLocation ? currentSlideIndex - 1 : currentSlideIndex];
-        this.setLocation(fav);
+        this.weatherStore.changeLocation(fav);
       }
     },
     getFavouriteWeather(fav: ForecastLocation) {
