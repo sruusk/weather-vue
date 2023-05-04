@@ -118,7 +118,7 @@ function toWeather(forecastList: any): OpenWeather {
         weather.windSpeed.push({ time, value: forecast.wind.speed });
         weather.windGust.push({ time, value: forecast.wind.gust });
         weather.precipitation.push({ time, value: Object.values(forecast.rain || forecast.snow || {"1h": 0})[0] as number });
-        weather.weatherSymbol.push({ time, value: forecast.weather.description }); // TODO: Convert to FMI symbol numbers
+        weather.weatherSymbol.push({ time, value: forecast.weather.description });
         weather.feelsLike.push({ time, value: forecast.main.feels_like });
     });
     return weather;
