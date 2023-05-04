@@ -73,18 +73,19 @@ export default defineComponent({
     const removedFavorites = this.favouriteLocations.filter((fav) => {
       return !favorites.find((f) => f.name === fav.name && f.region === fav.region && f.identifier === fav.identifier)
     }) as ForecastLocation[]
+    // Remove first to avoid overwriting the synchronously added new favourites
+    if(removedFavorites.length) {
+      console.log("Removing favourites", removedFavorites);
+      this.favouriteLocations = favorites;
+      for(let i = 0; i < removedFavorites.length; i++) { // Remove from favouritesWeather
+        this.favouritesWeather = this.favouritesWeather.filter((fav) => fav.location.name !== removedFavorites[i].name && fav.location.region !== removedFavorites[i].region && fav.location.identifier !== removedFavorites[i].identifier)
+      }
+    }
     if(newFavorites.length) {
       console.log("Adding new favourites", newFavorites);
       this.favouriteLocations = favorites;
       newFavorites.forEach((location) => {
         this.getFavouriteLocation(location);
-      })
-    }
-    if(removedFavorites.length) {
-      console.log("Removing favourites", removedFavorites);
-      this.favouriteLocations = favorites;
-      removedFavorites.forEach((location) => {
-        this.favouritesWeather = this.favouritesWeather.filter((fav) => fav.location.name !== location.name && fav.location.region !== location.region && fav.location.identifier !== location.identifier)
       })
     }
   },
