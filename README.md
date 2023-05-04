@@ -1,40 +1,12 @@
 # weather-vue
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple weather app built with Vue.js utilizing the OpenData API from the Finnish Meteorological Institute
+and the OpenWeatherMap API.
 
-## Recommended IDE Setup
+This uses the OpenData API as the primary source of weather data,
+but the OpenWeatherMap API is used to complement the data when the OpenData API does not have enough data available.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+### Weather Icons used in this project
+This project uses the [Weather Icons by Bas Milius](https://github.com/basmilius/weather-icons).
+The icons are renamed according to the 
+[OpenData API's weather icon explanations](https://www.ilmatieteenlaitos.fi/latauspalvelun-pikaohje).
