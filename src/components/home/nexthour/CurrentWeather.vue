@@ -12,11 +12,11 @@
           <LocationItem
               class="item"
               :weather="getFavouriteWeather(fav)"
-              v-if="fav.name !== weatherStore.gpsLocation.name" />
+              v-if="fav.name !== weatherStore.gpsLocation?.name" />
           <LocationItem
               class="item current-location"
               :weather="nextHourWeather"
-              v-if="isLocation && fav.name === weatherStore.gpsLocation.name" />
+              v-if="isLocation && fav.name === weatherStore.gpsLocation?.name" />
         </Slide>
         <template #addons>
           <Pagination />
@@ -56,57 +56,43 @@ export default defineComponent({
     }
   },
   beforeMount() {
+    console.log("CurrentWeather beforeMount");
     this.favouriteLocations = this.getFavourites();
+
     this.favouriteLocations.forEach((location) => {
       this.getFavouriteLocation(location);
-    })
-    if(this.weatherStore.locatingComplete && !this.isLocation) {
-      console.log("Setting location to first favourite location", this.weatherStore.locatingComplete, this.isLocation)
-      this.weatherStore.changeLocation(this.favouriteLocations[0])
+    });
+
+    if(!this.isLocation) {
+      this.weatherStore.changeLocation(this.favouriteLocations[0] as ForecastLocation);
     }
   },
   activated() {
     const favorites = this.getFavourites();
+
     const newFavorites = favorites.filter((fav) => {
       return !this.favouriteLocations.find((f) => f.name === fav.name && f.region === fav.region && f.identifier === fav.identifier)
     })
     const removedFavorites = this.favouriteLocations.filter((fav) => {
       return !favorites.find((f) => f.name === fav.name && f.region === fav.region && f.identifier === fav.identifier)
     }) as ForecastLocation[]
-    // Remove first to avoid overwriting the synchronously added new favourites
-    if(removedFavorites.length) {
-      console.log("Removing favourites", removedFavorites);
+
+    if(newFavorites.length || removedFavorites.length) {
+      this.weatherStore.changeLocation(favorites[0]);
       this.favouriteLocations = favorites;
-      for(let i = 0; i < removedFavorites.length; i++) { // Remove from favouritesWeather
-        this.favouritesWeather = this.favouritesWeather.filter((fav) => fav.location.name !== removedFavorites[i].name && fav.location.region !== removedFavorites[i].region && fav.location.identifier !== removedFavorites[i].identifier)
-      }
-    }
-    if(newFavorites.length) {
-      console.log("Adding new favourites", newFavorites);
-      this.favouriteLocations = favorites;
-      newFavorites.forEach((location) => {
+      this.favouritesWeather = [];
+      this.favouriteLocations.forEach((location) => {
         this.getFavouriteLocation(location);
-      })
+      });
     }
   },
   computed: {
     isLocation() {
-      return this.weatherStore.locationWeather && Object.keys(this.weatherStore.locationWeather).length
+      return !!this.weatherStore.gpsLocation
     },
     locations() {
       if(this.isLocation) {
         return [this.weatherStore.gpsLocation, ...this.favouriteLocations]
-      } else if(!this.favouriteLocations.length && this.weatherStore.locatingComplete) {
-        return [
-            { // Set default location if no favourites are set and geolocation is not available
-                name: "Kaivopuisto",
-                identifier: "843554",
-                region: "Helsinki",
-                country: "Finland",
-                lat: 60.15928,
-                lon: 24.96119
-            } as ForecastLocation
-        ] as ForecastLocation[]
       } else {
         return this.favouriteLocations
       }
@@ -137,7 +123,9 @@ export default defineComponent({
     getFavourites() {
       const favourites = Settings.favourites;
       return favourites.length
-          ? favourites
+        ? favourites
+        : this.weatherStore.locatingFailed
+          ? [this.weatherStore.currentWeather?.location as ForecastLocation]
           : [] as ForecastLocation[];
     },
     getFavouriteLocation(location: ForecastLocation) {

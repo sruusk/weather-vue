@@ -3,6 +3,15 @@ import Weather  from '@/weather';
 import Settings from "@/settings";
 import type { Weather as WeatherType, ForecastLocation } from '@/types';
 
+const defaultLocation: ForecastLocation = {
+    name: "Kaivopuisto",
+    identifier: "843554",
+    region: "Helsinki",
+    country: "Finland",
+    lat: 60.15928,
+    lon: 24.96119
+};
+
 interface State {
     currentWeather: WeatherType | undefined;
     locatingComplete: boolean;
@@ -31,18 +40,22 @@ export const useWeatherStore = defineStore('weather', {
                 }, (error) => {
                     this.locatingComplete = true;
                     console.log("Error getting location:", error);
+                    this.changeLocation(defaultLocation);
                 });
             } else {
                 this.locatingComplete = true;
                 console.log("Geolocation is not supported by this browser.");
+                this.changeLocation(defaultLocation);
             }
         },
         async setGpsLocation(lat: number, lon: number) {
+            if(!lat || !lon) return;
             const location = await Weather.getWeatherByLatLon(lat, lon);
             this.currentWeather = location;
             this.locationWeather = location;
         },
         async changeLocation(location: ForecastLocation) {
+            if(!location) return;
             this.currentWeather = await Weather.getWeatherByLatLon(location.lat, location.lon);
         }
     },
@@ -52,5 +65,6 @@ export const useWeatherStore = defineStore('weather', {
         hasWeather: (state: State) => state.currentWeather !== undefined,
         gpsWeather: (state: State) => state.locationWeather as WeatherType,
         gpsLocation: (state: State) => state.locationWeather?.location as ForecastLocation,
+        locatingFailed: (state: State) => state.locatingComplete && !state.locationWeather,
     }
 });
