@@ -66,7 +66,7 @@ class Settings {
         if (useOpenWeather) {
             return useOpenWeather === 'true';
         } else {
-            return false; // Default to false, because by default there is no API key
+            return true; // Default to false, because by default there is no API key
         }
     }
 
@@ -79,7 +79,7 @@ class Settings {
         if (openWeatherApiKey) {
             return openWeatherApiKey;
         } else {
-            return '';
+            return '75d89088d67426b47aa2331ea58fcb2b';
         }
     }
 
@@ -92,7 +92,7 @@ class Settings {
         if (oneCallApiKey) {
             return oneCallApiKey;
         } else {
-            return '';
+            return '75d89088d67426b47aa2331ea58fcb2b';
         }
     }
 
@@ -105,7 +105,7 @@ class Settings {
         if (useOneCall) {
             return useOneCall === 'true';
         } else {
-            return false;
+            return true;
         }
     }
 

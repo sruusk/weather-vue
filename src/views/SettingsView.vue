@@ -4,7 +4,7 @@
     <LanguageSettings />
     <LocationSettings />
     <WeatherRadarSettings />
-    <OpenWeatherSettings />
+    <OpenWeatherSettings v-if="false" />
   </div>
 </template>
 
