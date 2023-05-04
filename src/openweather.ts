@@ -60,24 +60,24 @@ function parseAlerts(alerts: any): Warnings {
 }
 
 function getFMIWeatherSymbolCode(description: string): number {
-    switch (description) {
-        case "clear sky":
+    switch (parseInt(description)) {
+        case 1:
             return 1;
-        case "few clouds":
+        case 2:
             return 2;
-        case "scattered clouds":
+        case 3:
             return 3;
-        case "broken clouds":
+        case 4:
             return 4;
-        case "shower rain":
+        case 9:
             return 23;
-        case "rain":
+        case 10:
             return 33;
-        case "thunderstorm":
+        case 11:
             return 64;
-        case "snow":
+        case 13:
             return 52;
-        case "mist":
+        case 50:
             return 91;
         default:
             return 1;
@@ -95,7 +95,7 @@ function oneCallToWeather(forecastList: any): OpenWeather {
         weather.windSpeed.push({ time, value: forecast.wind_speed });
         weather.windGust.push({ time, value: forecast.wind_gust });
         weather.precipitation.push({ time, value: Object.values(forecast.rain || {"1h": 0})[0] as number });
-        weather.weatherSymbol.push({ time, value: getFMIWeatherSymbolCode(forecast.weather.description) });
+        weather.weatherSymbol.push({ time, value: getFMIWeatherSymbolCode(forecast.weather.icon) });
         weather.feelsLike.push({ time, value: forecast.feels_like });
     });
     // Remove current hour weather
@@ -118,7 +118,7 @@ function toWeather(forecastList: any): OpenWeather {
         weather.windSpeed.push({ time, value: forecast.wind.speed });
         weather.windGust.push({ time, value: forecast.wind.gust });
         weather.precipitation.push({ time, value: Object.values(forecast.rain || forecast.snow || {"1h": 0})[0] as number });
-        weather.weatherSymbol.push({ time, value: getFMIWeatherSymbolCode(forecast.weather.description) });
+        weather.weatherSymbol.push({ time, value: getFMIWeatherSymbolCode(forecast.weather.icon) });
         weather.feelsLike.push({ time, value: forecast.main.feels_like });
     });
     return weather;
