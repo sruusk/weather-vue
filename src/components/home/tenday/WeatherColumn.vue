@@ -46,6 +46,7 @@ export default defineComponent({
   },
   methods: {
     getIconUrl(icon: number) {
+      if(!icon) return "/symbols/error.svg"
       return `/symbols/${icon}.svg`;
     },
     tempPrefix(temp: number) {
@@ -65,7 +66,7 @@ export default defineComponent({
   border-right: #1d2e5d 1px solid;
   border-bottom: #1d2e5d 2px solid;
   font-size: 12px;
-  contain: content;
+  contain: paint;
 }
 .weather-column__icon {
   width: 100%;

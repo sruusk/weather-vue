@@ -126,6 +126,7 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   overflow-x: clip;
+  max-width: calc(3/4 * 100vh);
 }
 
 /*noinspection CssUnusedSymbol*/

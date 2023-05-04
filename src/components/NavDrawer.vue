@@ -3,8 +3,20 @@
     <div class="header">
       <FMIOpenDataIcon class="logo" />
     </div>
-    <NavItem v-for="route in routes" :to="route.name" @click="close">{{ $t(`routes.${route.name}`) }}</NavItem>
-    <NavItem to="home" v-if="!isInstalled" @click="$emit('install')">{{ $t("routes.install") }}</NavItem>
+    <NavItem
+      v-for="route in routes"
+      :to="route.name"
+      @click="close"
+    >
+      {{ $t(`routes.${route.name}`) }}
+    </NavItem>
+    <NavItem
+      to="home"
+      v-if="!isInstalled"
+      @click="$emit('install')"
+    >
+      {{ $t("routes.install") }}
+    </NavItem>
   </div>
 </template>
 
@@ -47,7 +59,7 @@ export default defineComponent({
 <!--suppress CssUnusedSymbol -->
 <style scoped>
 .nav-drawer {
-  position: relative; /* Absolute instead of relative to improve sliding animation performance */
+  position: relative;
   top: 0;
   left: 0;
   bottom: 0;
@@ -64,7 +76,7 @@ export default defineComponent({
   contain: content;
 }
 .nav-drawer.open {
-  min-width: 80vw;
+  min-width: calc(min(80vw, 3/4 * 100vh * 0.8));
 }
 .nav-drawer.closed {
   min-width: 0;

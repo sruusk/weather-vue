@@ -69,6 +69,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.main {
+    contain: paint;
+}
 .header {
   font-size: 13px;
   font-weight: bold;

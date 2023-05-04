@@ -3,7 +3,7 @@
     <div class="side">
       <RainItem
           :rain-amount="weather.precipitation"
-          :rain-probability="weather.probabilityOfPrecipitation || -1"
+          :rain-probability="pop"
           :negative="true" />
     </div>
     <div class="center">
@@ -26,6 +26,7 @@ import { getDayLength } from "@/weather";
 import WindIndicator from "@/components/home/WindIndicator.vue";
 import RainItem from "@/components/home/RainItem.vue";
 import SunIcon from "@/components/icons/SunIcon.vue";
+import { useWeatherStore } from "@/stores";
 
 export default defineComponent({
   name: "CurrentWeatherBar.vue",
@@ -40,6 +41,12 @@ export default defineComponent({
     RainItem,
     SunIcon
   },
+  setup() {
+    const weatherStore = useWeatherStore();
+    return {
+      weatherStore
+    }
+  },
   data() {
     return {
       dayLength: "Loading..."
@@ -48,6 +55,13 @@ export default defineComponent({
   created() {
     const dayLength = getDayLength(this.weather.location);
     this.dayLength = `${dayLength.sunrise} - ${dayLength.sunset}`
+  },
+  computed: {
+    pop() {
+      // @ts-ignore
+      const value = this.weatherStore.currentWeather?.probabilityOfPrecipitation?.at(0).value;
+      return value !== undefined ? value : -1;
+    }
   }
 })
 </script>

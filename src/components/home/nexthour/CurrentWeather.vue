@@ -144,15 +144,15 @@ export default defineComponent({
         this.favouritesWeather.push(this.getNextHourWeather(weather));
       });
     },
-    handleSlide(data : { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
+    async handleSlide(data : { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
       const { currentSlideIndex } = data;
       if(currentSlideIndex === 0) {
-        if(this.isLocation) this.weatherStore.changeLocation(this.weatherStore.gpsLocation);
-        else this.weatherStore.changeLocation(this.favouriteLocations[0]);
+        if(this.isLocation) await this.weatherStore.changeLocation(this.weatherStore.gpsLocation);
+        else await this.weatherStore.changeLocation(this.favouriteLocations[0]);
       }
       else {
         const fav = this.favouriteLocations[this.isLocation ? currentSlideIndex - 1 : currentSlideIndex];
-        this.weatherStore.changeLocation(fav);
+        await this.weatherStore.changeLocation(fav);
       }
     },
     getFavouriteWeather(fav: ForecastLocation) {
@@ -200,7 +200,7 @@ export default defineComponent({
   background-color: #fdfdfe;
 }
 .isLocation :deep(.carousel__pagination-item:nth-of-type(1) .carousel__pagination-button) {
-  background-image: url("/images/location.svg");
+  background-image: url("@/assets/images/location.svg");
   filter: brightness(0.8);
   background-size: 40%;
   background-repeat: no-repeat;
@@ -209,7 +209,7 @@ export default defineComponent({
   height: 20px;
 }
 .isLocation :deep(.carousel__pagination-item:nth-of-type(1) .carousel__pagination-button--active) {
-  background-image: url("/images/location.svg");
+  background-image: url("@/assets/images/location.svg");
   filter: brightness(1);
   background-size: 40%;
   background-repeat: no-repeat;

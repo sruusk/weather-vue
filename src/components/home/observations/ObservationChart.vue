@@ -178,7 +178,7 @@ export default defineComponent({
 
 <style scoped>
 .observation-chart {
-  width: 100vw;
+  width: 100%;
   padding: 5px 5px;
   display: flex;
   align-items: center;
