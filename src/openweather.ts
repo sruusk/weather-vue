@@ -59,6 +59,31 @@ function parseAlerts(alerts: any): Warnings {
     return warnings;
 }
 
+function getFMIWeatherSymbolCode(description: string): number {
+    switch (description) {
+        case "clear sky":
+            return 1;
+        case "few clouds":
+            return 2;
+        case "scattered clouds":
+            return 3;
+        case "broken clouds":
+            return 4;
+        case "shower rain":
+            return 23;
+        case "rain":
+            return 33;
+        case "thunderstorm":
+            return 64;
+        case "snow":
+            return 52;
+        case "mist":
+            return 91;
+        default:
+            return 1;
+    }
+}
+
 function oneCallToWeather(forecastList: any): OpenWeather {
     const weather: OpenWeather = getEmptyOpenWeather();
     forecastList.forEach((forecast: any) => {
@@ -70,7 +95,7 @@ function oneCallToWeather(forecastList: any): OpenWeather {
         weather.windSpeed.push({ time, value: forecast.wind_speed });
         weather.windGust.push({ time, value: forecast.wind_gust });
         weather.precipitation.push({ time, value: Object.values(forecast.rain || {"1h": 0})[0] as number });
-        weather.weatherSymbol.push({ time, value: forecast.weather.description }); // TODO: Convert to FMI symbol numbers
+        weather.weatherSymbol.push({ time, value: getFMIWeatherSymbolCode(forecast.weather.description) });
         weather.feelsLike.push({ time, value: forecast.feels_like });
     });
     // Remove current hour weather
