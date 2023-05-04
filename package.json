@@ -15,6 +15,7 @@
     "@intlify/unplugin-vue-i18n": "^0.8.2",
     "chart.js": "^4.2.1",
     "dom-to-image": "^2.6.0",
+    "epic-spinners": "^2.0.0",
     "fast-xml-parser": "^4.1.1",
     "openweather-api-node": "^2.1.0",
     "pinia": "^2.0.35",

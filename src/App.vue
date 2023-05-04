@@ -126,7 +126,9 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   overflow-x: clip;
+  width: 100%;
   max-width: calc(3/4 * 100vh);
+  background-color: #1d225c;
 }
 
 /*noinspection CssUnusedSymbol*/
@@ -142,6 +144,10 @@ export default defineComponent({
 body {
   margin: 0;
   padding: 0;
-  background-color: #1d225c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #1e1e1e;
 }
 </style>

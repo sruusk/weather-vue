@@ -1,10 +1,13 @@
 <template>
-  <main v-if="weatherStore.hasWeather">
-    <div class="navigation">
+  <main>
+    <div v-if="weatherStore.locatingComplete" class="navigation">
       <HamburgerIcon class="menu" @click.stop="open" />
       <SearchIcon class="search" @click.stop="openSearch"/>
     </div>
-    <CurrentWeather />
+    <div v-else class="loader">
+      <BreedingRhombusSpinner :animation-duration="1500" :color="'#f39d0b'" />
+    </div>
+    <CurrentWeather v-if="weatherStore.locatingComplete && weatherStore.hasWeather" />
     <WarningsBar v-if="showWarnings" :warnings="weatherStore.currentWeather?.warnings" />
     <TenDayForecast v-if="weatherStore.currentWeather" :weather="weatherStore.currentWeather" />
     <WeatherRadar v-if="weatherStore.currentWeather && enableWeatherRadar" :location="weatherStore.currentWeather.location" />
@@ -18,6 +21,7 @@ import { defineComponent } from "vue";
 import Settings from "@/settings";
 import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
+import { BreedingRhombusSpinner } from 'epic-spinners'
 import CurrentWeather from "@/components/home/nexthour/CurrentWeather.vue";
 import WarningsBar from "@/components/home/warnings/WarningsBar.vue";
 import TenDayForecast from "@/components/home/tenday/TenDayForecast.vue";
@@ -30,6 +34,7 @@ import { useWeatherStore } from "@/stores";
 export default defineComponent({
   name: "HomeView",
   components: {
+    BreedingRhombusSpinner,
     HamburgerIcon,
     CurrentWeather,
     WarningsBar,
@@ -104,5 +109,13 @@ main::-webkit-scrollbar {
   cursor: pointer;
   height: 24px;
   z-index: 1000;
+}
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px;
+  height: calc(100vh - 200px - 120px);
+  background-color: #303193;
 }
 </style>
