@@ -6,7 +6,7 @@ export function get5DayForecastLatLon(lat: number, lon: number) {
     return fetchOpenWeather(url);
 }
 
-function fetchOpenWeather(url: string): Promise<OpenWeather> {
+function fetchOpenWeather(url: string, retry: number = 3): Promise<OpenWeather> {
     return new Promise((resolve) => {
         fetch(url).then(response => {
             return response.json();
@@ -15,13 +15,13 @@ function fetchOpenWeather(url: string): Promise<OpenWeather> {
             const weather = toWeather(data.list);
             resolve(weather);
         }).catch((error) => {
-            console.error(error);
-            resolve({} as OpenWeather);
+            console.error("OpenWeather fetchOpenWeather():", error);
+            if(retry > 0) resolve(fetchOpenWeather(url, retry - 1));
         });
     }) as Promise<OpenWeather>;
 }
 
-export function getHourlyForecastLatLon(lat: number, lon: number): Promise<OpenWeather> {
+export function getHourlyForecastLatLon(lat: number, lon: number, retry: number = 3): Promise<OpenWeather> {
     const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily&units=metric&appid=${Settings.openWeatherApiKey}`;
     return new Promise(resolve => {
         fetch(url).then(response => {
@@ -35,8 +35,8 @@ export function getHourlyForecastLatLon(lat: number, lon: number): Promise<OpenW
             }
             resolve(weather);
         }).catch((error) => {
-            console.error(error);
-            resolve({} as OpenWeather);
+            console.error("OpenWeather getHourlyForecastLatLon():", error);
+            if(retry > 0) resolve(getHourlyForecastLatLon(lat, lon, retry - 1));
         });
     })
 }

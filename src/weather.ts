@@ -118,7 +118,7 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
     }) as Promise<Weather>;
 }
 
-function getXml(url: string) {
+function getXml(url: string, retries: number = 3) {
     return new Promise((resolve, reject) => {
         fetch(url)
             .then((response) => {
@@ -133,7 +133,9 @@ function getXml(url: string) {
                 resolve(json);
             })
             .catch((error) => {
-                reject(error);
+                console.error('Error fetching weather data', error);
+                if(retries > 0) resolve(getXml(url, retries - 1));
+                else reject(error);
             });
     }) as Promise<any>;
 }
