@@ -10,7 +10,10 @@
     <CurrentWeather v-if="weatherStore.locatingComplete && weatherStore.hasWeather" />
     <WarningsBar v-if="showWarnings" :warnings="weatherStore.currentWeather?.warnings" />
     <TenDayForecast v-if="weatherStore.currentWeather" :weather="weatherStore.currentWeather" />
-    <WeatherRadar v-if="weatherStore.currentWeather && enableWeatherRadar" :location="weatherStore.currentWeather.location" />
+    <WeatherRadar
+      v-if="weatherStore.currentWeather && enableWeatherRadar && weatherStore.locatingComplete"
+      :location="weatherStore.currentWeather.location"
+    />
     <Observations v-if="weatherStore.currentWeather" :location="weatherStore.currentWeather.location" />
     <Footer />
   </main>
