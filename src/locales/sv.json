@@ -16,7 +16,7 @@
     "warnings": "Varningar",
     "days": "dagar",
     "forecast": "Prognos",
-    "tenDayForecast": "10-dygnsprognos",
+    "tenDayForecast": "5-dygnsprognos",
     "updated": "uppdaterad",
     "weatherRadar": "Radar",
     "weatherObservations": "Väderobservationer",
