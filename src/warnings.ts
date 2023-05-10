@@ -1,7 +1,6 @@
 // @ts-ignore
 import pointInPolygon from 'point-in-polygon';
 import type {ForecastLocation, Warning} from "@/types";
-import Settings from "@/settings";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
 const parser = new XMLParser({

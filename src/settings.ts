@@ -1,4 +1,5 @@
 import type {ForecastLocation} from "@/types";
+import {DefaultLanguage} from "@/contants";
 
 class Settings {
     constructor() {
@@ -23,7 +24,7 @@ class Settings {
         if (language) {
             return language;
         } else {
-            return 'en';
+            return DefaultLanguage;
         }
     }
 
@@ -55,101 +56,6 @@ class Settings {
 
     static set favourites(value: ForecastLocation[]) {
         localStorage.setItem('favourites', JSON.stringify(value));
-    }
-
-    static set useOpenWeather(value: boolean) {
-        localStorage.setItem('useOpenWeather', value.toString());
-    }
-
-    static get useOpenWeather() {
-        const useOpenWeather = localStorage.getItem('useOpenWeather');
-        if (useOpenWeather) {
-            return useOpenWeather === 'true';
-        } else {
-            return true; // Default to false, because by default there is no API key
-        }
-    }
-
-    static set openWeatherApiKey(value: string) {
-        localStorage.setItem('openWeatherApiKey', value);
-    }
-
-    static get openWeatherApiKey() {
-        const openWeatherApiKey = localStorage.getItem('openWeatherApiKey');
-        if (openWeatherApiKey) {
-            return openWeatherApiKey;
-        } else {
-            return '75d89088d67426b47aa2331ea58fcb2b';
-        }
-    }
-
-    static set oneCallApiKey(value: string) {
-        localStorage.setItem('oneCallApiKey', value);
-    }
-
-    static get oneCallApiKey() {
-        const oneCallApiKey = localStorage.getItem('oneCallApiKey');
-        if (oneCallApiKey) {
-            return oneCallApiKey;
-        } else {
-            return '75d89088d67426b47aa2331ea58fcb2b';
-        }
-    }
-
-    static set useOneCall(value: boolean) {
-        localStorage.setItem('useOneCall', value.toString());
-    }
-
-    static get useOneCall() {
-        const useOneCall = localStorage.getItem('useOneCall');
-        if (useOneCall) {
-            return useOneCall === 'true';
-        } else {
-            return true;
-        }
-    }
-
-    static set getWarnings(value: boolean) {
-        localStorage.setItem('getWarnings', value.toString());
-    }
-
-    static get getWarnings() {
-        const getWarnings = localStorage.getItem('getWarnings');
-        if (getWarnings) {
-            return getWarnings === 'true';
-        } else {
-            return true;
-        }
-    }
-
-    static set getPop(value: boolean) {
-        localStorage.setItem('getPop', value.toString());
-    }
-
-    static get getPop() {
-        const getPop = localStorage.getItem('getPop');
-        if (getPop) {
-            return getPop === 'true';
-        } else {
-            return true;
-        }
-    }
-
-    static set getHourlyPop(value: boolean) {
-        localStorage.setItem('getHourlyPop', value.toString());
-    }
-
-    static set getLongerForecast(value: boolean) {
-        localStorage.setItem('getLongerForecast', value.toString());
-    }
-
-    static get getLongerForecast() {
-        const getLongerForecast = localStorage.getItem('getLongerForecast');
-        if (getLongerForecast) {
-            return getLongerForecast === 'true';
-        } else {
-            return true;
-        }
     }
 }
 

@@ -40,10 +40,11 @@ job("Deploy") {
 			)
 		}
     }
-    
+
 
     container("Run deploy script", image = "node:16") {
         env["passwd"] = Secrets("weather-pass")
+        env["VITE_OPEN_WEATHER"] = Secrets("openweather")
         shellScript {
             interpreter = "/bin/sh"
             content = """

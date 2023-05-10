@@ -1,8 +1,8 @@
-import Settings from "@/settings";
+import { OpenWeatherApiKey } from "@/contants";
 import type {TimeSeriesObservation, OpenWeather, Warnings} from "@/types";
 
 export function get5DayForecastLatLon(lat: number, lon: number) {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${Settings.openWeatherApiKey}`;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${OpenWeatherApiKey}`;
     return fetchOpenWeather(url);
 }
 
@@ -22,17 +22,15 @@ function fetchOpenWeather(url: string, retry: number = 3): Promise<OpenWeather> 
 }
 
 export function getHourlyForecastLatLon(lat: number, lon: number, retry: number = 3): Promise<OpenWeather> {
-    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily&units=metric&appid=${Settings.openWeatherApiKey}`;
+    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily&units=metric&appid=${OpenWeatherApiKey}`;
     return new Promise(resolve => {
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
             console.log("OpenWeather OneCall", data);
             const weather = oneCallToWeather(data.hourly)
-            if(Settings.getWarnings) {
-                if(data.alerts) weather.warnings = parseAlerts(data.alerts);
-                else weather.warnings = {} as Warnings;
-            }
+            if(data.alerts) weather.warnings = parseAlerts(data.alerts);
+            else weather.warnings = {} as Warnings;
             resolve(weather);
         }).catch((error) => {
             console.error("OpenWeather getHourlyForecastLatLon():", error);

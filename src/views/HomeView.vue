@@ -53,8 +53,7 @@ export default defineComponent({
   },
   data() {
     return {
-      enableWeatherRadar: Settings.weatherRadar,
-      getWarnings: Settings.getWarnings
+      enableWeatherRadar: Settings.weatherRadar
     };
   },
   emits: ["open"],
@@ -62,12 +61,11 @@ export default defineComponent({
     this.weatherStore.init();
   },
   activated() {
-    this.getWarnings = Settings.getWarnings;
     this.enableWeatherRadar = Settings.weatherRadar
   },
   computed: {
     showWarnings() {
-      return this.weatherStore.currentWeather?.warnings && this.getWarnings;
+      return this.weatherStore.currentWeather?.warnings;
     }
   },
   methods: {
