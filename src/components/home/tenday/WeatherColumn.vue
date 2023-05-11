@@ -47,7 +47,7 @@ export default defineComponent({
   methods: {
     getIconUrl(icon: number) {
       if(!icon) return "/symbols/error.svg"
-      return `/symbols/${icon}.svg`;
+      return `/symbols/static/${icon}.svg`;
     },
     tempPrefix(temp: number) {
       return temp > 0 ? "+" : "-";
@@ -90,7 +90,7 @@ export default defineComponent({
   height: 30px;
 }
 .weather-column__feelslike-value {
-  margin-top: -17px;
+  margin-top: -16px;
   color: black;
 }
 .weather-column__rain {

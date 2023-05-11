@@ -61,7 +61,7 @@ export default defineComponent({
   },
   computed: {
     weatherIcon() {
-      return `/symbols/${this.weather.weatherSymbol}.svg`;
+      return `/symbols/animated/${this.weather.weatherSymbol}.svg`;
     }
   },
   methods: {

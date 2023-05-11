@@ -78,7 +78,7 @@ export default defineComponent({
     }) as ForecastLocation[]
 
     if(newFavorites.length || removedFavorites.length) {
-      this.weatherStore.changeLocation(favorites[0]);
+      this.weatherStore.changeLocation(this.weatherStore.gpsLocation || favorites[0]);
       this.favouriteLocations = favorites;
       this.favouritesWeather = [];
       this.favouriteLocations.forEach((location) => {

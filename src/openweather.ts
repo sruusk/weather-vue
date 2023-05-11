@@ -57,8 +57,8 @@ function parseAlerts(alerts: any): Warnings {
     return warnings;
 }
 
-function getFMIWeatherSymbolCode(description: string): number {
-    switch (parseInt(description)) {
+function getFMIWeatherSymbolCode(icon: string): number {
+    switch (parseInt(icon)) {
         case 1:
             return 1;
         case 2:

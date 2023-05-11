@@ -5,7 +5,8 @@
          :key="day.getTime()"
           @click="goToDay(day)"
          :id="'ten-day-slider-' + day.getDate()"
-         :class="day.toDateString() === selectedDay.toDateString() ? 'selected' : ''">
+         :class="day.toDateString() === selectedDay.toDateString() ? 'selected' : ''"
+    >
       <div class="day-header">{{ getShortDayName(day) }}</div>
       <img :src="getWeatherIcon(day)" alt="Weather icon" />
       <div class="day-temp">{{ tempPrefix(getDayTemp(day)) + getDayTemp(day) }} °C</div>
@@ -17,6 +18,7 @@
 <script lang="ts">
 import type {Weather} from "@/types";
 import {defineComponent} from 'vue';
+import {useWeatherStore} from "@/stores";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
@@ -40,37 +42,22 @@ export default defineComponent({
     selectedDay: {
       type: Date,
       required: true
-    },
-    getWeatherForDay: {
-      type: Function,
-      required: true
-    },
-    getWeatherForHour: {
-      type: Function,
-      required: true
-    },
-    getDaysFromWeather: {
-      type: Function,
-      required: true
+    }
+  },
+  setup() {
+    const weatherStore = useWeatherStore();
+    return {
+      weatherStore
     }
   },
   data () {
     return {
-      days: [] as Date[]
+
     }
   },
   computed: {
-
-  },
-  created() {
-    this.days = this.getDaysFromWeather();
-  },
-  watch: {
-    weather: {
-      handler: function () {
-        this.days = this.getDaysFromWeather();
-      },
-      deep: true
+    days() {
+      return this.weatherStore.getDays();
     }
   },
   methods: {
@@ -78,14 +65,12 @@ export default defineComponent({
       return date.toLocaleDateString(this.$t('meta.localeString'), { weekday: 'short' });
     },
     getWeatherIcon(date: Date) {
-      const weather = this.getWeatherForDay(date);
-      const weatherForHour = this.getWeatherForHour(15, weather) as any;
+      const weatherForHour = this.weatherStore.getWeather(date, 15);
       if(isNaN(weatherForHour.weatherSymbol)) return `/symbols/error.svg`;
-      return `/symbols/${weatherForHour.weatherSymbol}.svg`;
+      return `/symbols/animated/${weatherForHour.weatherSymbol}.svg`;
     },
     getDayTemp(date: Date) {
-      const weather = this.getWeatherForDay(date);
-      const weatherForHour = this.getWeatherForHour(15, weather) as any;
+      const weatherForHour = this.weatherStore.getWeather(date, 15);
       return Math.round(weatherForHour.temperature);
     },
     tempPrefix(temp: number) {

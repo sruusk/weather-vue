@@ -5,8 +5,10 @@
     <div class="header">{{ formattedDate }}</div>
     <div class="weather">
       <div v-for="hour in hours" :key="hour.getTime()">
-        <div class="hour">{{ hour.toLocaleTimeString($t('meta.localeString'), { hour: 'numeric', minute: 'numeric', hour12: false }) }}</div>
-        <WeatherColumn :weather="getWeatherForHour(hour.getHours(), weather)" />
+        <div class="hour">
+          {{ hour.toLocaleTimeString($t('meta.localeString'), { hour: 'numeric', minute: 'numeric', hour12: false }) }}
+        </div>
+        <WeatherColumn :weather="weatherStore.getWeather(day, hour.getHours())" />
       </div>
     </div>
   </div>
@@ -14,6 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import {useWeatherStore} from "@/stores";
 import type { Weather, TimeSeriesObservation } from '@/types';
 import WeatherColumn from "@/components/home/tenday/WeatherColumn.vue";
 
@@ -31,16 +34,14 @@ export default defineComponent({
       type: Date,
       required: true
     },
-    getWeatherForHour: {
-      type: Function,
-      required: true
-    },
   },
   emits : ['dayPosition'],
   setup() {
     const dayItem = ref(null)
+    const weatherStore = useWeatherStore();
     return {
-      dayItem
+      dayItem,
+      weatherStore
     }
   },
   data() {
@@ -70,7 +71,7 @@ export default defineComponent({
 
 <style scoped>
 .main {
-    contain: paint;
+  contain: content;
 }
 .header {
   font-size: 13px;

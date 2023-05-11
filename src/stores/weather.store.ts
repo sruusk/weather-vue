@@ -66,5 +66,52 @@ export const useWeatherStore = defineStore('weather', {
         gpsWeather: (state: State) => state.locationWeather as WeatherType,
         gpsLocation: (state: State) => state.locationWeather?.location as ForecastLocation,
         locatingFailed: (state: State) => state.locatingComplete && !state.locationWeather,
+        getWeather: (state: State) => (day: Date, hour: number = -1) => {
+            if (!state.currentWeather) return;
+            const out: any = {};
+            const startTime = new Date(day.toDateString());
+            const endTime = new Date(day.toDateString()).setHours(23, 59, 59, 999);
+
+            Object.entries(state.currentWeather).forEach(([key, value]) => {
+                if (Array.isArray(value)) {
+                    out[key] = value.filter((item: any) => item.time >= startTime && item.time <= endTime);
+                } else {
+                    out[key] = value;
+                }
+            });
+
+            if (hour === -1) return out;
+
+            const hourOut: any = {};
+            Object.entries(out).forEach(([key, value]) => {
+                if (Array.isArray(value)) {
+                    let over = false;
+                    value.forEach((item: any) => {
+                        if (item.time.getHours() === hour) {
+                            if (isNaN(item.value)) over = true;
+                            else hourOut[key] = item.value;
+                        } else if (over && !isNaN(item.value)) hourOut[key] = item.value;
+                        if (hourOut[key]) return;
+                    });
+                    if (!hourOut[key]) hourOut[key] = value[0]?.value;
+                } else {
+                    hourOut[key] = value;
+                }
+            });
+            return hourOut;
+        },
+        getDays: (state: State) => () => {
+            if (!state.currentWeather) return;
+            const days: Date[] = [];
+            const i: string[] = [];
+            state.currentWeather.temperature.forEach((item: any) => {
+                const dateString = item.time.toDateString();
+                if (!i.includes(dateString)) {
+                    days.push(new Date(dateString));
+                    i.push(dateString);
+                }
+            });
+            return days;
+        }
     }
 });

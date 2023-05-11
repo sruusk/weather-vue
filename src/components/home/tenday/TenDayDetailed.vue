@@ -6,15 +6,15 @@
     <DayItem
         v-for="day in days"
         :key="day.getTime()"
-        :weather="getWeatherForDay(day)"
+        :weather="weatherStore.getWeather(day)"
         :day="day"
-        :getWeatherForHour="getWeatherForHour"
         @day-position="addDayPosition" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import {useWeatherStore} from "@/stores";
 import type { Weather } from '@/types';
 import DayItem from "@/components/home/tenday/DayItem.vue";
 
@@ -22,8 +22,10 @@ export default defineComponent({
   name: "TenDayDetailed.vue",
   setup() {
     const slider = ref(null)
+    const weatherStore = useWeatherStore();
     return {
-      slider
+      slider,
+      weatherStore
     }
   },
   components: {
@@ -35,45 +37,25 @@ export default defineComponent({
       required: true
     },
     selectedDay: {
-      type: Date,
+      type: Date as unknown as () => Date | null,
       required: true
     },
     goToDay: {
-      type: Function,
-      required: true
-    },
-    getWeatherForDay: {
-      type: Function,
-      required: true
-    },
-    getWeatherForHour: {
-      type: Function,
-      required: true
-    },
-    getDaysFromWeather: {
       type: Function,
       required: true
     }
   },
   data() {
     return {
-      days: [] as Date[],
       dayPositions: {} as { [key: number]: Date },
       displayedDay: this.selectedDay,
+      scrollTimer: null as null | ReturnType<typeof setTimeout>
     }
   },
-  created() {
-    this.days = this.getDaysFromWeather();
-  },
   watch: {
-    weather: {
-      handler: function () {
-        this.days = this.getDaysFromWeather();
-      },
-      deep: true
-    },
     selectedDay: {
       handler: function () {
+        if(!this.selectedDay) return;
         // @ts-ignore
         this.slider?.querySelector(`#ten-day-detailed-${this.selectedDay.getDate()}`)
             .scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
@@ -85,22 +67,29 @@ export default defineComponent({
     isMobile() {
       // @ts-ignore
       return this.$isMobile();
+    },
+    days() {
+      return this.weatherStore.getDays();
     }
   },
   methods: {
     onScroll() {
-      // @ts-ignore
-      const scrollLeft = this.slider?.scrollLeft;
-      const entries = Object.entries(this.dayPositions).reverse();
-      for (const [position, date] of entries) {
-        if (scrollLeft >= parseInt(position) - 20) {
-          if(this.displayedDay.getDate() !== date.getDate()) {
-            this.goToDay(date);
-            this.displayedDay = date;
+      if(this.scrollTimer) clearTimeout(this.scrollTimer);
+      this.scrollTimer = setTimeout(() => {
+          if(!this.displayedDay) return;
+          // @ts-ignore
+          const scrollLeft = this.slider?.scrollLeft;
+          const entries = Object.entries(this.dayPositions).reverse();
+          for (const [position, date] of entries) {
+              if (scrollLeft >= parseInt(position) - 20) {
+                  if(this.displayedDay.getDate() !== date.getDate()) {
+                      this.goToDay(date);
+                      this.displayedDay = date;
+                  }
+                  break;
+              }
           }
-          break;
-        }
-      }
+      }, 20);
     },
     addDayPosition(dayPosition: { date: Date, position: number }) {
       this.dayPositions[dayPosition.position] = dayPosition.date;
