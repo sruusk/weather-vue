@@ -83,7 +83,8 @@
     "loading": "Loading",
     "error": "Error",
     "locating": "Locating...",
-    "loadingForecast": "Loading forecast..."
+    "loadingForecast": "Loading forecast...",
+    "loadingFavourites": "Loading favourites..."
   },
   "settings": {
     "settings": "Settings",

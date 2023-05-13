@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import Weather  from '@/weather';
 import Settings from "@/settings";
+import {useFavouritesStore} from "@/stores/favourites.store";
 import type { Weather as WeatherType, ForecastLocation } from '@/types';
 
 const defaultLocation: ForecastLocation = {
@@ -32,6 +33,7 @@ export const useWeatherStore = defineStore('weather', {
     actions: {
         init() {
             if(this.locatingComplete) return;
+            const favouritesStore = useFavouritesStore();
             if(!Settings.location) this.locatingComplete = true;
             else if (navigator.geolocation) {
                 console.log("Getting location...");
@@ -46,7 +48,11 @@ export const useWeatherStore = defineStore('weather', {
                     this.status = "home.loadingForecast";
                     this.locatingComplete = true;
                     console.log("Error getting location:", error);
-                    this.changeLocation(defaultLocation).then(() => {
+                    if(favouritesStore.favourites.length > 0) {
+                        this.changeLocation(favouritesStore.favourites[0]).then(() => {
+                            this.status = "";
+                        });
+                    } else this.changeLocation(defaultLocation).then(() => {
                         this.status = "";
                     });
                 });
@@ -54,7 +60,11 @@ export const useWeatherStore = defineStore('weather', {
                 this.status = "home.loadingForecast";
                 this.locatingComplete = true;
                 console.log("Geolocation is not supported by this browser.");
-                this.changeLocation(defaultLocation).then(() => {
+                if(favouritesStore.favourites.length > 0) {
+                    this.changeLocation(favouritesStore.favourites[0]).then(() => {
+                        this.status = "";
+                    });
+                } else this.changeLocation(defaultLocation).then(() => {
                     this.status = "";
                 });
             }

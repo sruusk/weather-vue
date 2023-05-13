@@ -1,4 +1,3 @@
-import type {ForecastLocation} from "@/types";
 import {DefaultLanguage} from "@/contants";
 
 class Settings {
@@ -43,19 +42,6 @@ class Settings {
 
     static set weatherRadar(value: boolean) {
         localStorage.setItem('weatherRadar', value.toString());
-    }
-
-    static get favourites() {
-        const favourites = localStorage.getItem('favourites');
-        if (favourites) {
-            return JSON.parse(favourites) as ForecastLocation[];
-        } else {
-            return [] as ForecastLocation[];
-        }
-    }
-
-    static set favourites(value: ForecastLocation[]) {
-        localStorage.setItem('favourites', JSON.stringify(value));
     }
 }
 

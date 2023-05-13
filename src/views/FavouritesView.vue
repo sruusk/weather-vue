@@ -12,11 +12,15 @@
     <div class="favourites-list">
       <div class="favourites-header">
         <div class="favourites-header-text">{{ $t("settings.favourites") }}</div>
-        <div class="favourites-header-button" @click="clearFavourites">{{ $t("settings.deleteAll") }}</div>
+        <div class="favourites-header-button"
+             @click="favouritesStore.removeAllFavourites()"
+        >
+          {{ $t("settings.deleteAll") }}
+        </div>
       </div>
-      <div class="favourite" v-for="fav in favourites" :key="fav.name">
+      <div class="favourite" v-for="fav in favouritesStore.favourites" :key="fav.name">
         <div class="favourite-name">{{fav.name}}, {{fav.region}}</div>
-        <div class="favourite-button" @click="removeFavourite(fav)">
+        <div class="favourite-button" @click="favouritesStore.removeFavourite(fav)">
           <div class="remove-button">-</div>
         </div>
       </div>
@@ -25,10 +29,9 @@
 </template>
 
 <script lang="ts">
-import type { ForecastLocation } from "@/types";
 import {defineComponent, ref} from 'vue';
 import Weather from "@/weather";
-import Settings from "@/settings";
+import {useFavouritesStore} from "@/stores";
 import BackNavigation from "@/components/BackNavigation.vue";
 
 export default defineComponent({
@@ -38,27 +41,18 @@ export default defineComponent({
   },
   setup() {
     const searchInput = ref(null) as any
-    return { searchInput };
+    const favouritesStore = useFavouritesStore();
+    return {
+      searchInput,
+      favouritesStore
+    };
   },
   data() {
     return {
-      favourites: Settings.favourites,
       searchString: ""
     }
   },
   methods: {
-    removeFavourite(favourite: ForecastLocation) {
-      this.favourites = this.favourites.filter(fav => fav.name !== favourite.name);
-      Settings.favourites = this.favourites;
-    },
-    clearFavourites() {
-      this.favourites = [];
-      Settings.favourites = [];
-    },
-    addFavourite(favourite: ForecastLocation) {
-      this.favourites.push(favourite);
-      Settings.favourites = this.favourites;
-    },
     search() {
       this.searchInput.blur();
       this.searchString = this.searchString.trim();
@@ -76,7 +70,7 @@ export default defineComponent({
 
       Weather.getWeather(this.searchString).then((weather) => {
         if(!weather.location.region) throw new Error("Invalid location");
-        this.addFavourite(weather.location);
+        this.favouritesStore.addFavourite(weather.location);
         this.searchString = "";
       }).catch((error) => {
         console.error("Error while searching for location", error);

@@ -8,11 +8,7 @@
       @open="openDrawer"
       @click="handleClick"
       :class="{'open' : drawerOpen}"
-      v-slot="{ Component }"
       id="router-view" >
-    <keep-alive include="HomeView">
-      <component :is="Component" />
-    </keep-alive>
   </RouterView>
 </template>
 
@@ -21,6 +17,8 @@ import { RouterLink, RouterView } from 'vue-router'
 import { defineComponent } from 'vue'
 import NavDrawer from "@/components/NavDrawer.vue";
 import Settings from "@/settings";
+import { useWeatherStore } from "@/stores";
+import { useFavouritesStore } from "@/stores";
 
 export default defineComponent({
   name: 'App',
@@ -28,6 +26,14 @@ export default defineComponent({
     RouterLink,
     RouterView,
     NavDrawer
+  },
+  setup() {
+    const weatherStore = useWeatherStore();
+    const favouritesStore = useFavouritesStore();
+    return {
+        weatherStore,
+        favouritesStore
+    };
   },
   data() {
     return {
@@ -43,6 +49,8 @@ export default defineComponent({
   },
   created() {
     this.$i18n.locale = Settings.language;
+    this.favouritesStore.init();
+    this.weatherStore.init();
   },
   mounted() {
     this.installed = this.isInstalled();

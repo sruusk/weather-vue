@@ -1,22 +1,22 @@
 <!--suppress CssUnknownTarget -->
 <template>
   <div class="main">
-    <div class="header" :class="isLocation ? 'isLocation' : ''">
+    <div class="header" :class="{ 'isLocation': weatherStore.gpsLocation }">
       <Carousel
           @slide-end="handleSlide"
           :wrap-around="true"
-          v-if="favouriteLocations.length === favouritesWeather.length">
+      >
         <Slide
             v-for="fav in locations"
             :key="fav.name">
           <LocationItem
               class="item"
-              :weather="getFavouriteWeather(fav)"
+              :weather="favouritesStore.getFavouriteWeather(fav) || getHourWeather(weatherStore.currentWeather)"
               v-if="fav.name !== weatherStore.gpsLocation?.name" />
           <LocationItem
               class="item current-location"
               :weather="nextHourWeather"
-              v-if="isLocation && fav.name === weatherStore.gpsLocation?.name" />
+              v-if="weatherStore.gpsLocation && fav.name === weatherStore.gpsLocation?.name" />
         </Slide>
         <template #addons>
           <Pagination />
@@ -27,14 +27,13 @@
 </template>
 
 <script lang="ts">
-import type { ForecastLocation, Weather as WeatherType, HourWeather } from "@/types";
+import type { Weather as WeatherType, HourWeather } from "@/types";
 import { defineComponent } from 'vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import LocationItem from "@/components/home/nexthour/LocationItem.vue";
 import { useWeatherStore } from "@/stores";
-import Weather from "@/weather";
-import Settings from "@/settings";
+import { useFavouritesStore } from "@/stores";
 
 export default defineComponent({
   name: "CurrentWeather.vue",
@@ -47,106 +46,59 @@ export default defineComponent({
   },
   setup() {
     const weatherStore = useWeatherStore();
-    return { weatherStore };
+    const favouritesStore = useFavouritesStore();
+    return {
+        weatherStore,
+        favouritesStore
+    };
   },
   data() {
     return {
-      favouriteLocations: [] as ForecastLocation[],
-      favouritesWeather: [] as HourWeather[],
-    }
-  },
-  beforeMount() {
-    console.log("CurrentWeather beforeMount");
-    this.favouriteLocations = this.getFavourites();
 
-    this.favouriteLocations.forEach((location) => {
-      this.getFavouriteLocation(location);
-    });
-
-    if(!this.isLocation) {
-      this.weatherStore.changeLocation(this.favouriteLocations[0] as ForecastLocation);
-    }
-  },
-  activated() {
-    const favorites = this.getFavourites();
-
-    const newFavorites = favorites.filter((fav) => {
-      return !this.favouriteLocations.find((f) => f.name === fav.name && f.region === fav.region && f.identifier === fav.identifier)
-    })
-    const removedFavorites = this.favouriteLocations.filter((fav) => {
-      return !favorites.find((f) => f.name === fav.name && f.region === fav.region && f.identifier === fav.identifier)
-    }) as ForecastLocation[]
-
-    if(newFavorites.length || removedFavorites.length) {
-      this.weatherStore.changeLocation(this.weatherStore.gpsLocation || favorites[0]);
-      this.favouriteLocations = favorites;
-      this.favouritesWeather = [];
-      this.favouriteLocations.forEach((location) => {
-        this.getFavouriteLocation(location);
-      });
     }
   },
   computed: {
-    isLocation() {
-      return !!this.weatherStore.gpsLocation
-    },
     locations() {
-      if(this.isLocation) {
-        return [this.weatherStore.gpsLocation, ...this.favouriteLocations]
+      if(this.weatherStore.gpsLocation) {
+        return [this.weatherStore.gpsLocation, ...this.favouritesStore.favourites];
+      } else if(this.favouritesStore.favourites.length === 0) {
+        return this.weatherStore.hasWeather ? [this.weatherStore.currentLocation] : [];
       } else {
-        return this.favouriteLocations
+        return this.favouritesStore.favourites;
       }
     },
     nextHourWeather() {
-      return this.getNextHourWeather(this.weatherStore.gpsWeather);
+      return this.getHourWeather(this.weatherStore.gpsWeather)
     },
   },
   methods: {
-    nextHour(){
-      return new Date(new Date().setHours(new Date().getHours() + 1))
-    },
-    getNextHourWeather(weather: WeatherType) {
-      return {
-        "time": `${this.nextHour().getHours()}:00`,
-        "location": weather.location,
-        "temperature": weather.temperature[0].value,
-        "windDirection": weather.windDirection[0].value,
-        "windSpeed": weather.windSpeed[0].value,
-        "windGust": weather.windGust[0].value,
-        "weatherSymbol": weather.weatherSymbol[0].value,
-        "precipitation": weather.precipitation[0].value,
-        "probabilityOfPrecipitation": weather.probabilityOfPrecipitation ? weather.probabilityOfPrecipitation[0].value : undefined,
-        "humidity": weather.humidity[0].value,
-        "feelsLike": weather.feelsLike[0].value,
-      } as HourWeather
-    },
-    getFavourites() {
-      const favourites = Settings.favourites;
-      return favourites.length
-        ? favourites
-        : this.weatherStore.locatingFailed
-          ? [this.weatherStore.currentWeather?.location as ForecastLocation]
-          : [] as ForecastLocation[];
-    },
-    getFavouriteLocation(location: ForecastLocation) {
-      Weather.getWeatherNextHour(`${location.name},${location.region}`).then((weather: WeatherType) => {
-        this.favouritesWeather.push(this.getNextHourWeather(weather));
-      });
-    },
     async handleSlide(data : { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
       const { currentSlideIndex } = data;
       if(currentSlideIndex === 0) {
-        if(this.isLocation) await this.weatherStore.changeLocation(this.weatherStore.gpsLocation);
-        else await this.weatherStore.changeLocation(this.favouriteLocations[0]);
+        if(this.weatherStore.gpsLocation) await this.weatherStore.changeLocation(this.weatherStore.gpsLocation);
+        else await this.weatherStore.changeLocation(this.favouritesStore.favourites[0]);
       }
       else {
-        const fav = this.favouriteLocations[this.isLocation ? currentSlideIndex - 1 : currentSlideIndex];
+        const fav = this.favouritesStore.favourites[this.weatherStore.gpsLocation ? currentSlideIndex - 1 : currentSlideIndex];
         await this.weatherStore.changeLocation(fav);
       }
     },
-    getFavouriteWeather(fav: ForecastLocation) {
-      return this.favouritesWeather.find(f => f.location.name === fav.name && f.location.region === fav.region) as HourWeather;
-    },
+    getHourWeather(weather: WeatherType | undefined): HourWeather {
+      if(!weather) return undefined as unknown as HourWeather;
+        return {
+            "time": `${(new Date(new Date().setHours(new Date().getHours() + 1))).getHours()}:00`,
+            "location": weather.location,
+            "temperature": weather.temperature[0].value,
+            "windDirection": weather.windDirection[0].value,
+            "windSpeed": weather.windSpeed[0].value,
+            "windGust": weather.windGust[0].value,
+            "weatherSymbol": weather.weatherSymbol[0].value,
+            "precipitation": weather.precipitation[0].value,
+            "probabilityOfPrecipitation": weather.probabilityOfPrecipitation ? weather.probabilityOfPrecipitation[0].value : undefined,
+            "humidity": weather.humidity[0].value,
+            "feelsLike": weather.feelsLike[0].value,
+        } as HourWeather;
+    }
   }
 })
 </script>

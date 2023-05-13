@@ -83,7 +83,8 @@
     "loading": "Laddar",
     "error": "Fel",
     "locating": "Locating...",
-    "loadingForecast": "Loading forecast..."
+    "loadingForecast": "Loading forecast...",
+    "loadingFavourites": "Loading favourites..."
   },
   "settings": {
     "settings": "Inställningar",

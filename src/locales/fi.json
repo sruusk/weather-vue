@@ -83,7 +83,8 @@
     "loading": "Ladataan",
     "error": "Virhe",
     "locating": "Paikannetaan...",
-    "loadingForecast": "Ladataan ennustetta..."
+    "loadingForecast": "Ladataan ennustetta...",
+    "loadingFavourites": "Ladataan suosikkeja..."
   },
   "settings": {
     "settings": "Asetukset",

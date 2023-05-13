@@ -1,21 +1,27 @@
 <template>
   <main>
-    <div v-if="weatherStore.locatingComplete" class="navigation">
+    <div v-if="weatherStore.locatingComplete && !favouritesStore.loading" class="navigation">
       <HamburgerIcon class="menu" @click.stop="open" />
       <SearchIcon class="search" @click.stop="openSearch"/>
     </div>
     <div v-else class="loader">
-      <BreedingRhombusSpinner :animation-duration="1500" :color="'#f39d0b'" />
-      <div class="loader-text">{{ $t(weatherStore.status) }}</div>
+      <BreedingRhombusSpinner :animation-duration="1500" :color="'#62b8e7'" />
+      <div class="loader-text">
+        {{ weatherStore.status ? $t(weatherStore.status) : favouritesStore.loading ? $t('home.loadingFavourites') : '' }}
+      </div>
     </div>
-    <CurrentWeather v-if="weatherStore.locatingComplete && weatherStore.hasWeather" />
-    <WarningsBar v-if="showWarnings" :warnings="weatherStore.currentWeather?.warnings" />
-    <TenDayForecast v-if="weatherStore.currentWeather" :weather="weatherStore.currentWeather" />
+    <CurrentWeather v-if="weatherStore.locatingComplete && !favouritesStore.loading" />
+    <WarningsBar v-if="showWarnings && !favouritesStore.loading" :warnings="weatherStore.currentWeather?.warnings" />
+    <TenDayForecast v-if="weatherStore.currentWeather && !favouritesStore.loading" :weather="weatherStore.currentWeather" />
     <WeatherRadar
-      v-if="weatherStore.currentWeather && enableWeatherRadar && weatherStore.locatingComplete && weatherStore.currentWeather.location.country === 'Finland'"
+      v-if="weatherStore.currentWeather
+      && enableWeatherRadar
+      && weatherStore.locatingComplete
+      && weatherStore.currentWeather.location.country === 'Finland'
+      && !favouritesStore.loading"
       :location="weatherStore.currentWeather.location"
     />
-    <Observations v-if="weatherStore.currentWeather" :location="weatherStore.currentWeather.location" />
+    <Observations v-if="weatherStore.currentWeather && !favouritesStore.loading" :location="weatherStore.currentWeather.location" />
     <Footer />
   </main>
 </template>
@@ -34,6 +40,7 @@ import Observations from "@/components/home/observations/Observations.vue";
 import Footer from "@/components/home/Footer.vue";
 import Weather from "@/weather";
 import { useWeatherStore } from "@/stores";
+import { useFavouritesStore } from "@/stores";
 
 export default defineComponent({
   name: "HomeView",
@@ -50,7 +57,11 @@ export default defineComponent({
   },
   setup() {
     const weatherStore = useWeatherStore();
-    return { weatherStore };
+    const favouritesStore = useFavouritesStore();
+    return {
+        weatherStore,
+        favouritesStore
+    };
   },
   data() {
     return {
@@ -58,9 +69,6 @@ export default defineComponent({
     };
   },
   emits: ["open"],
-  created() {
-    this.weatherStore.init();
-  },
   activated() {
     this.enableWeatherRadar = Settings.weatherRadar
   },
@@ -74,6 +82,7 @@ export default defineComponent({
       this.$emit("open");
     },
     openSearch() {
+      // @ts-ignore
       this.$router.push("/favourites");
     },
     getWeatherNextHour( place: string) {
