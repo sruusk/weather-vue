@@ -80,7 +80,9 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
         Promise.all([shortWeather, longWeather]).then((values) => {
             const short = values[0];
             let long = values[1];
+            console.log({ ...short, ...long } as Weather);
             if(Object.keys(long).length === 0) resolve(short);
+            else if(Object.keys(short).length <= 1) resolve( { ...short, ...long } as Weather );
             // Clip long forecast to start at short forecast end
             const shortEndTime = short.temperature[short.temperature.length - 1].time;
             long = {
@@ -122,6 +124,9 @@ function getXml(url: string, retries: number = 3) {
             .then((response) => {
                 if (response.ok) {
                     return response.text();
+                } else if (response.status === 400) { // FMI returns 400 if no data is available for the requested location
+                    console.warn('Bad request to FMI API');
+                    return response.text();
                 } else {
                     throw new Error('Network response was not ok.');
                 }
@@ -141,6 +146,16 @@ function getXml(url: string, retries: number = 3) {
 function parseWeather(xml: Promise<any>) {
     return new Promise((resolve, reject) => {
         xml.then(async (json) => {
+            if(json['ExceptionReport']) {
+                console.warn('FMI API returned exception report', json['ExceptionReport']);
+                const cityName = json['ExceptionReport']['Exception']['ExceptionText'][0].split('\'')[1];
+                resolve({
+                    location: {
+                        name: cityName
+                    },
+                } as Weather);
+            }
+
             const data = json['wfs:FeatureCollection']['wfs:member'];
             const weather: Weather = {
                 warnings: undefined,

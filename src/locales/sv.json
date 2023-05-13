@@ -81,7 +81,9 @@
     "weatherProvider": "Väder- och prognosdata tillhandahålls av Finlands meteorologiska institut (FMI) Open Data API.",
     "nextHourForecastFor": "Nästa timmes prognos för",
     "loading": "Laddar",
-    "error": "Fel"
+    "error": "Fel",
+    "locating": "Locating...",
+    "loadingForecast": "Loading forecast..."
   },
   "settings": {
     "settings": "Inställningar",

@@ -81,7 +81,9 @@
     "weatherProvider": "Säähavainnot ja osan ennusteista tarjoaa Ilmatieteen laitoksen Avoin data -palvelu",
     "nextHourForecastFor": "Seuraavan tunnin ennuste kohteeseen",
     "loading": "Ladataan",
-    "error": "Virhe"
+    "error": "Virhe",
+    "locating": "Paikannetaan...",
+    "loadingForecast": "Ladataan ennustetta..."
   },
   "settings": {
     "settings": "Asetukset",

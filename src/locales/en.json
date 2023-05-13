@@ -81,7 +81,9 @@
     "weatherProvider": "Weather and some forecast data provided by the Finnish Meteorological Institute (FMI) Open Data API",
     "nextHourForecastFor": "Next hour forecast for",
     "loading": "Loading",
-    "error": "Error"
+    "error": "Error",
+    "locating": "Locating...",
+    "loadingForecast": "Loading forecast..."
   },
   "settings": {
     "settings": "Settings",

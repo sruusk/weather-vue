@@ -75,6 +75,7 @@ export default defineComponent({
       }
 
       Weather.getWeather(this.searchString).then((weather) => {
+        if(!weather.location.region) throw new Error("Invalid location");
         this.addFavourite(weather.location);
         this.searchString = "";
       }).catch((error) => {

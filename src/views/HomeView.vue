@@ -6,12 +6,13 @@
     </div>
     <div v-else class="loader">
       <BreedingRhombusSpinner :animation-duration="1500" :color="'#f39d0b'" />
+      <div class="loader-text">{{ $t(weatherStore.status) }}</div>
     </div>
     <CurrentWeather v-if="weatherStore.locatingComplete && weatherStore.hasWeather" />
     <WarningsBar v-if="showWarnings" :warnings="weatherStore.currentWeather?.warnings" />
     <TenDayForecast v-if="weatherStore.currentWeather" :weather="weatherStore.currentWeather" />
     <WeatherRadar
-      v-if="weatherStore.currentWeather && enableWeatherRadar && weatherStore.locatingComplete"
+      v-if="weatherStore.currentWeather && enableWeatherRadar && weatherStore.locatingComplete && weatherStore.currentWeather.location.country === 'Finland'"
       :location="weatherStore.currentWeather.location"
     />
     <Observations v-if="weatherStore.currentWeather" :location="weatherStore.currentWeather.location" />
@@ -85,6 +86,7 @@ export default defineComponent({
 <style scoped>
 main {
   width: 100%;
+  min-height: calc(100vh);
   color: white;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -113,10 +115,16 @@ main::-webkit-scrollbar {
 }
 .loader {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 100px;
   height: calc(100vh - 200px - 120px);
   background-color: #303193;
+}
+.loader-text {
+  margin-top: 50px;
+  font-size: 18px;
+  font-weight: 400;
 }
 </style>

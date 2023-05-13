@@ -14,6 +14,7 @@ const defaultLocation: ForecastLocation = {
 
 interface State {
     currentWeather: WeatherType | undefined;
+    status: string;
     locatingComplete: boolean;
     locationWeather: WeatherType | undefined;
 }
@@ -22,6 +23,7 @@ export const useWeatherStore = defineStore('weather', {
     state: (): State => {
         return {
             currentWeather: undefined as WeatherType | undefined,
+            status: "",
             locatingComplete: false,
             locationWeather: undefined as WeatherType | undefined,
         }
@@ -33,24 +35,37 @@ export const useWeatherStore = defineStore('weather', {
             if(!Settings.location) this.locatingComplete = true;
             else if (navigator.geolocation) {
                 console.log("Getting location...");
+                this.status = "home.locating"
                 navigator.geolocation.getCurrentPosition((position) => {
+                    this.status = "home.loadingForecast";
                     this.setGpsLocation(position.coords.latitude, position.coords.longitude).then(() => {
                         this.locatingComplete = true;
+                        this.status = "";
                     });
                 }, (error) => {
+                    this.status = "home.loadingForecast";
                     this.locatingComplete = true;
                     console.log("Error getting location:", error);
-                    this.changeLocation(defaultLocation);
+                    this.changeLocation(defaultLocation).then(() => {
+                        this.status = "";
+                    });
                 });
             } else {
+                this.status = "home.loadingForecast";
                 this.locatingComplete = true;
                 console.log("Geolocation is not supported by this browser.");
-                this.changeLocation(defaultLocation);
+                this.changeLocation(defaultLocation).then(() => {
+                    this.status = "";
+                });
             }
         },
         async setGpsLocation(lat: number, lon: number) {
             if(!lat || !lon) return;
             const location = await Weather.getWeatherByLatLon(lat, lon);
+            if(!location.location.lat || !location.location.lon){
+                location.location.lat = lat;
+                location.location.lon = lon;
+            }
             this.currentWeather = location;
             this.locationWeather = location;
         },
