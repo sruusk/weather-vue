@@ -126,7 +126,7 @@ main::-webkit-scrollbar {
   align-items: center;
   padding: 100px;
   height: calc(100vh - 200px - 120px);
-  background-color: #303193;
+  background-color: var(--backgroundMediumLight);
 }
 .loader-text {
   margin-top: 50px;
