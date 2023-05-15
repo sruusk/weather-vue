@@ -12,7 +12,7 @@ export const dark: Theme = {
         backgroundLighter: '#404040',
         backgroundLightest: '#4d4d4d',
         backgroundGradient: 'linear-gradient(200deg,#4d4d4d 0%,#333333 100%)',
-        backgroundObservations: 'linear-gradient(180deg, #4d4d4d 0%, #333333 100%)',
+        backgroundObservations: 'linear-gradient(180deg, #4d4d4d 0%, #262626 100%)',
         backgroundSettingsItem: '#333333',
         selectedLight: '#333333',
     },

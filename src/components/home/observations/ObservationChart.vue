@@ -8,13 +8,16 @@
 import type { TimeSeriesObservation } from "@/types";
 import {defineComponent, ref} from 'vue';
 import {Chart} from "chart.js/auto";
+import {useThemeStore} from "@/stores";
 
 export default defineComponent({
   name: "ObservationChart.vue",
   setup() {
     const chart = ref(null);
+    const themeStore = useThemeStore();
     return {
-      chart
+      chart,
+      themeStore,
     }
   },
   props: {
@@ -107,7 +110,7 @@ export default defineComponent({
               display: false
             },
             grid: {
-              color: 'rgb(53,88,185)'
+              color: this.themeStore.theme.colours.backgroundLightest
             }
           },
           x: {
@@ -153,7 +156,7 @@ export default defineComponent({
               display: false
             },
             grid: {
-              color: 'rgb(53,88,185)'
+              color: this.themeStore.theme.colours.backgroundLightest
             }
           }
         },
