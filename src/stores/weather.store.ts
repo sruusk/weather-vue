@@ -33,7 +33,18 @@ export const useWeatherStore = defineStore('weather', {
         init() {
             if(this.locatingComplete) return;
             const favouritesStore = useFavouritesStore();
-            if(!useSettingsStore().useLocation) this.locatingComplete = true;
+            const loadWeather = () => {
+                this.status = "home.loadingForecast";
+                this.locatingComplete = true;
+                if(favouritesStore.favourites.length > 0) {
+                    this.changeLocation(favouritesStore.favourites[0]).then(() => {
+                        this.status = "";
+                    });
+                } else this.changeLocation(defaultLocation).then(() => {
+                    this.status = "";
+                });
+            }
+            if(!useSettingsStore().useLocation) loadWeather(); // Location disabled
             else if (navigator.geolocation) {
                 console.log("Getting location...");
                 this.status = "home.locating"
@@ -43,29 +54,11 @@ export const useWeatherStore = defineStore('weather', {
                         this.locatingComplete = true;
                         this.status = "";
                     });
-                }, (error) => {
-                    this.status = "home.loadingForecast";
-                    this.locatingComplete = true;
-                    console.log("Error getting location:", error);
-                    if(favouritesStore.favourites.length > 0) {
-                        this.changeLocation(favouritesStore.favourites[0]).then(() => {
-                            this.status = "";
-                        });
-                    } else this.changeLocation(defaultLocation).then(() => {
-                        this.status = "";
-                    });
+                }, () => {
+                    loadWeather(); // Location denied
                 });
             } else {
-                this.status = "home.loadingForecast";
-                this.locatingComplete = true;
-                console.log("Geolocation is not supported by this browser.");
-                if(favouritesStore.favourites.length > 0) {
-                    this.changeLocation(favouritesStore.favourites[0]).then(() => {
-                        this.status = "";
-                    });
-                } else this.changeLocation(defaultLocation).then(() => {
-                    this.status = "";
-                });
+                loadWeather(); // Geolocation not supported
             }
         },
         async setGpsLocation(lat: number, lon: number) {
