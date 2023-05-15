@@ -13,19 +13,22 @@
 </template>
 
 <script lang="ts">
-import type { ForecastLocation, ObservationStation } from "@/types";
+import type { ObservationStation } from "@/types";
 import {defineComponent, ref} from 'vue';
 import { getObservationsForClosestStations } from "@/weather";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import ObservationItem from "@/components/home/observations/ObservationItem.vue";
+import {useWeatherStore} from "@/stores";
 
 export default defineComponent({
   name: "Observations.vue",
   setup() {
     const carousel = ref(null);
+    const weatherStore = useWeatherStore();
     return {
-      carousel
+      carousel,
+      weatherStore
     };
   },
   components: {
@@ -34,12 +37,6 @@ export default defineComponent({
     Pagination,
     Navigation,
     ObservationItem
-  },
-  props: {
-    location: {
-      type: Object as () => ForecastLocation,
-      required: true
-    }
   },
   data() {
     return {
@@ -50,18 +47,15 @@ export default defineComponent({
     this.getObservationStations();
   },
   watch: {
-    location: {
-      handler() {
-        this.getObservationStations();
-        // @ts-ignore
-        if(this.carousel) this.carousel.slideTo(0); // Reset carousel to first page when location changes
-      },
-      deep: true
+    "weatherStore.currentLocation": function () {
+      this.getObservationStations();
+      // @ts-ignore
+      if(this.carousel) this.carousel.slideTo(0);
     }
   },
   methods: {
     getObservationStations() {
-      getObservationsForClosestStations(this.location.lat, this.location.lon, 4)
+      getObservationsForClosestStations(this.weatherStore.currentLocation.lat, this.weatherStore.currentLocation.lon, 4)
         .then((stations) => {
           console.log("Observation stations", stations);
           this.observationStations = stations;

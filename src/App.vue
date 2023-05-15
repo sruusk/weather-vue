@@ -8,7 +8,11 @@
       @open="openDrawer"
       @click="handleClick"
       :class="{'open' : drawerOpen}"
+      v-slot="{ Component }"
       id="router-view" >
+    <keep-alive :include="'HomeView'">
+      <component :is="Component" />
+    </keep-alive>
   </RouterView>
 </template>
 

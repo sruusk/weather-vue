@@ -29,7 +29,7 @@ import { defineComponent, ref } from 'vue';
 import MarkerIcon from "@/components/icons/MarkerIcon.vue";
 import MetOClient from "@fmidev/metoclient";
 import config from "@/components/home/WeatherRadar/config.json";
-import {useThemeStore} from "@/stores";
+import {useThemeStore, useWeatherStore} from "@/stores";
 
 export default defineComponent({
   name: "WeatherRadar.vue",
@@ -40,21 +40,19 @@ export default defineComponent({
     autoPlay: {
       type: Boolean,
       default: false,
-    },
-    location: {
-      type: Object as () => ForecastLocation,
-      required: true
     }
   },
   setup() {
     const animationTime = ref(null);
     const animator = ref(null);
     const themeStore = useThemeStore();
+    const weatherStore = useWeatherStore();
 
     return {
       animationTime,
       animator,
       themeStore,
+      weatherStore,
     }
   },
   data() {
@@ -65,6 +63,7 @@ export default defineComponent({
       map: null,
       timeStepButton: null,
       timeSlider: null,
+      newLocation: false,
     }
   },
   mounted() {
@@ -84,22 +83,28 @@ export default defineComponent({
       this.showTimeOptions = false;
       this.timeStepButton.textContent = this.timeStep;
     },
-    location() {
-      config.center = this.center;
-      console.log("Setting new location to MetOClient", config.center);
-      this.metoclient.destroy();
-      this.metoclient = new MetOClient(config);
-      this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
-        // statements to handle any exceptions
-        console.error(error);
-      });
-    }
+    'weatherStore.currentLocation': {
+      handler: function () {
+        if(this.$route.name === "home") this.updateLocation();
+        else this.newLocation = true;
+      },
+      deep: true,
+    },
+    '$route'( to, from ) {
+      if (this.newLocation && to.name === "home") {
+        // Wait for the map to be rendered before updating the location
+        setTimeout(() => {
+          this.updateLocation();
+        }, 1000);
+        this.newLocation = false;
+      }
+    },
   },
   computed: {
     // convert from lat and long to ETRS89/UTM zone 35N (N-E)
     // (EPSG:3067) (ETRS89 / TM35FIN(E,N)) (https://epsg.io/3067)
     center() {
-      const { lat, lon } = this.location;
+      const { lat, lon } = this.weatherStore.currentLocation;
       const [x, y] = MetOClient.transform([lon, lat], 'EPSG:4326', 'EPSG:3067');
       console.log("Center", [x, y]);
       return [x, y];
@@ -138,6 +143,20 @@ export default defineComponent({
     updateAnimationTime() {
       this.animationTime.textContent = this.timeSlider.getClock();
     },
+    updateLocation() {
+      config.center = this.center;
+      console.log("Setting new location to MetOClient", config.center);
+      try {
+          this.metoclient.destroy();
+          this.metoclient = new MetOClient(config);
+          this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
+              // statements to handle any exceptions
+              console.error("MetOClient render error", error);
+          });
+      } catch (e) {
+          console.error("MetOClient error", e);
+      }
+    }
   },
 })
 </script>

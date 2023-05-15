@@ -19,7 +19,6 @@
       && weatherStore.locatingComplete
       && weatherStore.currentWeather.location.country === 'Finland'
       && !favouritesStore.loading"
-      :location="weatherStore.currentWeather.location"
     />
     <Observations v-if="weatherStore.currentWeather && !favouritesStore.loading" :location="weatherStore.currentWeather.location" />
     <Footer />
