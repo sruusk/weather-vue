@@ -100,6 +100,11 @@
     "favourites": "Suosikit",
     "deleteAll": "Poista kaikki",
     "inputLocation": "Syötä sijainti",
-    "forExample": "esimerkiksi"
+    "forExample": "esimerkiksi",
+    "theme": {
+      "theme": "Teema",
+      "blue": "Sininen",
+      "dark": "Tumma"
+    }
   }
 }

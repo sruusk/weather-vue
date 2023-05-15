@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <BackNavigation>About</BackNavigation>
+    <BackNavigation> {{ $t('routes.about') }} </BackNavigation>
     <h1>INOP</h1>
   </div>
 </template>
@@ -27,5 +27,6 @@ export default defineComponent({
   margin: 0;
   padding: 0;
   text-align: center;
+  color: white;
 }
 </style>

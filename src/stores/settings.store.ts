@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 import {DefaultLanguage} from "@/contants";
+import {useThemeStore} from "@/stores/theme.store";
 
 interface State {
     settings: {
         language: string;
         useLocation: boolean;
         weatherRadar: boolean;
+        theme: string;
     }
 }
 
@@ -16,6 +18,7 @@ export const useSettingsStore = defineStore('settings', {
                 language: DefaultLanguage,
                 useLocation: true,
                 weatherRadar: true,
+                theme: 'blue'
             }))
         }
     },
@@ -36,6 +39,12 @@ export const useSettingsStore = defineStore('settings', {
         setWeatherRadar(weatherRadar: boolean) {
             this.settings.weatherRadar = weatherRadar;
             localStorage.setItem('settings', JSON.stringify(this.settings));
+        },
+
+        setTheme(theme: string) {
+            this.settings.theme = theme;
+            useThemeStore().setTheme(theme);
+            localStorage.setItem('settings', JSON.stringify(this.settings));
         }
     },
 
@@ -43,5 +52,6 @@ export const useSettingsStore = defineStore('settings', {
         language: state => state.settings.language,
         useLocation: state => state.settings.useLocation,
         weatherRadar: state => state.settings.weatherRadar,
+        theme: state => state.settings.theme
     }
 });

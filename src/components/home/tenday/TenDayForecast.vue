@@ -70,7 +70,7 @@ export default defineComponent({
 .main {
   height: 430px;
   overflow: hidden;
-  background-color: #111a2d;
+  background-color: var(--backgroundDarkest);
   contain: content;
 }
 .header {

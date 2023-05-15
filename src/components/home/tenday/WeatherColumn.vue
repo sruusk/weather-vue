@@ -63,8 +63,8 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   height: 210px;
-  border-right: #1d2e5d 1px solid;
-  border-bottom: #1d2e5d 2px solid;
+  border-right: var(--backgroundDark) 1px solid;
+  border-bottom: var(--backgroundDark) 2px solid;
   font-size: 12px;
   contain: paint;
 }

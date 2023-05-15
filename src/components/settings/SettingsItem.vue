@@ -25,13 +25,13 @@ export default defineComponent({
   margin: 0;
 }
 .content {
-  background-color: #253478;
+  background-color: var(--backgroundSettingsItem);
 }
 :slotted(.content > div) {
   margin: 0 10px 0 10px;
   padding: 17px 10px;
-  background-color: #253478;
-  border-bottom: #2e499d 1px solid;
+  background-color: var(--backgroundSettingsItem);
+  border-bottom: var(--backgroundLight) 1px solid;
   color: white;
   font-size: 13px;
   font-weight: 300;

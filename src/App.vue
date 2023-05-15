@@ -16,8 +16,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { defineComponent } from 'vue'
 import NavDrawer from "@/components/NavDrawer.vue";
-import { blue } from '@/assets/themes';
-import { useWeatherStore, useFavouritesStore, useSettingsStore } from "@/stores";
+import { useWeatherStore, useFavouritesStore, useSettingsStore, useThemeStore } from "@/stores";
 
 export default defineComponent({
   name: 'App',
@@ -30,17 +29,21 @@ export default defineComponent({
     const weatherStore = useWeatherStore();
     const favouritesStore = useFavouritesStore();
     const settingsStore = useSettingsStore();
+    const themeStore = useThemeStore();
+    themeStore.setTheme(settingsStore.theme);
     return {
         weatherStore,
         favouritesStore,
-        settingsStore
+        settingsStore,
+        themeStore,
     };
   },
   data() {
     return {
       drawerOpen: false,
       deferredPrompt: null as any,
-      installed: false
+      installed: false,
+      colour: 'red',
     }
   },
   beforeCreate() {
@@ -97,10 +100,6 @@ export default defineComponent({
 
 </script>
 
-<style scoped>
-
-</style>
-
 <style>
 @font-face {
   font-family: "Roboto";
@@ -137,7 +136,21 @@ export default defineComponent({
   overflow-x: clip;
   width: 100%;
   max-width: calc(3/4 * 100vh);
-  background-color: #1d225c;
+  background-color: var(--background);
+
+  /* Default theme to help the editor resolve the variables */
+  --background: #1d225c;
+  --backgroundDark: #1d2e5d;
+  --backgroundDarker: #111a2e;
+  --backgroundDarkest: #111a2d;
+  --backgroundLight: #274498;
+  --backgroundLighter: #3559b9;
+  --backgroundLightest: #5582cd;
+  --backgroundGradient: linear-gradient(200deg,#5582cd 0%,#242282 100%);
+  --backgroundMediumLight: #253e80;
+  --backgroundObservations: linear-gradient(180deg, #456fc8 0%, #242282 100%);
+  --backgroundSettingsItem: #253478;
+  --selectedLight: #243f82;
 }
 
 /*noinspection CssUnusedSymbol*/

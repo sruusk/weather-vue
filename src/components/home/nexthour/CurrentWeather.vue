@@ -108,7 +108,7 @@ export default defineComponent({
   height: 280px;
   width: 100%;
   padding: 60px 0 0 0;
-  background-image: linear-gradient(200deg, #5582cd 0%, #242282 100%);
+  background-image: var(--backgroundGradient);
   border-bottom: 1px solid rgba(145, 149, 194, 0.2);
   box-shadow: #00000070 0 0 5px 3px;
   contain: content;

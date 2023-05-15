@@ -80,7 +80,7 @@ export default defineComponent({
   line-height: 45px;
   font-size: 14px;
   font-weight: 500;
-  background-color: #3559b9;
+  background-color: var(--backgroundLighter);
   padding: 0 0 0 12px;
   margin-bottom: -2px;
   transform: translateY(-1px); /* Inset to hide gap between previous element */
@@ -88,7 +88,7 @@ export default defineComponent({
 .observations-carousel {
   min-height: 550px;
   width: 100%;
-  background-image: linear-gradient(180deg, #456fc8 0%, #242282 100%);
+  background-image: var(--backgroundObservations);
   padding-top: 30px; /* Make gap for the page indicators */
   contain: content;
 }

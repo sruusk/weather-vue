@@ -95,4 +95,23 @@ export type Warning = {
     severity: "Moderate" | "Severe"
 }
 
+export type Theme = {
+    name: string,
+    colours: {
+        background: string,
+        backgroundDark: string,
+        backgroundDarker: string,
+        backgroundDarkest: string,
+        backgroundLight: string,
+        backgroundLighter: string,
+        backgroundLightest: string,
+        backgroundGradient: string,
+        backgroundMediumLight: string,
+        backgroundObservations: string,
+        backgroundSettingsItem: string,
+        selectedLight: string,
+    },
+    invertRadar: boolean,
+}
+
 

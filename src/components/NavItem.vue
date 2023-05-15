@@ -35,11 +35,11 @@ export default defineComponent({
   font-weight: 400;
   font-size: 16px;
   transition: background-color 0.3s ease-in-out;
-  border-top: #2b4294 solid 1px;
+  border-top: var(--backgroundLight) solid 1px;
   white-space: nowrap;
 }
 .link:last-of-type {
-  border-bottom: #2b4294 solid 1px;
+  border-bottom: var(--backgroundLight) solid 1px;
 }
 .icon {
   width: 20px;

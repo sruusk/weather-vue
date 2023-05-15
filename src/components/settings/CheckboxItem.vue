@@ -23,13 +23,14 @@ export default defineComponent({
 .checkbox {
   width: 20px;
   height: 20px;
-  border: 1px solid #62b8e8;
+  border: 1px solid var(--backgroundLightest);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .checkbox.checked {
-  background-color: #62b8e8;
+  background-color: var(--backgroundLightest);
+  filter: brightness(1.2);
 }
 </style>

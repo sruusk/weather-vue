@@ -77,7 +77,7 @@ export default defineComponent({
   font-size: 13px;
   font-weight: bold;
   margin: 0;
-  background-color: #1d2e5d;
+  background-color: var(--backgroundDark);
   padding: 5px 0 0 10px;
   height: 20px;
   text-transform: capitalize;
@@ -87,7 +87,7 @@ export default defineComponent({
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #111a2e;
+  background-color: var(--backgroundDarker);
 }
 .hour {
   font-size: 12px;
@@ -95,6 +95,6 @@ export default defineComponent({
   margin: 0;
   padding: 0 0 3px 10px;
   height: 20px;
-  background-color: #1d2e5d;
+  background-color: var(--backgroundDark);
 }
 </style>

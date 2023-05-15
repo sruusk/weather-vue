@@ -1,7 +1,7 @@
 <template>
   <div class="weather-radar-container">
     <div class="header">{{ $t('home.weatherRadar') }}</div>
-    <div class="radar">
+    <div class="radar" :class="{ 'invert': themeStore.theme.invertRadar }">
       <div id="fmi-animation-time" ref="animationTime" />
       <div id="fmi-animator" class="fmi-animator" ref="animator" />
       <div id="fmi-animation-time-options"
@@ -29,6 +29,7 @@ import { defineComponent, ref } from 'vue';
 import MarkerIcon from "@/components/icons/MarkerIcon.vue";
 import MetOClient from "@fmidev/metoclient";
 import config from "@/components/home/WeatherRadar/config.json";
+import {useThemeStore} from "@/stores";
 
 export default defineComponent({
   name: "WeatherRadar.vue",
@@ -48,10 +49,12 @@ export default defineComponent({
   setup() {
     const animationTime = ref(null);
     const animator = ref(null);
+    const themeStore = useThemeStore();
 
     return {
       animationTime,
       animator,
+      themeStore,
     }
   },
   data() {
@@ -149,7 +152,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: #253e80;
+  background-color: var(--backgroundMediumLight);
   contain: content;
 }
 .header {
@@ -163,6 +166,9 @@ export default defineComponent({
 .radar {
   width: 100%;
   height: 100%;
+}
+:global(.invert #fmi-animator .ol-layers) {
+  filter: hue-rotate(180deg) saturate(1.5) invert(1);
 }
 .fmi-animator {
   width: 100%;

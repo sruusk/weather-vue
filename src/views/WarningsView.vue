@@ -1,6 +1,6 @@
 <template>
   <div class="warnings">
-    <BackNavigation>Warnings</BackNavigation>
+    <BackNavigation> {{ $t('routes.warnings') }} </BackNavigation>
     <h1>INOP</h1>
   </div>
 </template>
@@ -21,10 +21,11 @@ export default defineComponent({
   width: 100%;
 }
 .warnings h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: white;
 }
 </style>

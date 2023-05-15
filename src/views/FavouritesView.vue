@@ -86,7 +86,7 @@ export default defineComponent({
   width: 100%;
 }
 .navigation {
-  background-color: #253478;
+  background-color: var(--backgroundSettingsItem);
 }
 .input {
   width: 100%;
@@ -103,7 +103,7 @@ export default defineComponent({
   font-size: 12px;
 }
 .favourites-list > div {
-  border-bottom: #2e499d 1px solid;
+  border-bottom: var(--backgroundLight) 1px solid;
 }
 .favourites-header {
   display: flex;

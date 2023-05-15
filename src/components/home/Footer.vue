@@ -23,7 +23,7 @@ export default defineComponent({
   justify-content: center;
   padding: 10px;
   align-items: center;
-  background-color: #303193;
+  background-color: var(--backgroundLight);
   flex-direction: column;
 }
 .logo {

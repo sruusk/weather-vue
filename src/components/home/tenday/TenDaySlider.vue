@@ -86,7 +86,7 @@ export default defineComponent({
   grid-template-columns: repeat(10, 1fr);
   width: 100%;
   overflow-x: auto;
-  background-color: #3559b9;
+  background-color: var(--backgroundLighter);
   box-shadow: inset 0 20px 10px -10px rgba(0, 0, 0, 0.2);
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -123,10 +123,10 @@ export default defineComponent({
 }
 /*noinspection CssUnusedSymbol*/
 .selected {
-  background-color: #243f82;
+  background-color: var(--selectedLight);
 }
 .glance-bar {
-  background-color: #274498;
+  background-color: var(--backgroundLight);
   height: 9px;
   width: 100%;
 }

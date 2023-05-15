@@ -22,21 +22,34 @@
           transform="translate(-336,-323)"
           stroke="#3559b9"
           id="g4197"
-          style="stroke-width:0.97973992;stroke-dasharray:none;stroke:#3170df;stroke-opacity:1">
+          :style="`stroke-width:0.97973992;stroke-dasharray:none;stroke:${color};stroke-opacity:1`">
         <g
             id="g4195"
-            style="stroke-width:0.97973992;stroke-dasharray:none;stroke:#3170df;stroke-opacity:1">
+            :style="`stroke-width:0.97973992;stroke-dasharray:none;stroke:${color};stroke-opacity:1`">
           <g
               transform="translate(15,297)"
               id="g4193"
-              style="stroke-width:0.97973992;stroke-dasharray:none;stroke:#3170df;stroke-opacity:1">
+              :style="`stroke-width:0.97973992;stroke-dasharray:none;stroke:${color};stroke-opacity:1`">
             <path
                 d="m 322,26 6,6.5 -6,6.5"
                 id="path4191"
-                style="stroke-width:0.97973992;stroke-dasharray:none;stroke:#3170df;stroke-opacity:1" />
+                :style="`stroke-width:0.97973992;stroke-dasharray:none;stroke:${color};stroke-opacity:1`" />
           </g>
         </g>
       </g>
     </g>
   </svg>
 </template>
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "MenuArrowIcon",
+  props: {
+    color: {
+      type: String,
+      default: "var(--backgroundLightest)",
+    },
+  },
+});
+</script>

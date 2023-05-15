@@ -67,8 +67,8 @@ export default defineComponent({
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #1f2566;
-  box-shadow: inset 0 0 20px #161e4d;
+  background-color: var(--backgroundDark);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
   transition: min-width 0.3s ease-out;
   overflow: hidden;
   text-wrap: none;
@@ -86,8 +86,8 @@ export default defineComponent({
   justify-content: flex-start;
   align-items: center;
   padding: 0 10px 0 10px;
-  background: #253478;
-  box-shadow: #161e4d 0 0 20px;
+  background: var(--backgroundMediumLight);
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 20px;
   margin-bottom: 40px;
   height: 80px;
 }
