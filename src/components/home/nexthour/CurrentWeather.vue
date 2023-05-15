@@ -132,7 +132,7 @@ export default defineComponent({
   width: 20px;
 }
 :deep(.carousel__pagination-button::after) {
-  background-color: #a8bce2;
+  background-color: #FFFFFF7F;
   border-radius: 5px;
   width: 8px;
   height: 8px;

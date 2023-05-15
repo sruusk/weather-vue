@@ -45,7 +45,7 @@ export default defineComponent({
 }
 .feelslike-unit {
   font-weight: 400;
-  color: #a3b4dc;
+  color: #FFFFFF7F;
   margin-right: 15px;
 }
 .icon {

@@ -140,7 +140,7 @@ h2 {
 .unit {
   font-size: 1.2rem;
   font-weight: 200;
-  color: #a3b4dc;
+  color: #FFFFFF7F;
   text-align: center;
   margin: 10px 0 0 10px;
   padding: 0;
@@ -170,7 +170,7 @@ h2 {
 .time-value {
   font-size: 14px;
   font-weight: 400;
-  color: #a3b4dc;
+  color: #FFFFFF7F;
   text-align: center;
   margin: 0;
   padding: 0;
