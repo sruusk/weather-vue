@@ -8,9 +8,9 @@ import router from './router'
 import './registerServiceWorker';
 
 // Import locales
-import en from './locales/en.json'
-import fi from './locales/fi.json'
-import sv from './locales/sv.json'
+import en from '@/assets/locales/en.json'
+import fi from '@/assets/locales/fi.json'
+import sv from '@/assets/locales/sv.json'
 
 const i18n = createI18n({
     locale: 'fi',
@@ -19,11 +19,12 @@ const i18n = createI18n({
         fi,
         sv
     }
-})
+});
 
 const pinia = createPinia();
 pinia.use(({ store }) => {
     store.$router = router;
+    store.$i18n = i18n;
 });
 
 const app = createApp(App)

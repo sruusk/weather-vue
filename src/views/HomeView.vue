@@ -15,7 +15,7 @@
     <TenDayForecast v-if="weatherStore.currentWeather && !favouritesStore.loading" :weather="weatherStore.currentWeather" />
     <WeatherRadar
       v-if="weatherStore.currentWeather
-      && enableWeatherRadar
+      && settingsStore.weatherRadar
       && weatherStore.locatingComplete
       && weatherStore.currentWeather.location.country === 'Finland'
       && !favouritesStore.loading"
@@ -28,7 +28,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Settings from "@/settings";
 import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 import { BreedingRhombusSpinner } from 'epic-spinners'
@@ -39,8 +38,7 @@ import WeatherRadar from "@/components/home/WeatherRadar/WeatherRadar.vue";
 import Observations from "@/components/home/observations/Observations.vue";
 import Footer from "@/components/home/Footer.vue";
 import Weather from "@/weather";
-import { useWeatherStore } from "@/stores";
-import { useFavouritesStore } from "@/stores";
+import { useWeatherStore, useFavouritesStore, useSettingsStore } from "@/stores";
 
 export default defineComponent({
   name: "HomeView",
@@ -58,20 +56,19 @@ export default defineComponent({
   setup() {
     const weatherStore = useWeatherStore();
     const favouritesStore = useFavouritesStore();
+    const settingsStore = useSettingsStore();
     return {
         weatherStore,
-        favouritesStore
+        favouritesStore,
+        settingsStore
     };
   },
   data() {
     return {
-      enableWeatherRadar: Settings.weatherRadar
+
     };
   },
   emits: ["open"],
-  activated() {
-    this.enableWeatherRadar = Settings.weatherRadar
-  },
   computed: {
     showWarnings() {
       return this.weatherStore.currentWeather?.warnings;

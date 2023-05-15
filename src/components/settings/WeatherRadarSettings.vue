@@ -3,21 +3,21 @@
     <div>
       {{ $t('settings.on') }}
       <CheckboxItem
-          @click="weatherRadarEnabled = true"
-          :checked="weatherRadarEnabled" />
+          @click="settingsStore.setWeatherRadar(true)"
+          :checked="settingsStore.weatherRadar" />
     </div>
     <div>
       {{ $t('settings.off') }}
       <CheckboxItem
-          @click="weatherRadarEnabled = false"
-          :checked="!weatherRadarEnabled" />
+          @click="settingsStore.setWeatherRadar(false)"
+          :checked="!settingsStore.weatherRadar" />
     </div>
   </SettingsItem>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import Settings from "@/settings";
+import {useSettingsStore} from "@/stores";
 import SettingsItem from "@/components/settings/SettingsItem.vue";
 import CheckboxItem from "@/components/settings/CheckboxItem.vue";
 
@@ -27,15 +27,11 @@ export default defineComponent({
     SettingsItem,
     CheckboxItem
   },
-  data() {
+  setup() {
+    const settingsStore = useSettingsStore();
     return {
-      weatherRadarEnabled: Settings.weatherRadar,
-    }
-  },
-  watch: {
-    weatherRadarEnabled() {
-      Settings.weatherRadar = this.weatherRadarEnabled;
-    }
+      settingsStore
+    };
   },
 })
 </script>

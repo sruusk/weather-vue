@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import Weather  from '@/weather';
-import Settings from "@/settings";
-import {useFavouritesStore} from "@/stores/favourites.store";
+import {useFavouritesStore, useSettingsStore} from "@/stores";
 import type { Weather as WeatherType, ForecastLocation } from '@/types';
 
 const defaultLocation: ForecastLocation = {
@@ -34,7 +33,7 @@ export const useWeatherStore = defineStore('weather', {
         init() {
             if(this.locatingComplete) return;
             const favouritesStore = useFavouritesStore();
-            if(!Settings.location) this.locatingComplete = true;
+            if(!useSettingsStore().useLocation) this.locatingComplete = true;
             else if (navigator.geolocation) {
                 console.log("Getting location...");
                 this.status = "home.locating"

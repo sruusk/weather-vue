@@ -110,7 +110,7 @@ export default defineComponent({
   padding: 60px 0 0 0;
   background-image: linear-gradient(200deg, #5582cd 0%, #242282 100%);
   border-bottom: 1px solid rgba(145, 149, 194, 0.2);
-  box-shadow: #161e4d 0 0 5px 3px;
+  box-shadow: #00000070 0 0 5px 3px;
   contain: content;
 }
 .item {

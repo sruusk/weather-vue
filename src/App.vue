@@ -16,9 +16,8 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { defineComponent } from 'vue'
 import NavDrawer from "@/components/NavDrawer.vue";
-import Settings from "@/settings";
-import { useWeatherStore } from "@/stores";
-import { useFavouritesStore } from "@/stores";
+import { blue } from '@/assets/themes';
+import { useWeatherStore, useFavouritesStore, useSettingsStore } from "@/stores";
 
 export default defineComponent({
   name: 'App',
@@ -30,9 +29,11 @@ export default defineComponent({
   setup() {
     const weatherStore = useWeatherStore();
     const favouritesStore = useFavouritesStore();
+    const settingsStore = useSettingsStore();
     return {
         weatherStore,
-        favouritesStore
+        favouritesStore,
+        settingsStore
     };
   },
   data() {
@@ -48,7 +49,7 @@ export default defineComponent({
     });
   },
   created() {
-    this.$i18n.locale = Settings.language;
+    this.$i18n.locale = this.settingsStore.language;
     this.favouritesStore.init();
     this.weatherStore.init();
   },
@@ -104,27 +105,27 @@ export default defineComponent({
 @font-face {
   font-family: "Roboto";
   font-weight: 100;
-  src: local("Roboto Thin"), url("@/fonts/Roboto-Thin.ttf") format("truetype");
+  src: local("Roboto Thin"), url("@/assets/fonts/Roboto-Thin.ttf") format("truetype");
 }
 @font-face {
   font-family: "Roboto";
   font-weight: 300;
-  src: local("Roboto Light"), url("@/fonts/Roboto-Light.ttf") format("truetype");
+  src: local("Roboto Light"), url("@/assets/fonts/Roboto-Light.ttf") format("truetype");
 }
 @font-face {
   font-family: "Roboto";
   font-weight: 500;
-  src: local("Roboto Medium"), url("@/fonts/Roboto-Medium.ttf") format("truetype");
+  src: local("Roboto Medium"), url("@/assets/fonts/Roboto-Medium.ttf") format("truetype");
 }
 @font-face {
   font-family: "Roboto";
   font-weight: normal;
-  src: local("Roboto"), url("@/fonts/Roboto-Regular.ttf") format("truetype");
+  src: local("Roboto"), url("@/assets/fonts/Roboto-Regular.ttf") format("truetype");
 }
 @font-face {
   font-family: "Roboto";
   font-weight: bold;
-  src: local("Roboto Bold"), url("@/fonts/Roboto-Bold.ttf") format("truetype");
+  src: local("Roboto Bold"), url("@/assets/fonts/Roboto-Bold.ttf") format("truetype");
 }
 
 /*noinspection CssUnusedSymbol*/

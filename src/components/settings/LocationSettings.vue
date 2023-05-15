@@ -4,14 +4,14 @@
       <div>
         {{ $t('settings.on') }}
         <CheckboxItem
-            @click="locationEnabled = true"
-            :checked="locationEnabled" />
+            @click="settingsStore.setUseLocation(true)"
+            :checked="settingsStore.useLocation" />
       </div>
       <div>
         {{ $t('settings.off') }}
         <CheckboxItem
-            @click="locationEnabled = false"
-            :checked="!locationEnabled" />
+            @click="settingsStore.setUseLocation(false)"
+            :checked="!settingsStore.useLocation" />
       </div>
     </SettingsItem>
   </div>
@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import Settings from "@/settings";
+import {useSettingsStore} from "@/stores";
 import SettingsItem from "@/components/settings/SettingsItem.vue";
 import CheckboxItem from "@/components/settings/CheckboxItem.vue";
 
@@ -29,20 +29,11 @@ export default defineComponent({
     SettingsItem,
     CheckboxItem
   },
-  data() {
+  setup() {
+    const settingsStore = useSettingsStore();
     return {
-      locationEnabled: Settings.location,
-    }
-  },
-  watch: {
-    locationEnabled() {
-      this.saveLocationSetting();
-    }
-  },
-  methods: {
-    saveLocationSetting() {
-      Settings.location = this.locationEnabled;
-    },
+      settingsStore
+    };
   }
 })
 </script>
