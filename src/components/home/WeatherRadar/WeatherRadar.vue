@@ -67,6 +67,10 @@ export default defineComponent({
     }
   },
   mounted() {
+    if(this.$route.name !== 'home') {
+        this.newLocation = true;
+        return;
+    }
     config.center = this.center;
     // https://github.com/fmidev/metoclient#constructor
     this.metoclient = new MetOClient(config);
@@ -76,7 +80,11 @@ export default defineComponent({
     });
   },
   beforeUnmount() {
-    if(this.metoclient) this.metoclient.destroy();
+    if(this.metoclient) {
+        try {
+            this.metoclient.destroy();
+        } catch (e) {}
+    }
   },
   watch: {
     timeStep() {
@@ -91,6 +99,7 @@ export default defineComponent({
       deep: true,
     },
     '$route'( to, from ) {
+      console.log("Route changed", to.name);
       if (this.newLocation && to.name === "home") {
         // Wait for the map to be rendered before updating the location
         setTimeout(() => {
@@ -147,7 +156,9 @@ export default defineComponent({
       config.center = this.center;
       console.log("Setting new location to MetOClient", config.center);
       try {
-          this.metoclient.destroy();
+          try {
+              this.metoclient.destroy();
+          } catch (e) {}
           this.metoclient = new MetOClient(config);
           this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
               // statements to handle any exceptions
