@@ -1,7 +1,5 @@
 <template>
   <svg width="10px" height="12px" viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>icon</title>
-    <desc></desc>
     <defs>
       <polyline id="path-1" points="0 0 9.66666667 0 9.66666667 13.8550675 0 13.8550675"></polyline>
     </defs>

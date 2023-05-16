@@ -1,8 +1,5 @@
 <template>
   <svg width="19px" height="26px" viewBox="0 0 19 26" xmlns="http://www.w3.org/2000/svg">
-    <title>location-icon</title>
-    <desc></desc>
-    <defs></defs>
     <g id="layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.900000036">
       <g id="etusivu-mobile-portrait" transform="translate(-176.000000, -986.000000)" fill="#15124E">
         <g id="sadetutka" transform="translate(0.000000, 762.000000)">

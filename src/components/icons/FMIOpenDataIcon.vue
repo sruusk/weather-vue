@@ -1,7 +1,6 @@
 1<template>
   <svg width="785px" height="130px" viewBox="0 0 785 130" xmlns="http://www.w3.org/2000/svg">
     <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
-    <title>il-avoin-data-logo-rgb</title>
     <desc>Created with Sketch.</desc>
     <g id="il-avoin-data-logo-rgb" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g transform="translate(2.000000, 1.000000)">

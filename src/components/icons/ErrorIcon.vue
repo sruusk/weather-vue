@@ -1,8 +1,5 @@
 <template>
   <svg width="178px" height="138px" viewBox="0 0 178 138" xmlns="http://www.w3.org/2000/svg">
-    <title>icon</title>
-    <desc></desc>
-    <defs></defs>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g transform="translate(-99.000000, -110.000000)" fill="#FFFFFF">
         <g transform="translate(99.000000, 110.000000)">
