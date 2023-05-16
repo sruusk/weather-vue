@@ -100,6 +100,12 @@
     "favourites": "Favoriter",
     "deleteAll": "Radera alla",
     "inputLocation": "Ange plats",
-    "forExample": "till exempel"
+    "forExample": "till exempel",
+    "animatedSymbols": "Animated symbols",
+    "theme": {
+      "theme": "Theme",
+      "blue": "Blue",
+      "dark": "Dark"
+    }
   }
 }

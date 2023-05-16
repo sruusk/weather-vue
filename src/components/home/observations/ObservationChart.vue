@@ -78,7 +78,8 @@ export default defineComponent({
         datasets: datasets
       },
       options: {
-        responsive: true,
+        responsive: false,
+        maintainAspectRatio: true,
         parsing: {
           xAxisKey: 'x',
           yAxisKey: 'y'
@@ -186,5 +187,9 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.observation-chart canvas {
+  width: 100%;
+  height: 100%;
 }
 </style>

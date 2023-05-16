@@ -18,7 +18,7 @@
 <script lang="ts">
 import type {Weather} from "@/types";
 import {defineComponent} from 'vue';
-import {useWeatherStore} from "@/stores";
+import {useWeatherStore, useSettingsStore} from "@/stores";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
@@ -46,8 +46,10 @@ export default defineComponent({
   },
   setup() {
     const weatherStore = useWeatherStore();
+    const settingsStore = useSettingsStore();
     return {
-      weatherStore
+      weatherStore,
+      settingsStore
     }
   },
   data () {
@@ -67,7 +69,7 @@ export default defineComponent({
     getWeatherIcon(date: Date) {
       const weatherForHour = this.weatherStore.getWeather(date, 15);
       if(isNaN(weatherForHour.weatherSymbol)) return `/symbols/error.svg`;
-      return `/symbols/animated/${weatherForHour.weatherSymbol}.svg`;
+      return `/symbols/${this.settingsStore.useAnimations ? 'animated' : 'static'}/${weatherForHour.weatherSymbol}.svg`;
     },
     getDayTemp(date: Date) {
       const weatherForHour = this.weatherStore.getWeather(date, 15);

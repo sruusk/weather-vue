@@ -7,7 +7,7 @@
           :negative="true" />
     </div>
     <div class="center">
-      <SunIcon class="sun-icon" />
+      <SunIcon class="sun-icon" :animate="settingsStore.useAnimations" />
       <span>{{ dayLength }}</span>
     </div>
     <div class="side">
@@ -26,7 +26,7 @@ import { getDayLength } from "@/weather";
 import WindIndicator from "@/components/home/WindIndicator.vue";
 import RainItem from "@/components/home/RainItem.vue";
 import SunIcon from "@/components/icons/SunIcon.vue";
-import { useWeatherStore } from "@/stores";
+import { useWeatherStore, useSettingsStore } from "@/stores";
 
 export default defineComponent({
   name: "CurrentWeatherBar.vue",
@@ -43,8 +43,10 @@ export default defineComponent({
   },
   setup() {
     const weatherStore = useWeatherStore();
+    const settingsStore = useSettingsStore();
     return {
-      weatherStore
+      weatherStore,
+      settingsStore
     }
   },
   data() {

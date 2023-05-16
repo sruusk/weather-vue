@@ -32,6 +32,7 @@ import ClockIcon from "@/components/icons/ClockIcon.vue";
 import ShareButton from "@/components/home/nexthour/ShareButton.vue";
 import FeelsLike from "@/components/home/nexthour/FeelsLike.vue";
 import CurrentWeatherBar from "@/components/home/nexthour/CurrentWeatherBar.vue";
+import {useSettingsStore} from "@/stores";
 
 export default defineComponent({
   name: "LocationItem.vue",
@@ -49,8 +50,10 @@ export default defineComponent({
   },
   setup() {
     const item = ref(null);
+    const settingsStore = useSettingsStore();
     return {
       item,
+      settingsStore
     };
   },
   data() {
@@ -62,7 +65,7 @@ export default defineComponent({
   },
   computed: {
     weatherIcon() {
-      return `/symbols/animated/${this.weather.weatherSymbol}.svg`;
+      return `/symbols/${this.settingsStore.useAnimations ? 'animated' : 'static'}/${this.weather.weatherSymbol}.svg`;
     }
   },
   methods: {
