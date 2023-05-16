@@ -9,7 +9,7 @@ import {defineComponent} from 'vue';
 import CheckmarkIcon from "@/components/icons/CheckmarkIcon.vue";
 
 export default defineComponent({
-  name: "CheckboxItem.vue",
+  name: "CheckboxItem",
   components: {
     CheckmarkIcon
   },

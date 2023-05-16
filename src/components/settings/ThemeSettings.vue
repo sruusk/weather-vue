@@ -3,9 +3,11 @@
     <SettingsItem :title="$t('settings.theme.theme')">
       <div v-for="theme in themeStore.themes">
         {{ $t(`settings.theme.${theme.name}`) }}
-        <CheckboxItem
+        <ThemeCheckbox
             @click="settingsStore.setTheme(theme.name)"
-            :checked="settingsStore.theme === theme.name" />
+            :checked="settingsStore.theme === theme.name"
+            :color="theme.colours.backgroundLight"
+        />
       </div>
     </SettingsItem>
   </div>
@@ -14,14 +16,14 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import SettingsItem from "@/components/settings/SettingsItem.vue";
-import CheckboxItem from "@/components/settings/CheckboxItem.vue";
+import ThemeCheckbox from "@/components/settings/ThemeCheckbox.vue";
 import {useSettingsStore, useThemeStore} from "@/stores";
 
 export default defineComponent({
     name: "ThemeSettings.vue",
     components: {
         SettingsItem,
-        CheckboxItem
+        ThemeCheckbox
     },
     setup() {
         const settingsStore = useSettingsStore();
