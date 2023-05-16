@@ -21,6 +21,7 @@
 import {defineComponent} from 'vue';
 import TenDaySlider from "@/components/home/tenday/TenDaySlider.vue";
 import TenDayDetailed from "@/components/home/tenday/TenDayDetailed.vue";
+import {useWeatherStore} from "@/stores";
 import type {Weather} from "@/types";
 
 export default defineComponent({
@@ -35,6 +36,12 @@ export default defineComponent({
       required: true,
     },
   },
+  setup() {
+    const weatherStore = useWeatherStore();
+    return {
+      weatherStore,
+    };
+  },
   data() {
     return {
       selectedDay: new Date() as Date | null,  // This is the day when the detailed view is to be focused
@@ -43,7 +50,7 @@ export default defineComponent({
   },
   computed: {
     updateTime() { // TODO: Get actual update time
-      return new Date().toLocaleString("fi-FI", {
+      return this.weatherStore.currentWeather?.updated.toLocaleString("fi-FI", {
         day: "numeric",
         month: "numeric",
         year: "numeric",

@@ -150,6 +150,38 @@ export default defineConfig({
                             statuses: [0, 200]
                         }
                     }
+                }, {
+                    urlPattern: ({ url }) => {
+                        if(url.hostname === 'opendata.fmi.fi') return true
+                        if(url.hostname === 'api.openweathermap.org') return true
+                    },
+                    method: 'GET',
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'weather-data-cache',
+                        cacheableResponse: {
+                            statuses: [0, 200]
+                        },
+                        expiration: {
+                            maxAgeSeconds: 60 * 10 // 10 minutes
+                        }
+                    }
+                }, {
+                    urlPattern: ({ url }) => {
+                        if(url.hostname === 'data.fmi.fi') return true
+                        if(url.hostname === 'openwms.fmi.fi') return true
+                    },
+                    method: 'GET',
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'weather-radar-cache',
+                        cacheableResponse: {
+                            statuses: [0, 200]
+                        },
+                        expiration: {
+                            maxAgeSeconds: 60 * 10 // 10 minutes
+                        }
+                    }
                 }],
             }
         })

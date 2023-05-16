@@ -22,6 +22,7 @@ export type Weather = {
     weatherSymbol: TimeSeriesObservation[],
     feelsLike: TimeSeriesObservation[],
     location: ForecastLocation,
+    updated: Date,
 }
 export type OpenWeather = {
     warnings: Warnings | undefined;

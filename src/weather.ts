@@ -109,7 +109,8 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
                     : long.probabilityOfPrecipitation ? long.probabilityOfPrecipitation : undefined,
                 weatherSymbol: short.weatherSymbol.concat(long.weatherSymbol),
                 feelsLike: short.feelsLike.concat(long.feelsLike),
-                location: short.location
+                location: short.location,
+                updated: short.updated
             }
             resolve(weather);
         }).catch((error) => {
@@ -168,7 +169,8 @@ function parseWeather(xml: Promise<any>) {
                 probabilityOfPrecipitation: undefined,
                 weatherSymbol: parseTimeSeriesObservation(data[6]),
                 feelsLike: parseTimeSeriesObservation(data[7]),
-                location: parseLocation(data[0])
+                location: parseLocation(data[0]),
+                updated: parseDate(data[1])
             }
 
             const oneCall = await getHourlyForecastLatLon(weather.location.lat, weather.location.lon);
@@ -227,6 +229,11 @@ function parseLocation(data: any) {
         lat: parseFloat(pos[0]),
         lon: parseFloat(pos[1])
     } as ForecastLocation;
+}
+
+function parseDate(data: any): Date {
+    const date = data['omso:PointTimeSeriesObservation']['om:resultTime']['gml:TimeInstant']['gml:timePosition'];
+    return new Date(date);
 }
 
 export function getObservationsForClosestStations(lat: number, lon: number, count: number) {
