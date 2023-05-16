@@ -12,7 +12,7 @@ import type { ObservationStation } from "@/types";
 import {defineComponent} from 'vue';
 
 export default defineComponent({
-  name: "ObservationDetails.vue",
+  name: "ObservationDetails",
   props: {
     station: {
       type: Object as () => ObservationStation,

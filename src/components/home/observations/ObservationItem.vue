@@ -24,7 +24,7 @@ import ObservationDetails from "@/components/home/observations/ObservationDetail
 import ObservationChart from "@/components/home/observations/ObservationChart.vue";
 
 export default defineComponent({
-  name: "ObervationItem.vue",
+  name: "ObservationItem",
   components: {
     ObservationDetails,
     ObservationChart
@@ -45,7 +45,7 @@ export default defineComponent({
         minute: '2-digit'
       });
     }
-  },
+  }
 })
 </script>
 

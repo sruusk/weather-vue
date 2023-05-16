@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import Weather  from '@/weather';
-import {useFavouritesStore, useSettingsStore} from "@/stores";
+import {useFavouritesStore, useSettingsStore, useObservationsStore} from "@/stores";
 import type { Weather as WeatherType, ForecastLocation } from '@/types';
 
 const defaultLocation: ForecastLocation = {
@@ -70,9 +70,11 @@ export const useWeatherStore = defineStore('weather', {
             }
             this.currentWeather = location;
             this.locationWeather = location;
+            useObservationsStore().changeLocation(location.location);
         },
         async changeLocation(location: ForecastLocation) {
             if(!location) return;
+            useObservationsStore().changeLocation(location);
             this.currentWeather = await Weather.getWeatherByLatLon(location.lat, location.lon);
         }
     },

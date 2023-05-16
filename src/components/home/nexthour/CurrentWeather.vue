@@ -3,6 +3,7 @@
   <div class="main">
     <div class="header" :class="{ 'isLocation': weatherStore.gpsLocation }">
       <Carousel
+          ref="carousel"
           @slide-end="handleSlide"
           :wrap-around="true"
       >
@@ -28,7 +29,7 @@
 
 <script lang="ts">
 import type { Weather as WeatherType, HourWeather } from "@/types";
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import LocationItem from "@/components/home/nexthour/LocationItem.vue";
@@ -45,9 +46,11 @@ export default defineComponent({
     Navigation,
   },
   setup() {
+    const carousel = ref(null);
     const weatherStore = useWeatherStore();
     const favouritesStore = useFavouritesStore();
     return {
+        carousel,
         weatherStore,
         favouritesStore
     };
@@ -56,6 +59,12 @@ export default defineComponent({
     return {
 
     }
+  },
+  watch: {
+    "favouritesStore.favourites": function () {
+      // @ts-ignore
+      if(this.carousel) this.carousel.slideTo(0);
+    },
   },
   computed: {
     locations() {

@@ -1,8 +1,8 @@
 <template>
-  <div class="header" v-if="observationStations.length">{{ $t('home.weatherObservations') }}</div>
-  <div class="observations-carousel" v-if="observationStations.length">
+  <div class="header" v-if="observationsStore.stations.length">{{ $t('home.weatherObservations') }}</div>
+  <div class="observations-carousel" v-if="observationsStore.stations.length">
     <Carousel ref="carousel" :wrap-around="true">
-      <Slide v-for="station in observationStations" :key="station.location.name">
+      <Slide v-for="station in observationsStore.stations" :key="station.location.name">
         <ObservationItem :station="station" class="item" />
       </Slide>
       <template #addons>
@@ -13,22 +13,20 @@
 </template>
 
 <script lang="ts">
-import type { ObservationStation } from "@/types";
 import {defineComponent, ref} from 'vue';
-import { getObservationsForClosestStations } from "@/weather";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import ObservationItem from "@/components/home/observations/ObservationItem.vue";
-import {useWeatherStore} from "@/stores";
+import {useObservationsStore} from "@/stores";
 
 export default defineComponent({
-  name: "Observations.vue",
+  name: "ObservationsElement",
   setup() {
     const carousel = ref(null);
-    const weatherStore = useWeatherStore();
+    const observationsStore = useObservationsStore();
     return {
       carousel,
-      weatherStore
+      observationsStore
     };
   },
   components: {
@@ -38,33 +36,12 @@ export default defineComponent({
     Navigation,
     ObservationItem
   },
-  data() {
-    return {
-      observationStations: [] as ObservationStation[],
-    }
-  },
-  created() {
-    this.getObservationStations();
-  },
   watch: {
-    "weatherStore.currentLocation": function () {
-      this.getObservationStations();
+    "observationsStore.stations": function () {
       // @ts-ignore
       if(this.carousel) this.carousel.slideTo(0);
     }
   },
-  methods: {
-    getObservationStations() {
-      getObservationsForClosestStations(this.weatherStore.currentLocation.lat, this.weatherStore.currentLocation.lon, 4)
-        .then((stations) => {
-          console.log("Observation stations", stations);
-          this.observationStations = stations;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }
 })
 </script>
 

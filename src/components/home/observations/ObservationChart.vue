@@ -11,7 +11,7 @@ import {Chart} from "chart.js/auto";
 import {useThemeStore} from "@/stores";
 
 export default defineComponent({
-  name: "ObservationChart.vue",
+  name: "ObservationChart",
   setup() {
     const chart = ref(null);
     const themeStore = useThemeStore();
@@ -32,8 +32,18 @@ export default defineComponent({
   },
   data() {
     return {
-
+      chartObject: null as Chart | any,
+      windowResizeTimeout: null as any,
     }
+  },
+  created() {
+      window.addEventListener("resize", this.myEventHandler);
+  },
+  unmounted() {
+      window.removeEventListener("resize", this.myEventHandler);
+  },
+  activated() {
+    if(this.chartObject !== null) this.chartObject.resize();
   },
   mounted() {
     const datasets = [] as any[];
@@ -72,7 +82,7 @@ export default defineComponent({
       labels.push(this.formatDate(date));
     }
 
-    new Chart(this.$refs.chart as HTMLCanvasElement, {
+    this.chartObject = new Chart(this.$refs.chart as HTMLCanvasElement, {
       type: 'line',
       data: {
         datasets: datasets
@@ -175,6 +185,12 @@ export default defineComponent({
         hour: "2-digit",
         minute: "2-digit",
       });
+    },
+    myEventHandler() { // Resize chart after window resize event finished
+      clearTimeout(this.windowResizeTimeout);
+      this.windowResizeTimeout = setTimeout(() => {
+        this.chartObject.resize();
+      }, 100);
     }
   }
 })
