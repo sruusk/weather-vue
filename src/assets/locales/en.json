@@ -7,7 +7,8 @@
     "warnings": "Warnings",
     "settings": "Settings",
     "about": "About the app",
-    "install": "Install as an app"
+    "install": "Install as an app",
+    "symbols": "Weather symbols"
   },
   "language": "Language",
   "languageName": "English",
@@ -107,6 +108,48 @@
       "blue": "Blue",
       "dark": "Dark",
       "amoled": "AMOLED"
+    }
+  },
+  "about": {
+    "credits": "Credits",
+    "FMI": "Finnish Meteorological Institute (FMI)",
+    "weatherData": "Weather radar images, weather station data, observations and HARMONIE forecast data provided by FMI Open Data API",
+    "additionalData": "Additional weather data and warnings provided by OpenWeather",
+    "icons": "UI icons",
+    "weatherSymbols": "Weather symbols",
+    "madeWithVue": "Made with Vue.js"
+  },
+  "symbols":{
+    "animated": "Animated",
+    "static": "Static",
+    "symbols": {
+      "1": "Clear",
+      "2": "Partly cloudy",
+      "21": "Light showers",
+      "22": "Moderate showers",
+      "23": "Heavy showers",
+      "3": "Cloudy",
+      "31": "Light rain",
+      "32": "Moderate rain",
+      "33": "Heavy rain",
+      "41": "Light snow showers",
+      "42": "Moderate snow showers",
+      "43": "Heavy snow showers",
+      "51": "Light snow",
+      "52": "Moderate snow",
+      "53": "Heavy snow",
+      "61": "Thunder showers",
+      "62": "Heavy thunder showers",
+      "63": "Thunder",
+      "64": "Heavy thunder",
+      "71": "Light sleet showers",
+      "72": "Moderate sleet showers",
+      "73": "Heavy sleet showers",
+      "81": "Light sleet",
+      "82": "Moderate sleet",
+      "83": "Heavy sleet",
+      "91": "Mist",
+      "92": "Fog"
     }
   }
 }

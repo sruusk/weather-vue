@@ -7,7 +7,8 @@
     "warnings": "Varoitukset",
     "settings": "Asetukset",
     "about": "Tietoja sovelluksesta",
-    "install": "Asenna sovellus"
+    "install": "Asenna sovellus",
+    "symbols": "Säämerkkien selitykset"
   },
   "language": "Kieli",
   "languageName": "Suomi",
@@ -107,6 +108,48 @@
       "blue": "Sininen",
       "dark": "Tumma",
       "amoled": "AMOLED"
+    }
+  },
+  "about": {
+    "credits": "Kiitokset",
+    "FMI": "Ilmatieteen laitos",
+    "weatherData": "Säätutkakuvat, säähavainnot ja HARMONIE sääennuste.",
+    "additionalData": "Pidemmät sääennusteet, sateen todennäköisyys ja varoitukset.",
+    "icons": "Kuvakkeet",
+    "weatherSymbols": "Säämerkit",
+    "madeWithVue": ""
+  },
+  "symbols": {
+    "animated": "Animoidut",
+    "static": "Staattiset",
+    "symbols": {
+      "1": "Selkeää",
+      "2": "Puolipilvistä",
+      "21": "Heikkoja sadekuuroja",
+      "22": "Sadekuuroja",
+      "23": "Voimakkaita sadekuuroja",
+      "3": "Pilvistä",
+      "31": "Heikkoa vesisadetta",
+      "32": "Vesisadetta",
+      "33": "Voimakasta vesisadetta",
+      "41": "Heikkoja lumikuuroja",
+      "42": "Lumikuuroja",
+      "43": "Voimakkaita lumikuuroja",
+      "51": "Heikkoa lumisadetta",
+      "52": "Lumisadetta",
+      "53": "Voimakasta lumisadetta",
+      "61": "Ukkoskuuroja",
+      "62": "Voimakkaita ukkoskuuroja",
+      "63": "Ukkosta",
+      "64": "Voimakasta ukkosta",
+      "71": "Heikkoja räntäkuuroja",
+      "72": "Räntäkuuroja",
+      "73": "Voimakkaita räntäkuuroja",
+      "81": "Heikkoa räntäsadetta",
+      "82": "Räntäsadetta",
+      "83": "Voimakasta räntäsadetta",
+      "91": "Utua",
+      "92": "Sumua"
     }
   }
 }

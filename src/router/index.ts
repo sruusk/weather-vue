@@ -21,15 +21,21 @@ export const routes = [
     showInMenu: true,
   },
   {
-    path: '/settings',
-    name: 'settings',
-    component: () => import('../views/SettingsView.vue'),
+    path: '/symbols',
+    name: 'symbols',
+    component: () => import('../views/SymbolsView.vue'),
     showInMenu: true
   },
   {
     path: '/about',
     name: 'about',
     component: () => import('../views/AboutView.vue'),
+    showInMenu: true
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('../views/SettingsView.vue'),
     showInMenu: true
   }
 ]

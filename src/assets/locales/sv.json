@@ -7,7 +7,8 @@
     "warnings": "Varningar",
     "settings": "Inställningar",
     "about": "Information",
-    "install": "Installera"
+    "install": "Installera",
+    "symbols": "Symboler"
   },
   "language": "Språk",
   "languageName": "Svenska",
@@ -82,9 +83,9 @@
     "nextHourForecastFor": "Nästa timmes prognos för",
     "loading": "Laddar",
     "error": "Fel",
-    "locating": "Locating...",
-    "loadingForecast": "Loading forecast...",
-    "loadingFavourites": "Loading favourites..."
+    "locating": "Lokaliserar",
+    "loadingForecast": "Laddar prognos...",
+    "loadingFavourites": "Laddar favoriter..."
   },
   "settings": {
     "settings": "Inställningar",
@@ -101,12 +102,54 @@
     "deleteAll": "Radera alla",
     "inputLocation": "Ange plats",
     "forExample": "till exempel",
-    "animatedSymbols": "Animated symbols",
+    "animatedSymbols": "Animerade symboler",
     "theme": {
       "theme": "Theme",
       "blue": "Blue",
       "dark": "Dark",
       "amoled": "AMOLED"
+    }
+  },
+  "about": {
+    "credits": "Krediter",
+    "FMI": "Finska Meteorologiska Institutet (FMI)",
+    "weatherData": "Väderkartor, väderstationers data, observationer och HARMONIE-prognosdata tillhandahållet av FMI Open Data API",
+    "additionalData": "Ytterligare väderdata och varningar tillhandahållna av OpenWeather",
+    "icons": "Användargränssnittssymboler",
+    "weatherSymbols": "Vädersymboler",
+    "madeWithVue": "Skapad med Vue.js"
+  },
+  "symbols":{
+    "animated": "Animerad",
+    "static": "Statisk",
+    "symbols": {
+      "1": "Klart",
+      "2": "Delvis molnigt",
+      "21": "Lätta skurar",
+      "22": "Måttliga skurar",
+      "23": "Kraftiga skurar",
+      "3": "Molnigt",
+      "31": "Lätt regn",
+      "32": "Måttligt regn",
+      "33": "Kraftigt regn",
+      "41": "Lätta snöskurar",
+      "42": "Måttliga snöskurar",
+      "43": "Kraftiga snöskurar",
+      "51": "Lätt snöfall",
+      "52": "Måttligt snöfall",
+      "53": "Kraftigt snöfall",
+      "61": "Åskskurar",
+      "62": "Kraftiga åskskurar",
+      "63": "Åska",
+      "64": "Kraftig åska",
+      "71": "Lätta snöblandade regnskurar",
+      "72": "Måttliga snöblandade regnskurar",
+      "73": "Kraftiga snöblandade regnskurar",
+      "81": "Lätt snöblandat regn",
+      "82": "Måttligt snöblandat regn",
+      "83": "Kraftigt snöblandat regn",
+      "91": "Dimma",
+      "92": "Tät dimma"
     }
   }
 }
