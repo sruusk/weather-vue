@@ -99,7 +99,6 @@ export default defineComponent({
       deep: true,
     },
     '$route'( to, from ) {
-      console.log("Route changed", to.name);
       if (this.newLocation && to.name === "home") {
         // Wait for the map to be rendered before updating the location
         setTimeout(() => {
@@ -115,7 +114,6 @@ export default defineComponent({
     center() {
       const { lat, lon } = this.weatherStore.currentLocation;
       const [x, y] = MetOClient.transform([lon, lat], 'EPSG:4326', 'EPSG:3067');
-      console.log("Center", [x, y]);
       return [x, y];
     }
   },
