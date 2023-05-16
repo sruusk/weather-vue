@@ -28,7 +28,7 @@ export default defineConfig({
                 name: 'Weather',
                 short_name: 'Weather',
                 start_url: '/',
-                id: 'fi.a32.weather',
+                id: 'https://weather.a32.fi/',
                 description: 'Weather',
                 theme_color: '#191c1f',
                 background_color: '#191c1f',
@@ -37,14 +37,28 @@ export default defineConfig({
                 categories: ['weather'],
                 icons: [
                     {
-                        src: "icons/pwa-192x192.png",
+                        src: "icons/icon-192x192.png",
                         sizes: "192x192",
-                        type: "image/png"
+                        type: "image/png",
+                        purpose: "maskable"
                     },
                     {
-                        src: 'icons/pwa-512x512.png',
+                        src: 'icons/icon-512x512.png',
                         sizes: '512x512',
-                        type: 'image/png'
+                        type: 'image/png',
+                        purpose: 'maskable'
+                    },
+                    {
+                        src: "icons/icon-192x192.png",
+                        sizes: "192x192",
+                        type: "image/png",
+                        purpose: "any"
+                    },
+                    {
+                        src: 'icons/icon-512x512.png',
+                        sizes: '512x512',
+                        type: 'image/png',
+                        purpose: 'any'
                     }
                 ],
                 screenshots: [
@@ -91,12 +105,7 @@ export default defineConfig({
                         url: "/favourites",
                         icons: [
                             {
-                                src: "icons/pwa-192x192.png",
-                                sizes: "192x192",
-                                type: "image/png"
-                            },
-                            {
-                                src: 'icons/pwa-512x512.png',
+                                src: 'icons/favourites-icon-512x512.png',
                                 sizes: '512x512',
                                 type: 'image/png'
                             }
@@ -107,15 +116,10 @@ export default defineConfig({
                         url: "/settings",
                         icons: [
                             {
-                                src: "icons/pwa-192x192.png",
-                                sizes: "192x192",
+                                src: "icons/settings-icon-512x512.png",
+                                sizes: "512x512",
                                 type: "image/png"
                             },
-                            {
-                                src: 'icons/pwa-512x512.png',
-                                sizes: '512x512',
-                                type: 'image/png'
-                            }
                         ]
                     }
                 ],
