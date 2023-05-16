@@ -170,7 +170,7 @@ function parseWeather(xml: Promise<any>) {
                 weatherSymbol: parseTimeSeriesObservation(data[6]),
                 feelsLike: parseTimeSeriesObservation(data[7]),
                 location: parseLocation(data[0]),
-                updated: parseDate(data[1])
+                updated: parseDate(data[0])
             }
 
             const oneCall = await getHourlyForecastLatLon(weather.location.lat, weather.location.lon);
