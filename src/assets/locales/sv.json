@@ -105,7 +105,8 @@
     "theme": {
       "theme": "Theme",
       "blue": "Blue",
-      "dark": "Dark"
+      "dark": "Dark",
+      "amoled": "AMOLED"
     }
   }
 }
