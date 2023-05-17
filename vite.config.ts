@@ -35,6 +35,7 @@ export default defineConfig({
                 display: 'standalone',
                 orientation: 'portrait',
                 categories: ['weather'],
+                dir: 'ltr',
                 icons: [
                     {
                         src: "icons/icon-192x192.png",
@@ -108,6 +109,11 @@ export default defineConfig({
                                 src: 'icons/favourites-icon-512x512.png',
                                 sizes: '512x512',
                                 type: 'image/png'
+                            },
+                            {
+                                src: 'icons/favourites-icon-96x96.png',
+                                sizes: '96x96',
+                                type: 'image/png'
                             }
                         ]
                     },
@@ -120,6 +126,11 @@ export default defineConfig({
                                 sizes: "512x512",
                                 type: "image/png"
                             },
+                            {
+                                src: "icons/settings-icon-96x96.png",
+                                sizes: "96x96",
+                                type: "image/png"
+                            }
                         ]
                     }
                 ],
