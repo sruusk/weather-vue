@@ -116,7 +116,7 @@ export default defineComponent({
 .main {
   height: 280px;
   width: 100%;
-  padding: 60px 0 0 0;
+  padding: calc(env(titlebar-area-height, 0px) / 2 + 60px) 0 0 0;
   background-image: var(--backgroundGradient);
   border-bottom: 1px solid rgba(145, 149, 194, 0.2);
   box-shadow: #00000070 0 0 5px 3px;
@@ -130,7 +130,7 @@ export default defineComponent({
 
 /*noinspection CssUnusedSymbol*/
 .carousel__pagination {
-  top: -30px;
+  top: calc(-30px + env(titlebar-area-height, 0px) / 4);
   position: absolute;
   padding: 0;
   margin: 0;

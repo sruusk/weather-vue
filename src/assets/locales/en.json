@@ -13,6 +13,7 @@
   "language": "Language",
   "languageName": "English",
   "home": {
+    "offline": "No internet connection",
     "share": "Share",
     "warnings": "Warnings",
     "days": "days",

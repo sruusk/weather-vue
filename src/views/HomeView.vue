@@ -1,16 +1,20 @@
 <template>
   <main>
-    <div v-if="weatherStore.locatingComplete && !favouritesStore.loading" class="navigation">
-      <HamburgerIcon class="menu" @click.stop="open" />
-      <SearchIcon class="search" @click.stop="openSearch"/>
+    <div v-if="weatherStore.locatingComplete && !favouritesStore.loading && weatherStore.hasWeather"
+         class="navigation"
+    >
+      <HamburgerIcon class="navigation-button" style="height: 18px;" @click.stop="open" />
+      <div class="drag-handle" />
+      <SearchIcon class="search navigation-button" style="height: 24px;" @click.stop="openSearch"/>
     </div>
     <div v-else class="loader">
       <BreedingRhombusSpinner :animation-duration="1500" :color="'#62b8e7'" />
       <div class="loader-text">
         {{ weatherStore.status ? $t(weatherStore.status) : favouritesStore.loading ? $t('home.loadingFavourites') : '' }}
+        {{ online ? '' : $t('home.offline')}}
       </div>
     </div>
-    <CurrentWeather v-if="weatherStore.locatingComplete && !favouritesStore.loading" />
+    <CurrentWeather v-if="weatherStore.locatingComplete && !favouritesStore.loading && weatherStore.hasWeather" />
     <WarningsBar v-if="showWarnings && !favouritesStore.loading" :warnings="weatherStore.currentWeather?.warnings" />
     <TenDayForecast v-if="weatherStore.currentWeather && !favouritesStore.loading" :weather="weatherStore.currentWeather" />
     <WeatherRadar
@@ -64,14 +68,19 @@ export default defineComponent({
   },
   data() {
     return {
-
+      online: navigator.onLine,
     };
+  },
+  created() {
+    if(!this.online) {
+      window.addEventListener("online", this.setOnline, { once: true });
+    }
   },
   emits: ["open"],
   computed: {
     showWarnings() {
       return this.weatherStore.currentWeather?.warnings;
-    }
+    },
   },
   methods: {
     open() {
@@ -83,7 +92,10 @@ export default defineComponent({
     },
     getWeatherNextHour( place: string) {
       return Weather.getWeatherNextHour(place);
-    }
+    },
+    setOnline() {
+      this.online = true;
+    },
   },
 });
 </script>
@@ -106,17 +118,18 @@ main::-webkit-scrollbar {
   flex-direction: row;
   justify-content: space-between;
 }
-.menu {
-  padding: 30px 20px;
-  height: 18px;
-  cursor: pointer;
+.navigation-button {
   z-index: 1000;
+  padding: calc(env(titlebar-area-height, 10px) + 20px) 20px;
+  cursor: pointer;
 }
-.search {
-  padding: 30px 20px;
-  cursor: pointer;
-  height: 24px;
-  z-index: 1000;
+.drag-handle {
+  width: 100%;
+  position: absolute;
+  height: 0;
+  padding: env(titlebar-area-height, 0) 0 0 0;
+  -webkit-app-region: drag;
+  app-region: drag;
 }
 .loader {
   display: flex;

@@ -13,6 +13,7 @@
   "language": "Språk",
   "languageName": "Svenska",
   "home": {
+    "offline": "Du är offline",
     "share": "Dela",
     "warnings": "Varningar",
     "days": "dagar",

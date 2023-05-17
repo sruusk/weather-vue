@@ -1,4 +1,5 @@
 <template>
+  <div class="drag-handle" />
   <div class="back-navigation">
     <router-link to="/" class="link">
       <BackArrowIcon class="icon" />
@@ -26,7 +27,7 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 15px 0;
+  padding:calc(env(titlebar-area-height, 5px) + 10px) 0 15px 0;
   line-height: 20px;
   height: 40px;
   text-transform: uppercase;
@@ -44,5 +45,13 @@ export default defineComponent({
 }
 .back-navigation div {
   width: 40px; /* width of the arrow icon to center the slot */
+}
+.drag-handle {
+    width: 100%;
+    position: absolute;
+    height: 0;
+    padding: env(titlebar-area-height, 0) 0 0 0;
+    -webkit-app-region: drag;
+    app-region: drag;
 }
 </style>

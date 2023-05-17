@@ -57,8 +57,14 @@ export default defineComponent({
   },
   created() {
     this.$i18n.locale = this.settingsStore.language;
-    this.favouritesStore.init();
-    this.weatherStore.init();
+    if(navigator.onLine) {
+      this.favouritesStore.init();
+      this.weatherStore.init();
+    }
+    else window.addEventListener('online', () => {
+      this.favouritesStore.init();
+      this.weatherStore.init();
+    }, { once: true });
   },
   mounted() {
     this.installed = this.isInstalled();

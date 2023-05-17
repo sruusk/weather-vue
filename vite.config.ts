@@ -32,6 +32,7 @@ export default defineConfig({
                 description: 'Weather',
                 theme_color: '#191c1f',
                 background_color: '#191c1f',
+                display_override: ['window-controls-overlay', 'standalone'],
                 display: 'standalone',
                 orientation: 'portrait',
                 categories: ['weather'],

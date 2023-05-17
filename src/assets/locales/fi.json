@@ -13,6 +13,7 @@
   "language": "Kieli",
   "languageName": "Suomi",
   "home": {
+    "offline": "Ei internet-yhteyttä",
     "share": "JAA",
     "warnings": "Varoitukset",
     "days": "vrk",
