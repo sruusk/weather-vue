@@ -166,6 +166,7 @@ export default defineConfig({
                     urlPattern: ({ url }) => {
                         if(url.hostname === 'opendata.fmi.fi') return true
                         if(url.hostname === 'api.openweathermap.org') return true
+                        if(url.href.includes('www.ilmatieteenlaitos.fi/geoserver/alert/')) return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',

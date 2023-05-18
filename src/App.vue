@@ -10,7 +10,7 @@
       :class="{'open' : drawerOpen}"
       v-slot="{ Component }"
       id="router-view" >
-    <keep-alive :include="'HomeView'">
+    <keep-alive :include="['HomeView', 'WarningsView']">
       <component :is="Component" />
     </keep-alive>
   </RouterView>
