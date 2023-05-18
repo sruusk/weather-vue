@@ -18,6 +18,7 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import {useSettingsStore} from "@/stores";
+import LICENSE from "@/assets/alert-client/LICENSE.txt";
 import { OrbitSpinner } from 'epic-spinners'
 import BackNavigation from "@/components/BackNavigation.vue";
 import "@/assets/alert-client/vue.js";
@@ -44,6 +45,8 @@ export default defineComponent({
     }
   },
   created() {
+    console.info("smartmet-alert-client is licensed under the MIT License. See", LICENSE);
+
     setTimeout(() => {
       const lang = this.settingsStore.language;
       // @ts-ignore
