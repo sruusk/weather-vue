@@ -23,6 +23,7 @@ export const useThemeStore = defineStore('theme', {
                 // @ts-ignore
                 document.querySelector('#app').style.setProperty(`--${key}`, value);
             });
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', this.theme.colours.background);
         }
     },
 

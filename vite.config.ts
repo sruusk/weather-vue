@@ -30,7 +30,7 @@ export default defineConfig({
                 start_url: '/',
                 id: 'https://weather.a32.fi/',
                 description: 'Weather',
-                theme_color: '#191c1f',
+                theme_color: '#000000',
                 background_color: '#191c1f',
                 display_override: ['window-controls-overlay', 'standalone'],
                 display: 'standalone',
