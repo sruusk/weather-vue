@@ -111,4 +111,9 @@ export default defineComponent({
   z-index: 1000;
   transform: translate(-50%, -50%);
 }
+.alert-client {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 </style>
