@@ -9,7 +9,7 @@
         :size="70"
         color="#62b8e7"
     />
-    <div class="alert-client" ref="alertClient">
+    <div class="alert-client" ref="alertClient" :style="loading ? 'filter: blur(5px) brightness(0.3) saturate(0.5);' : ''">
       <div id="alert-client-app" />
     </div>
   </div>
@@ -113,6 +113,8 @@ export default defineComponent({
   left: 50%;
   z-index: 1000;
   transform: translate(-50%, -50%);
+  border-radius: 50%;
+  padding: 1rem;
 }
 .alert-client {
   width: 100%;
