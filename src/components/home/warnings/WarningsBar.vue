@@ -42,7 +42,7 @@ export default defineComponent({
    }
  },
  computed: {
-    warnings(): Warnings {
+    warnings(): any {
       if( !this.weatherStore.currentWeather?.location ) return [] as unknown as Warnings;
       return this.alertsStore.getAlertsForLocation(this.weatherStore.currentWeather?.location)
     }
