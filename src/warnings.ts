@@ -42,6 +42,7 @@ export function getAlerts(): Promise<FmiAlerts> {
                        if(entry["content"]["alert"]["msgType"] === "Cancel") return undefined;
                        const alert = entry["content"]["alert"]["info"].find((alert: any) => alert["language"] === key);
                        if(!alert) return undefined;
+                       if(!Array.isArray(alert["area"])) alert["area"] = [alert["area"]];
                        return {
                            severity: alert["severity"],
                            polygons: alert["area"].map((area: any) => area["polygon"].toString().split(" ").map((point: string) => {
