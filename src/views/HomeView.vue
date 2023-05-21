@@ -10,14 +10,16 @@
     <div v-else class="loader">
       <BreedingRhombusSpinner :animation-duration="1500" :color="'#62b8e7'" />
       <div class="loader-text">
-        {{ weatherStore.status
-          ? $t(weatherStore.status)
-          : favouritesStore.loading
-              ? $t('home.loadingFavourites')
-              : alertsStore.loading
-                  ? $t('home.loadingWarnings')
-                  : '' }}
-        {{ online ? '' : $t('home.offline')}}
+        {{ !online
+          ? $t('home.offline')
+          : weatherStore.status
+            ? $t(weatherStore.status)
+            : favouritesStore.loading
+                ? $t('home.loadingFavourites')
+                : alertsStore.loading
+                    ? $t('home.loadingWarnings')
+                    : ''
+        }}
       </div>
     </div>
     <CurrentWeather v-if="!isLoading" />
