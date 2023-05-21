@@ -1,7 +1,7 @@
 import {useSettingsStore} from "@/stores";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
-import type {FmiAlert} from "@/types";
+import type {FmiAlerts} from "@/types";
 
 const parser = new XMLParser({
     attributeNamePrefix: '@_',
@@ -9,6 +9,7 @@ const parser = new XMLParser({
     parseAttributeValue: true
 });
 
+// This is not needed since FMI returns all languages in the same feed anyway
 const alertUrl = () => {
     const lang = useSettingsStore().language;
     switch(lang) {
@@ -21,27 +22,41 @@ const alertUrl = () => {
     }
 }
 
-export function getAlerts(): Promise<FmiAlert[]> {
-    const url = `https://corsproxy.io/?${ encodeURIComponent(alertUrl()) }`
+const languageMap: any = {
+    "fi-FI": "fi",
+    "sv-FI": "sv",
+    "en-GB": "en"
+};
+
+export function getAlerts(): Promise<FmiAlerts> {
+    const url = `https://corsproxy.io/?${ encodeURIComponent("https://alerts.fmi.fi/cap/feed/atom_fi-FI.xml") }`
     return new Promise((resolve, reject) => {
        fetch(url).then(response => {
            if(response.ok) return response.text();
            else reject(response);
        }).then(text => {
            const xml = parser.parse(text);
-           const alerts = xml["feed"]["entry"].map((entry: any) => {
-               if(entry["content"]["alert"]["msgType"] === "Cancel") return undefined;
-               const alert = entry["content"]["alert"]["info"][0];
-               return {
-                   severity: alert["severity"],
-                   polygons: alert["area"].map((area: any) => area["polygon"].toString().split(" ").map((point: string) => {
-                          const [lon, lat] = point.split(",");
-                            return [parseFloat(lon), parseFloat(lat)];
-                          }) as [number, number]),
-                   onset: new Date(alert["onset"]),
-                   expires: new Date(alert["expires"]),
-               }
-           });
+           const alerts = Object.fromEntries(
+               Object.keys(languageMap).map((key: string) => {
+                   return [languageMap[key], xml["feed"]["entry"].map((entry: any) => {
+                       if(entry["content"]["alert"]["msgType"] === "Cancel") return undefined;
+                       const alert = entry["content"]["alert"]["info"].find((alert: any) => alert["language"] === key);
+                       if(!alert) return undefined;
+                       return {
+                           severity: alert["severity"],
+                           polygons: alert["area"].map((area: any) => area["polygon"].toString().split(" ").map((point: string) => {
+                               const [lon, lat] = point.split(",");
+                               return [parseFloat(lon), parseFloat(lat)];
+                           }) as [number, number]),
+                           onset: new Date(alert["onset"]),
+                           expires: new Date(alert["expires"]),
+                           event: alert["event"],
+                           headline: alert["headline"],
+                           description: alert["description"],
+                       }
+                   })];
+               }));
+
            resolve(alerts);
        });
     });

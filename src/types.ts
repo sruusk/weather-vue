@@ -90,11 +90,20 @@ export type Warnings = {
     4: Warning
 }
 
-export type FmiAlert = {
+export type FmiAlertData = {
     severity: string,
     polygons: [number, number][][],
     onset: Date,
-    expires: Date
+    expires: Date,
+    event: string,
+    headline: string,
+    description: string,
+}
+
+export type FmiAlerts = {
+    fi: FmiAlertData[],
+    sv: FmiAlertData[],
+    en: FmiAlertData[],
 }
 
 export type Warning = {
