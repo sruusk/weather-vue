@@ -115,8 +115,8 @@
   "about": {
     "credits": "Krediter",
     "FMI": "Finska Meteorologiska Institutet (FMI)",
-    "weatherData": "Väderkartor, väderstationers data, observationer och HARMONIE-prognosdata tillhandahållet av FMI Open Data API",
-    "additionalData": "Ytterligare väderdata och varningar tillhandahållna av OpenWeather",
+    "weatherData": "Väderkartor, väderstationers data, varningar och HARMONIE-prognosdata tillhandahållet av FMI Open Data API",
+    "additionalData": "Ytterligare väderdata tillhandahållna av OpenWeather",
     "icons": "Användargränssnittssymboler",
     "weatherSymbols": "Vädersymboler",
     "madeWithVue": "Skapad med Vue.js"

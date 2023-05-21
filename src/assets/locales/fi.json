@@ -116,7 +116,7 @@
     "credits": "Kiitokset",
     "FMI": "Ilmatieteen laitos",
     "weatherData": "Säätutkakuvat, säähavainnot ja HARMONIE sääennuste.",
-    "additionalData": "Pidemmät sääennusteet, sateen todennäköisyys ja varoitukset.",
+    "additionalData": "Pidemmät sääennusteet ja sateen todennäköisyys.",
     "icons": "Kuvakkeet",
     "weatherSymbols": "Säämerkit",
     "madeWithVue": ""
