@@ -1,3 +1,4 @@
+<!--suppress JSVoidFunctionReturnValueUsed -->
 <template>
   <div v-if="weather && Object.keys(weather).length" ref="item">
     <h2 v-if="weather.location.region">{{ weather.location.name }}, {{ weather.location.region }}</h2>
@@ -27,7 +28,8 @@
 <script lang="ts">
 import type { HourWeather } from "@/types";
 import { defineComponent, ref } from 'vue';
-import domtoimage from 'dom-to-image';
+// @ts-ignore
+import domtoimage from 'dom-to-image-more';
 import ClockIcon from "@/components/icons/ClockIcon.vue";
 import ShareButton from "@/components/home/nexthour/ShareButton.vue";
 import FeelsLike from "@/components/home/nexthour/FeelsLike.vue";
@@ -50,9 +52,11 @@ export default defineComponent({
   },
   setup() {
     const item = ref(null);
+    const shareButton = ref(null);
     const settingsStore = useSettingsStore();
     return {
       item,
+      shareButton,
       settingsStore
     };
   },
@@ -81,17 +85,19 @@ export default defineComponent({
           files: [image]
         }).catch((error: any) => {
           console.log('Error sharing', error);
+          window.alert('Error sharing');
         });
       });
     },
     captureNodeScreenshot() {
       return new Promise(resolve => {
-        domtoimage.toBlob(this.item as any, { bgcolor: '#3a4da5'})
+        domtoimage.toBlob(this.item as any, { bgcolor: '#3a4da5' })
             .then(function (blob : any) {
               const file = new File([blob], 'weather.png', { type: 'image/png' });
               resolve(file);
             }).catch(function (error: any) {
               console.error('oops, something went wrong!', error);
+              window.alert('Error sharing');
             });
       });
     }
