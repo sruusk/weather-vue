@@ -20,7 +20,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import {useWeatherStore, useAlertsStore} from "@/stores";
-import type {Warning, Warnings} from "@/types";
+import type {Warnings} from "@/types";
 import WarningItem from "@/components/home/warnings/WarningItem.vue";
 
 export default defineComponent({

@@ -20,7 +20,6 @@ import {defineComponent} from 'vue';
 import TenDaySlider from "@/components/home/tenday/TenDaySlider.vue";
 import TenDayDetailed from "@/components/home/tenday/TenDayDetailed.vue";
 import {useWeatherStore} from "@/stores";
-import type {Weather} from "@/types";
 
 export default defineComponent({
   name: "TenDayForecast.vue",

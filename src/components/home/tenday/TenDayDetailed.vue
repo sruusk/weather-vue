@@ -15,7 +15,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import {useWeatherStore} from "@/stores";
-import type { Weather } from '@/types';
 import DayItem from "@/components/home/tenday/DayItem.vue";
 
 export default defineComponent({
