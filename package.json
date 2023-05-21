@@ -17,7 +17,7 @@
     "epic-spinners": "^2.0.0",
     "fast-xml-parser": "^4.2.2",
     "pinia": "^2.0.36",
-    "point-in-polygon": "^1.1.0",
+    "robust-point-in-polygon": "^1.0.3",
     "suncalc": "^1.9.0",
     "vue": "^3.2.45",
     "vue-mobile-detection": "^2.0.1",

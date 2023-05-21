@@ -181,6 +181,22 @@ export default defineConfig({
                     }
                 }, {
                     urlPattern: ({ url }) => {
+                        if(url.hostname === 'alerts.fmi.fi') return true
+                        if(url.hostname === 'corsproxy.io') return true
+                    },
+                    method: 'GET',
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'alert-cache',
+                        cacheableResponse: {
+                            statuses: [0, 200]
+                        },
+                        expiration: {
+                            maxAgeSeconds: 60 * 60 * 3 // 3 hours
+                        }
+                    }
+                }, {
+                    urlPattern: ({ url }) => {
                         if(url.hostname === 'data.fmi.fi') return true
                         if(url.hostname === 'openwms.fmi.fi') return true
                     },

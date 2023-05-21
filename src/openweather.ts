@@ -11,7 +11,7 @@ function fetchOpenWeather(url: string, retry: number = 3): Promise<OpenWeather> 
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
-            console.log("OpenWeather", data);
+            //console.log("OpenWeather", data);
             const weather = toWeather(data.list);
             resolve(weather);
         }).catch((error) => {
@@ -27,10 +27,8 @@ export function getHourlyForecastLatLon(lat: number, lon: number, retry: number 
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
-            console.log("OpenWeather OneCall", data);
+            //console.log("OpenWeather OneCall", data);
             const weather = oneCallToWeather(data.hourly)
-            if(data.alerts) weather.warnings = parseAlerts(data.alerts);
-            else weather.warnings = {} as Warnings;
             resolve(weather);
         }).catch((error) => {
             console.error("OpenWeather getHourlyForecastLatLon():", error);
@@ -53,7 +51,7 @@ function parseAlerts(alerts: any): Warnings {
             }
         }
     });
-    console.log("Warnings", warnings, alerts);
+    console.log("OpenWeather Alerts", warnings, alerts);
     return warnings;
 }
 

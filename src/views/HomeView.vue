@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div v-if="weatherStore.locatingComplete && !favouritesStore.loading && weatherStore.hasWeather"
+    <div v-if="!isLoading"
          class="navigation"
     >
       <HamburgerIcon class="navigation-button" style="height: 18px;" @click.stop="open" />
@@ -10,21 +10,25 @@
     <div v-else class="loader">
       <BreedingRhombusSpinner :animation-duration="1500" :color="'#62b8e7'" />
       <div class="loader-text">
-        {{ weatherStore.status ? $t(weatherStore.status) : favouritesStore.loading ? $t('home.loadingFavourites') : '' }}
+        {{ weatherStore.status
+          ? $t(weatherStore.status)
+          : favouritesStore.loading
+              ? $t('home.loadingFavourites')
+              : alertsStore.loading
+                  ? $t('home.loadingWarnings')
+                  : '' }}
         {{ online ? '' : $t('home.offline')}}
       </div>
     </div>
-    <CurrentWeather v-if="weatherStore.locatingComplete && !favouritesStore.loading && weatherStore.hasWeather" />
-    <WarningsBar v-if="showWarnings && !favouritesStore.loading" :warnings="weatherStore.currentWeather?.warnings" />
-    <TenDayForecast v-if="weatherStore.currentWeather && !favouritesStore.loading" :weather="weatherStore.currentWeather" />
+    <CurrentWeather v-if="!isLoading" />
+    <WarningsBar v-if="!isLoading" />
+    <TenDayForecast v-if="!isLoading" />
     <WeatherRadar
-      v-if="weatherStore.currentWeather
+      v-if="!isLoading
       && settingsStore.weatherRadar
-      && weatherStore.locatingComplete
-      && weatherStore.currentWeather.location.country === 'Finland'
-      && !favouritesStore.loading"
+      && weatherStore.currentWeather?.location.country === 'Finland'"
     />
-    <Observations v-if="weatherStore.currentWeather && !favouritesStore.loading" :location="weatherStore.currentWeather.location" />
+    <Observations v-if="!isLoading" :location="weatherStore.currentWeather?.location" />
     <Footer />
   </main>
 </template>
@@ -41,7 +45,7 @@ import WeatherRadar from "@/components/home/WeatherRadar/WeatherRadar.vue";
 import Observations from "@/components/home/observations/Observations.vue";
 import Footer from "@/components/home/Footer.vue";
 import Weather from "@/weather";
-import { useWeatherStore, useFavouritesStore, useSettingsStore } from "@/stores";
+import { useWeatherStore, useFavouritesStore, useSettingsStore, useAlertsStore } from "@/stores";
 
 export default defineComponent({
   name: "HomeView",
@@ -60,10 +64,12 @@ export default defineComponent({
     const weatherStore = useWeatherStore();
     const favouritesStore = useFavouritesStore();
     const settingsStore = useSettingsStore();
+    const alertsStore = useAlertsStore();
     return {
-        weatherStore,
-        favouritesStore,
-        settingsStore
+      weatherStore,
+      favouritesStore,
+      settingsStore,
+      alertsStore,
     };
   },
   data() {
@@ -78,8 +84,8 @@ export default defineComponent({
   },
   emits: ["open"],
   computed: {
-    showWarnings() {
-      return this.weatherStore.currentWeather?.warnings;
+    isLoading() {
+      return !this.weatherStore.locatingComplete || !this.weatherStore.hasWeather || this.favouritesStore.loading || this.alertsStore.loading;
     },
   },
   methods: {

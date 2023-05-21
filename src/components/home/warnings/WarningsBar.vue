@@ -19,6 +19,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
+import {useWeatherStore, useAlertsStore} from "@/stores";
 import type {Warning, Warnings} from "@/types";
 import WarningItem from "@/components/home/warnings/WarningItem.vue";
 
@@ -27,18 +28,24 @@ export default defineComponent({
  components: {
    WarningItem
  },
- props: {
-   warnings: {
-     type: Object as () => any,
-     required: true
-   }
- },
+  setup() {
+    const weatherStore = useWeatherStore();
+    const alertsStore = useAlertsStore();
+    return {
+      weatherStore,
+      alertsStore
+    }
+  },
  data() {
    return {
      nextDays: this.nextFiveDays()
    }
  },
  computed: {
+    warnings(): Warnings {
+      if( !this.weatherStore.currentWeather?.location ) return [] as unknown as Warnings;
+      return this.alertsStore.getAlertsForLocation(this.weatherStore.currentWeather?.location)
+    }
  },
  methods: {
    nextFiveDays() {

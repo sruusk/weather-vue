@@ -80,7 +80,6 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
         Promise.all([shortWeather, longWeather]).then((values) => {
             const short = values[0];
             let long = values[1];
-            console.log({ ...short, ...long } as Weather);
             if(Object.keys(long).length === 0) resolve(short);
             else if(Object.keys(short).length <= 1) resolve( { ...short, ...long } as Weather );
             // Clip long forecast to start at short forecast end
@@ -97,7 +96,6 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
                 feelsLike: long.feelsLike.filter((value) => value.time > shortEndTime)
             } as OpenWeather;
             const weather: Weather = {
-                warnings: short.warnings,
                 humidity: short.humidity.concat(long.humidity),
                 temperature: short.temperature.concat(long.temperature),
                 windDirection: short.windDirection.concat(long.windDirection),
@@ -159,7 +157,6 @@ function parseWeather(xml: Promise<any>) {
 
             const data = json['wfs:FeatureCollection']['wfs:member'];
             const weather: Weather = {
-                warnings: undefined,
                 humidity: parseTimeSeriesObservation(data[0]),
                 temperature: parseTimeSeriesObservation(data[1]),
                 windDirection: parseTimeSeriesObservation(data[2]),
@@ -176,7 +173,6 @@ function parseWeather(xml: Promise<any>) {
             const oneCall = await getHourlyForecastLatLon(weather.location.lat, weather.location.lon);
             const lastTime = weather.temperature[weather.temperature.length - 1].time;
             weather.probabilityOfPrecipitation = oneCall.probabilityOfPrecipitation.filter((value) => value.time <= lastTime);
-            weather.warnings = oneCall.warnings;
 
             // remove NaN values
             weather.humidity = weather.humidity.filter((value) => !isNaN(value.value));

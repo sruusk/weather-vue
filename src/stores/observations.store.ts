@@ -20,7 +20,7 @@ export const useObservationsStore = defineStore('observations', {
             this.loading = true;
             getObservationsForClosestStations(location.lat, location.lon, 4)
                 .then((stations) => {
-                    console.log("Observation stations", stations);
+                    //console.log("Observation stations", stations);
                     this.weatherStations = stations;
                 })
                 .catch((error) => {

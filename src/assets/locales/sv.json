@@ -86,7 +86,8 @@
     "error": "Fel",
     "locating": "Lokaliserar",
     "loadingForecast": "Laddar prognos...",
-    "loadingFavourites": "Laddar favoriter..."
+    "loadingFavourites": "Laddar favoriter...",
+    "loadingWarnings": "Laddar varningar..."
   },
   "settings": {
     "settings": "Inställningar",

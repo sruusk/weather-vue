@@ -5,12 +5,10 @@
       <div class="update-time">{{ $t('home.forecast') }} {{ $t('home.updated') }} {{ updateTime }}</div>
     </div>
     <TenDaySlider
-        :weather="weather"
         :selected-day="displayedDay"
         :go-to-day="goToDay"
     />
     <TenDayDetailed
-        :weather="weather"
         :selected-day="selectedDay"
         :go-to-day="(date: Date) => { displayedDay = date; }"
     />
@@ -29,12 +27,6 @@ export default defineComponent({
   components: {
     TenDaySlider,
     TenDayDetailed
-  },
-  props: {
-    weather: {
-      type: Object as () => Weather,
-      required: true,
-    },
   },
   setup() {
     const weatherStore = useWeatherStore();

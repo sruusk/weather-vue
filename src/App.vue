@@ -20,7 +20,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { defineComponent } from 'vue'
 import NavDrawer from "@/components/NavDrawer.vue";
-import { useWeatherStore, useFavouritesStore, useSettingsStore, useThemeStore } from "@/stores";
+import { useWeatherStore, useFavouritesStore, useSettingsStore, useThemeStore, useAlertsStore } from "@/stores";
 
 export default defineComponent({
   name: 'App',
@@ -65,6 +65,8 @@ export default defineComponent({
       this.favouritesStore.init();
       this.weatherStore.init();
     }, { once: true });
+
+    useAlertsStore().init();
   },
   mounted() {
     this.installed = this.isInstalled();

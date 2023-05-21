@@ -32,10 +32,6 @@ export default defineComponent({
     DayItem
   },
   props: {
-    weather: {
-      type: Object as () => Weather,
-      required: true
-    },
     selectedDay: {
       type: Date as unknown as () => Date | null,
       required: true

@@ -86,7 +86,8 @@
     "error": "Virhe",
     "locating": "Paikannetaan...",
     "loadingForecast": "Ladataan ennustetta...",
-    "loadingFavourites": "Ladataan suosikkeja..."
+    "loadingFavourites": "Ladataan suosikkeja...",
+    "loadingWarnings": "Ladataan varoituksia..."
   },
   "settings": {
     "settings": "Asetukset",

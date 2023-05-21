@@ -86,7 +86,8 @@
     "error": "Error",
     "locating": "Locating...",
     "loadingForecast": "Loading forecast...",
-    "loadingFavourites": "Loading favourites..."
+    "loadingFavourites": "Loading favourites...",
+    "loadingWarnings": "Loading warnings..."
   },
   "settings": {
     "settings": "Settings",

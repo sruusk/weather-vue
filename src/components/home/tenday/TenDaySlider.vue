@@ -16,7 +16,6 @@
 </template>
 
 <script lang="ts">
-import type {Weather} from "@/types";
 import {defineComponent} from 'vue';
 import {useWeatherStore, useSettingsStore} from "@/stores";
 import 'vue3-carousel/dist/carousel.css'
@@ -31,10 +30,6 @@ export default defineComponent({
     Navigation
   },
   props: {
-    weather: {
-      type: Object as () => Weather,
-      required: true
-    },
     goToDay: {
       type: Function,
       required: true
