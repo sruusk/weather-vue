@@ -1,7 +1,9 @@
 <!--suppress JSVoidFunctionReturnValueUsed -->
 <template>
   <div v-if="weather && Object.keys(weather).length" ref="item">
-    <h2 v-if="weather.location.region">{{ weather.location.name }}, {{ weather.location.region }}</h2>
+    <h2 v-if="weather.location.region && weather.location.region !== weather.location.country">
+      {{ weather.location.name }}, {{ weather.location.region }}
+    </h2>
     <h2 v-else>{{ weather.location.name }}</h2>
     <div class="weather">
       <img :src="weatherIcon" alt="weather icon" />
