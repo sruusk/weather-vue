@@ -24,7 +24,6 @@
 
 <script lang="ts">
 // @ts-nocheck
-import type { ForecastLocation } from "@/types";
 import { defineComponent, ref } from 'vue';
 import MarkerIcon from "@/components/icons/MarkerIcon.vue";
 import MetOClient from "@fmidev/metoclient";
@@ -71,6 +70,9 @@ export default defineComponent({
         this.newLocation = true;
         return;
     }
+    // Remove possible children from animator
+    while (this.animator?.firstChild) this.animator.removeChild(this.animator.firstChild);
+
     config.center = this.center;
     // https://github.com/fmidev/metoclient#constructor
     this.metoclient = new MetOClient(config);
@@ -99,7 +101,7 @@ export default defineComponent({
       },
       deep: true,
     },
-    '$route'( to, from ) {
+    '$route'( to ) {
       if (this.newLocation && to.name === "home") {
         // Wait for the map to be rendered before updating the location
         setTimeout(() => {
@@ -196,6 +198,8 @@ export default defineComponent({
   width: 100%;
   height: 100%;
 }
+
+/*noinspection CssUnusedSymbol*/
 :global(.invert #fmi-animator .ol-layers) {
   filter: hue-rotate(180deg) saturate(1.5) invert(1);
 }

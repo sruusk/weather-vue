@@ -183,6 +183,7 @@ export default defineConfig({
                     urlPattern: ({ url }) => {
                         if(url.hostname === 'alerts.fmi.fi') return true
                         if(url.hostname === 'corsproxy.io') return true
+                        if(url.hostname === 'wwwi2.ymparisto.fi') return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',
