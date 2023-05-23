@@ -14,9 +14,13 @@ import fi from '@/assets/locales/fi.json'
 import sv from '@/assets/locales/sv.json'
 
 // Import country names
-countries.registerLocale(await import('i18n-iso-countries/langs/en.json'));
-countries.registerLocale(await import('i18n-iso-countries/langs/fi.json'));
-countries.registerLocale(await import('i18n-iso-countries/langs/sv.json'));
+Promise.all([
+    import('i18n-iso-countries/langs/en.json'),
+    import('i18n-iso-countries/langs/fi.json'),
+    import('i18n-iso-countries/langs/sv.json')
+]).then((c) => {
+    for(const country of c) countries.registerLocale(country);
+});
 
 const i18n = createI18n({
     locale: 'fi',
