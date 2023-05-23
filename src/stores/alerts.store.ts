@@ -27,16 +27,15 @@ export const useAlertsStore = defineStore('alerts', {
     actions: {
         init() {
             this.loading = true;
-            getAlerts().then(alerts => {
-                console.log("FMI Alerts loaded", alerts);
+            Promise.all([
+                getAlerts(),
+                getFloodingAlerts()
+            ]).then(([alerts, floodingAlerts]) => {
+                console.log("FMI Alerts", alerts, "SYKE Flooding Alerts", floodingAlerts);
                 // @ts-ignore
                 Object.keys(alerts).forEach((key) => this.alerts[key].push(...alerts[key]));
-                this.loading = false;
-            });
-            getFloodingAlerts().then(alerts => {
-                console.log("SYKE Flooding Alerts loaded", alerts);
                 // @ts-ignore
-                Object.keys(alerts).forEach((key) => this.alerts[key].push(...alerts[key]));
+                Object.keys(floodingAlerts).forEach((key) => this.alerts[key].push(...floodingAlerts[key]));
                 this.loading = false;
             });
         }
