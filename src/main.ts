@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 // @ts-ignore // No type definitions available
 import VueMobileDetection from "vue-mobile-detection";
 import { createI18n } from 'vue-i18n'
+import countries from 'i18n-iso-countries';
 import App from './App.vue'
 import { createPinia } from "pinia";
 import router from './router'
@@ -11,6 +12,11 @@ import './registerServiceWorker';
 import en from '@/assets/locales/en.json'
 import fi from '@/assets/locales/fi.json'
 import sv from '@/assets/locales/sv.json'
+
+// Import country names
+countries.registerLocale(await import('i18n-iso-countries/langs/en.json'));
+countries.registerLocale(await import('i18n-iso-countries/langs/fi.json'));
+countries.registerLocale(await import('i18n-iso-countries/langs/sv.json'));
 
 const i18n = createI18n({
     locale: 'fi',

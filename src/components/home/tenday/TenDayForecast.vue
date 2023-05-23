@@ -41,7 +41,7 @@ export default defineComponent({
   },
   computed: {
     updateTime() { // TODO: Get actual update time
-      return this.weatherStore.currentWeather?.updated.toLocaleString("fi-FI", {
+      return this.weatherStore.currentWeather?.updated?.toLocaleString("fi-FI", {
         day: "numeric",
         month: "numeric",
         year: "numeric",

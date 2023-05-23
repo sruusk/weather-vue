@@ -1,8 +1,8 @@
 <!--suppress JSVoidFunctionReturnValueUsed -->
 <template>
   <div v-if="weather && Object.keys(weather).length" ref="item">
-    <h2 v-if="weather.location.region && weather.location.region !== weather.location.country">
-      {{ weather.location.name }}, {{ weather.location.region }}
+    <h2 v-if="weather.location.region">
+      {{ weather.location.name }}, {{ region }}
     </h2>
     <h2 v-else>{{ weather.location.name }}</h2>
     <div class="weather">
@@ -32,6 +32,7 @@ import type { HourWeather } from "@/types";
 import { defineComponent, ref } from 'vue';
 // @ts-ignore
 import domtoimage from 'dom-to-image-more';
+import countries from "i18n-iso-countries";
 import ClockIcon from "@/components/icons/ClockIcon.vue";
 import ShareButton from "@/components/home/nexthour/ShareButton.vue";
 import FeelsLike from "@/components/home/nexthour/FeelsLike.vue";
@@ -72,7 +73,14 @@ export default defineComponent({
   computed: {
     weatherIcon() {
       return `/symbols/${this.settingsStore.useAnimations ? 'animated' : 'static'}/${this.weather.weatherSymbol}.svg`;
-    }
+    },
+    region() {
+      if(this.weather.location.region === this.weather.location.country) {
+        const countryCode = this.weather.location.country.length === 2 ? this.weather.location.country : countries.getAlpha2Code(this.weather.location.country, 'en');
+        return countries.getName(countryCode, this.settingsStore.language);
+      }
+      return this.weather.location.region;
+    },
   },
   methods: {
     tempPrefix(temp: number) {
