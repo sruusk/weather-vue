@@ -173,6 +173,7 @@ export default defineComponent({
 
 #router-view {
   contain: content;
+  min-width: 100%;
 }
 
 body {
