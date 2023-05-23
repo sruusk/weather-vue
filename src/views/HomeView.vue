@@ -23,14 +23,16 @@
       </div>
     </div>
     <CurrentWeather v-if="!isLoading" />
-    <WarningsBar v-if="!isLoading" />
+    <Transition name="drop" v-if="!isLoading">
+      <WarningsBar v-if="weatherStore.currentLocation.country === 'Finland'" />
+    </Transition>
     <TenDayForecast v-if="!isLoading" />
     <WeatherRadar
       v-if="!isLoading
       && settingsStore.weatherRadar
-      && weatherStore.currentWeather?.location.country === 'Finland'"
+      && weatherStore.currentLocation.country === 'Finland'"
     />
-    <Observations v-if="!isLoading" :location="weatherStore.currentWeather?.location" />
+    <Observations v-if="!isLoading" :location="weatherStore.currentLocation" />
     <Footer />
   </main>
 </template>
@@ -152,5 +154,16 @@ main::-webkit-scrollbar {
   margin-top: 50px;
   font-size: 18px;
   font-weight: 400;
+}
+.drop-enter-active, .drop-leave-active {
+  transition: height 1s ease-in-out, margin 1s ease-in-out;
+}
+.drop-enter-from, .drop-leave-to {
+  height: 0;
+  margin: 0;
+}
+.drop-enter-to, .drop-leave-from {
+  height: 62px;
+  margin: 9px 0 14px 0;
 }
 </style>

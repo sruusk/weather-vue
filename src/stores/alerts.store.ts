@@ -3,7 +3,7 @@ import pointInPolygon from 'robust-point-in-polygon';
 import { defineStore } from 'pinia';
 import {useSettingsStore} from "@/stores/settings.store";
 import type {ForecastLocation, Warnings, FmiAlerts, FmiAlertData} from "@/types";
-import { getAlerts } from "@/warnings";
+import { getAlerts, getFloodingAlerts } from "@/warnings";
 
 const severityOrder = ["Minor", "Moderate", "Severe", "Extreme"];
 
@@ -29,7 +29,14 @@ export const useAlertsStore = defineStore('alerts', {
             this.loading = true;
             getAlerts().then(alerts => {
                 console.log("FMI Alerts loaded", alerts);
-                this.alerts = alerts;
+                // @ts-ignore
+                Object.keys(alerts).forEach((key) => this.alerts[key].push(...alerts[key]));
+                this.loading = false;
+            });
+            getFloodingAlerts().then(alerts => {
+                console.log("SYKE Flooding Alerts loaded", alerts);
+                // @ts-ignore
+                Object.keys(alerts).forEach((key) => this.alerts[key].push(...alerts[key]));
                 this.loading = false;
             });
         }
@@ -46,6 +53,7 @@ export const useAlertsStore = defineStore('alerts', {
                 }
                 return undefined;
             }).filter(alert => alert !== undefined) as FmiAlertData[];
+            //console.log(`Alerts for ${location.name}, ${location.region}`, alerts);
             const warnings: any = {};
             for(let i = 0; i < 5; i++) {
                 const date = new Date();
@@ -67,7 +75,7 @@ export const useAlertsStore = defineStore('alerts', {
                     }
                 }
             }
-            console.log("FMI Alerts", warnings);
+            console.log(`Alerts for ${location.name}, ${location.region}`, warnings);
             return warnings as Warnings;
         },
     }

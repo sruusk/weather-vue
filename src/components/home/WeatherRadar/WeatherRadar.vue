@@ -93,6 +93,7 @@ export default defineComponent({
     },
     'weatherStore.currentLocation': {
       handler: function () {
+        if(this.weatherStore.currentLocation.country !== "Finland") return;
         if(this.$route.name === "home") this.updateLocation();
         else this.newLocation = true;
       },

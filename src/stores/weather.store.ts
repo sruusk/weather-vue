@@ -62,6 +62,7 @@ export const useWeatherStore = defineStore('weather', {
             }
         },
         async setGpsLocation(lat: number, lon: number) {
+            console.log("Setting GPS location", lat, lon);
             if(!lat || !lon) return;
             const location = await Weather.getWeatherByLatLon(lat, lon);
             if(!location.location.lat || !location.location.lon){

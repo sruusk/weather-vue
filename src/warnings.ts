@@ -2,6 +2,7 @@ import {useSettingsStore} from "@/stores";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
 import type {FmiAlerts} from "@/types";
+import MetOClient from "@fmidev/metoclient";
 
 const parser = new XMLParser({
     attributeNamePrefix: '@_',
@@ -46,8 +47,8 @@ export function getAlerts(): Promise<FmiAlerts> {
                        return {
                            severity: alert["severity"],
                            polygons: alert["area"].map((area: any) => area["polygon"].toString().split(" ").map((point: string) => {
-                               const [lon, lat] = point.split(",");
-                               return [parseFloat(lon), parseFloat(lat)];
+                               const [lat, lon] = point.split(",");
+                               return [parseFloat(lat), parseFloat(lon)];
                            }) as [number, number]),
                            onset: new Date(alert["onset"]),
                            expires: new Date(alert["expires"]),
@@ -60,5 +61,34 @@ export function getAlerts(): Promise<FmiAlerts> {
 
            resolve(alerts);
        });
+    });
+}
+
+export function getFloodingAlerts(): Promise<FmiAlerts> {
+    const url = 'https://wwwi2.ymparisto.fi/i2/vespa/alerts.json';
+    return new Promise((resolve, reject) => {
+        fetch(url).then(response => {
+            if(response.ok) return response.json();
+            else reject(response);
+        }).then(json => {
+            const alerts = Object.fromEntries(
+                Object.keys(languageMap).map((key: string) => {
+                    return [languageMap[key], json.features.map((alert: any) => {
+                        return {
+                            severity: alert.properties.severity,
+                            polygons: alert.geometry.coordinates.map((polygon: any) => polygon.map((point: any) => {
+                                const [lon, lat] = MetOClient.transform([point[0], point[1]], 'EPSG:3067', 'EPSG:4326');
+                                return [lat, lon];
+                            })),
+                            onset: new Date(alert.properties.onset),
+                            expires: new Date(alert.properties.expires),
+                            event: alert.properties[`type_${languageMap[key]}`],
+                            headline: alert.properties[`desc_${languageMap[key]}`],
+                            description: alert.properties[`desc_${languageMap[key]}`],
+                        }
+                    })]
+                }));
+            resolve(alerts);
+        });
     });
 }
