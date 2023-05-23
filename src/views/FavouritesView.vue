@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="favourite" v-for="fav in favouritesStore.favourites" :key="fav.name">
-        <div class="favourite-name">{{fav.name}}, {{fav.region}}</div>
+        <div class="favourite-name">{{ fav.name }}, {{ translateRegion(fav) }}</div>
         <div class="favourite-button" @click="favouritesStore.removeFavourite(fav)">
           <div class="remove-button">-</div>
         </div>
@@ -31,8 +31,10 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import Weather from "@/weather";
-import {useFavouritesStore} from "@/stores";
+import countries from "i18n-iso-countries";
+import {useFavouritesStore, useSettingsStore} from "@/stores";
 import BackNavigation from "@/components/BackNavigation.vue";
+import type {ForecastLocation} from "@/types";
 
 export default defineComponent({
   name: "FavouritesView",
@@ -42,9 +44,11 @@ export default defineComponent({
   setup() {
     const searchInput = ref(null) as any
     const favouritesStore = useFavouritesStore();
+    const settingsStore = useSettingsStore();
     return {
       searchInput,
-      favouritesStore
+      favouritesStore,
+      settingsStore
     };
   },
   data() {
@@ -76,6 +80,13 @@ export default defineComponent({
         console.error("Error while searching for location", error);
         this.searchString = "Error! Location not found";
       });
+    },
+    translateRegion(location: ForecastLocation) {
+      if(location.region === location.country) {
+        const countryCode = location.country.length === 2 ? location.country : countries.getAlpha2Code(location.country, 'en');
+        return countries.getName(countryCode, this.settingsStore.language);
+      }
+      return location.region;
     }
   }
 })

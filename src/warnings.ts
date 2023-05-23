@@ -55,7 +55,7 @@ export function getAlerts(): Promise<FmiAlerts> {
                            headline: alert["headline"],
                            description: alert["description"],
                        }
-                   })];
+                   }).filter((alert: any) => alert !== undefined) as any[]]
                }));
 
            resolve(alerts);
