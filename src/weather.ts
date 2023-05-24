@@ -82,8 +82,15 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
             let long = values[1];
             if(Object.keys(long).length === 0) resolve(short);
             else if(Object.keys(short).length <= 1) resolve( { ...short, ...long } as Weather );
+
             // Clip long forecast to start at short forecast end
-            const shortEndTime = short.temperature[short.temperature.length - 1].time;
+            let shortEndTime = short.temperature[0].time;
+            for(const time of short.temperature.map((value) => value.time)) {
+                if(time.getTime() - shortEndTime.getTime() > 1000 * 60 * 60 * 3) break; // If there is a gap of more than 3 hours, stop
+                if(time > shortEndTime) shortEndTime = time;
+            }
+            console.log(shortEndTime);
+
             long = {
                 humidity: long.humidity.filter((value) => value.time > shortEndTime),
                 temperature: long.temperature.filter((value) => value.time > shortEndTime),
@@ -95,18 +102,22 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
                 weatherSymbol: long.weatherSymbol.filter((value) => value.time > shortEndTime),
                 feelsLike: long.feelsLike.filter((value) => value.time > shortEndTime)
             } as OpenWeather;
+
+            const longEndTime = long.temperature[long.temperature.length - 1].time;
+            console.log(longEndTime);
+
             const weather: Weather = {
-                humidity: short.humidity.concat(long.humidity),
-                temperature: short.temperature.concat(long.temperature),
-                windDirection: short.windDirection.concat(long.windDirection),
-                windSpeed: short.windSpeed.concat(long.windSpeed),
-                windGust: short.windGust.concat(long.windGust),
-                precipitation: short.precipitation.concat(long.precipitation),
+                humidity: short.humidity.filter((value) => value.time <= shortEndTime).concat(long.humidity).concat(short.humidity.filter((value) => value.time > longEndTime)),
+                temperature: short.temperature.filter((value) => value.time <= shortEndTime).concat(long.temperature).concat(short.temperature.filter((value) => value.time > longEndTime)),
+                windDirection: short.windDirection.filter((value) => value.time <= shortEndTime).concat(long.windDirection).concat(short.windDirection.filter((value) => value.time > longEndTime)),
+                windSpeed: short.windSpeed.filter((value) => value.time <= shortEndTime).concat(long.windSpeed).concat(short.windSpeed.filter((value) => value.time > longEndTime)),
+                windGust: short.windGust.filter((value) => value.time <= shortEndTime).concat(long.windGust).concat(short.windGust.filter((value) => value.time > longEndTime)),
+                precipitation: short.precipitation.filter((value) => value.time <= shortEndTime).concat(long.precipitation).concat(short.precipitation.filter((value) => value.time > longEndTime)),
                 probabilityOfPrecipitation: short.probabilityOfPrecipitation
-                    ? short.probabilityOfPrecipitation.concat(long.probabilityOfPrecipitation)
+                    ? short.probabilityOfPrecipitation.filter((value) => value.time <= shortEndTime).concat(long.probabilityOfPrecipitation).concat(short.probabilityOfPrecipitation.filter((value) => value.time > longEndTime))
                     : long.probabilityOfPrecipitation ? long.probabilityOfPrecipitation : undefined,
-                weatherSymbol: short.weatherSymbol.concat(long.weatherSymbol),
-                feelsLike: short.feelsLike.concat(long.feelsLike),
+                weatherSymbol: short.weatherSymbol.filter((value) => value.time <= shortEndTime).concat(long.weatherSymbol).concat(short.weatherSymbol.filter((value) => value.time > longEndTime)),
+                feelsLike: short.feelsLike.filter((value) => value.time <= shortEndTime).concat(long.feelsLike).concat(short.feelsLike.filter((value) => value.time > longEndTime)),
                 location: short.location,
                 updated: short.updated
             }
@@ -175,14 +186,14 @@ function parseWeather(xml: Promise<any>) {
             weather.probabilityOfPrecipitation = oneCall.probabilityOfPrecipitation.filter((value) => value.time <= lastTime);
 
             // remove NaN values
-            weather.humidity = weather.humidity.filter((value) => !isNaN(value.value));
-            weather.temperature = weather.temperature.filter((value) => !isNaN(value.value));
-            weather.windDirection = weather.windDirection.filter((value) => !isNaN(value.value));
-            weather.windSpeed = weather.windSpeed.filter((value) => !isNaN(value.value));
-            weather.windGust = weather.windGust.filter((value) => !isNaN(value.value));
-            weather.precipitation = weather.precipitation.filter((value) => !isNaN(value.value));
-            weather.weatherSymbol = weather.weatherSymbol.filter((value) => !isNaN(value.value));
-            weather.feelsLike = weather.feelsLike.filter((value) => !isNaN(value.value));
+            weather.humidity = weather.humidity.filter((value) => !isNaN(value.value)).concat(oneCall.humidity.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+            weather.temperature = weather.temperature.filter((value) => !isNaN(value.value)).concat(oneCall.temperature.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+            weather.windDirection = weather.windDirection.filter((value) => !isNaN(value.value)).concat(oneCall.windDirection.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+            weather.windSpeed = weather.windSpeed.filter((value) => !isNaN(value.value)).concat(oneCall.windSpeed.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+            weather.windGust = weather.windGust.filter((value) => !isNaN(value.value)).concat(oneCall.windGust.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+            weather.precipitation = weather.precipitation.filter((value) => !isNaN(value.value)).concat(oneCall.precipitation.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+            weather.weatherSymbol = weather.weatherSymbol.filter((value) => !isNaN(value.value)).concat(oneCall.weatherSymbol.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+            weather.feelsLike = weather.feelsLike.filter((value) => !isNaN(value.value)).concat(oneCall.feelsLike.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
 
             resolve(weather);
         }).catch((error) => {

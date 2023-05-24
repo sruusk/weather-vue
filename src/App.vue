@@ -34,7 +34,6 @@ export default defineComponent({
     const favouritesStore = useFavouritesStore();
     const settingsStore = useSettingsStore();
     const themeStore = useThemeStore();
-    themeStore.setTheme(settingsStore.theme);
     return {
         weatherStore,
         favouritesStore,
@@ -56,6 +55,7 @@ export default defineComponent({
     });
   },
   created() {
+    this.themeStore.setTheme(this.settingsStore.theme);
     this.$i18n.locale = this.settingsStore.language;
     if(navigator.onLine) {
       this.favouritesStore.init();

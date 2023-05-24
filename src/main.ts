@@ -7,6 +7,7 @@ import App from './App.vue'
 import { createPinia } from "pinia";
 import router from './router'
 import './registerServiceWorker';
+import {DefaultLanguage} from "@/contants";
 
 // Import locales
 import en from '@/assets/locales/en.json'
@@ -23,7 +24,7 @@ Promise.all([
 });
 
 const i18n = createI18n({
-    locale: 'fi',
+    locale: DefaultLanguage,
     messages: {
         en,
         fi,
