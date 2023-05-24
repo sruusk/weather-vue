@@ -89,7 +89,6 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
                 if(time.getTime() - shortEndTime.getTime() > 1000 * 60 * 60 * 3) break; // If there is a gap of more than 3 hours, stop
                 if(time > shortEndTime) shortEndTime = time;
             }
-            console.log(shortEndTime);
 
             long = {
                 humidity: long.humidity.filter((value) => value.time > shortEndTime),
@@ -104,7 +103,6 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
             } as OpenWeather;
 
             const longEndTime = long.temperature[long.temperature.length - 1].time;
-            console.log(longEndTime);
 
             const weather: Weather = {
                 humidity: short.humidity.filter((value) => value.time <= shortEndTime).concat(long.humidity).concat(short.humidity.filter((value) => value.time > longEndTime)),

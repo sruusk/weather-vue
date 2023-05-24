@@ -35,7 +35,6 @@ export function getHourlyForecastLatLon(lat: number, lon: number, retry: number 
                 weather[key] = weather[key]?.concat(dailyWeather[key]);
             });
 
-            console.log("OpenWeather", weather);
             resolve(weather);
         }).catch((error) => {
             console.error("OpenWeather getHourlyForecastLatLon():", error);

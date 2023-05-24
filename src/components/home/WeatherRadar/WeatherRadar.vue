@@ -70,8 +70,6 @@ export default defineComponent({
         this.newLocation = true;
         return;
     }
-    // Remove possible children from animator
-    while (this.animator?.firstChild) this.animator.removeChild(this.animator.firstChild);
 
     config.center = this.center;
     // https://github.com/fmidev/metoclient#constructor

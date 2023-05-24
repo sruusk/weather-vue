@@ -57,14 +57,22 @@ export default defineComponent({
   },
   data() {
     return {
-
+      slideBypass: false
     }
   },
   watch: {
-    "favouritesStore.favourites": function () {
+    "weatherStore.currentLocation": function () {
+      const currentLocation = this.weatherStore.currentLocation;
+      const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
+      this.slideBypass = true;
       // @ts-ignore
-      if(this.carousel) this.carousel.slideTo(0);
+      if(this.carousel) this.carousel.slideTo(index || 0);
     },
+    "favouritesStore.favourites": function () {
+      this.slideBypass = true;
+      // @ts-ignore
+      if(this.favouritesStore.favourites.length === 0) this.carousel.slideTo(0);
+    }
   },
   computed: {
     locations() {
@@ -82,6 +90,10 @@ export default defineComponent({
   },
   methods: {
     async handleSlide(data : { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
+      if(this.slideBypass) {
+        this.slideBypass = false;
+        return;
+      }
       const { currentSlideIndex } = data;
       if(currentSlideIndex === 0) {
         if(this.weatherStore.gpsLocation) await this.weatherStore.changeLocation(this.weatherStore.gpsLocation);

@@ -3,7 +3,7 @@
     <BackNavigation class="navigation">
       <input
           type="text"
-          :placeholder="`${$t('settings.inputLocation')}, ${$t('settings.forExample')}: Kaivopuisto Helsinki`"
+          :placeholder="placeholder"
           class="input"
           ref="searchInput"
           @keydown.enter="search"
@@ -53,7 +53,14 @@ export default defineComponent({
   },
   data() {
     return {
-      searchString: ""
+      searchString: "",
+      message: ""
+    }
+  },
+  computed: {
+    placeholder() {
+      if(this.message.length) return this.message;
+      return `${this.$t('settings.inputLocation')}, ${this.$t('settings.forExample')}: Kaivopuisto Helsinki`
     }
   },
   methods: {
@@ -75,11 +82,12 @@ export default defineComponent({
       Weather.getWeather(this.searchString).then((weather) => {
         if(!weather.location.region) throw new Error("Invalid location");
         this.favouritesStore.addFavourite(weather.location);
-        this.searchString = "";
       }).catch((error) => {
         console.error("Error while searching for location", error);
-        this.searchString = "Error! Location not found";
-      });
+        this.message = "Error! Location not found";
+      }).finally(() => {
+        this.searchString = "";
+      })
     },
     translateRegion(location: ForecastLocation) {
       if(location.region === location.country) {
