@@ -7,8 +7,7 @@
         v-for="day in days"
         :key="day.getTime()"
         :weather="weatherStore.getWeather(day)"
-        :day="day"
-        @day-position="addDayPosition" />
+        :day="day" />
   </div>
 </template>
 
@@ -47,6 +46,11 @@ export default defineComponent({
       scrollTimer: null as null | ReturnType<typeof setTimeout>
     }
   },
+  created() {
+    this.$nextTick(() => {
+      this.getDayPositions();
+    });
+  },
   watch: {
     selectedDay: {
       handler: function () {
@@ -56,6 +60,12 @@ export default defineComponent({
             .scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
       },
       deep: true
+    },
+    "weatherStore.currentWeather": function () {
+      this.$nextTick(() => {
+        this.getDayPositions();
+        this.goToDay(this.days?.[0]);
+      });
     }
   },
   computed: {
@@ -69,6 +79,7 @@ export default defineComponent({
   },
   methods: {
     onScroll() {
+      // @ts-ignore
       if(this.scrollTimer) clearTimeout(this.scrollTimer);
       this.scrollTimer = setTimeout(() => {
           if(!this.displayedDay) return;
@@ -86,8 +97,17 @@ export default defineComponent({
           }
       }, 20);
     },
-    addDayPosition(dayPosition: { date: Date, position: number }) {
-      this.dayPositions[dayPosition.position] = dayPosition.date;
+    getDayPositions() {
+      // @ts-ignore
+      const children = this.slider?.children;
+      for(let i = 0; i < children.length; i++) {
+          const child = children[i];
+          // @ts-ignore
+          const position = child.offsetLeft;
+          const date = this.days?.[i];
+          if(!date) continue;
+          this.dayPositions[position] = date;
+      }
     }
   },
 })

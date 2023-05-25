@@ -35,7 +35,6 @@ export default defineComponent({
       required: true
     },
   },
-  emits : ['dayPosition'],
   setup() {
     const dayItem = ref(null)
     const weatherStore = useWeatherStore();
@@ -48,10 +47,6 @@ export default defineComponent({
     return {
 
     }
-  },
-  mounted() {
-    // @ts-ignore
-    this.$emit('dayPosition', { date: this.day, position: this.dayItem.offsetLeft });
   },
   computed: {
     formattedDate() {
