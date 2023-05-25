@@ -49,7 +49,6 @@ import TenDayForecast from "@/components/home/tenday/TenDayForecast.vue";
 import WeatherRadar from "@/components/home/WeatherRadar/WeatherRadar.vue";
 import Observations from "@/components/home/observations/Observations.vue";
 import Footer from "@/components/home/Footer.vue";
-import Weather from "@/weather";
 import { useWeatherStore, useFavouritesStore, useSettingsStore, useAlertsStore } from "@/stores";
 
 export default defineComponent({
@@ -101,9 +100,6 @@ export default defineComponent({
       // @ts-ignore
       this.$router.push("/favourites");
     },
-    getWeatherNextHour( place: string) {
-      return Weather.getWeatherNextHour(place);
-    },
     setOnline() {
       this.online = true;
     },
@@ -111,6 +107,7 @@ export default defineComponent({
 });
 </script>
 
+<!--suppress CssUnusedSymbol -->
 <style scoped>
 main {
   width: 100%;

@@ -16,7 +16,7 @@ export default defineComponent({
   name: "ListSelection",
   props: {
     items: {
-      type: Array,
+      type: Array as () => {name: string, lat: number, lon: number, country: string, state: string}[],
       required: true
     }
   },

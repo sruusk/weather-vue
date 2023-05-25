@@ -3,7 +3,7 @@
     <BackNavigation class="navigation">
       <input
           type="text"
-          :placeholder="`${this.$t('settings.inputLocation')}, ${this.$t('settings.forExample')}: Kaivopuisto Helsinki`"
+          :placeholder="`${$t('settings.inputLocation')}, ${$t('settings.forExample')}: Kaivopuisto Helsinki`"
           class="input"
           ref="searchInput"
           @keydown.enter="search"
@@ -80,7 +80,7 @@ export default defineComponent({
       Weather.getWeather(this.searchString).then((weather) => {
         if(!weather.location.region) throw new Error("Invalid location");
         this.favouritesStore.addFavourite(weather.location);
-      }).catch((error) => {
+      }).catch(() => {
         findLocation(this.searchString).then(list => {
           if(list) this.selection = list;
         });
