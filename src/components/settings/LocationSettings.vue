@@ -1,17 +1,13 @@
 <template>
   <div class="settings">
     <SettingsItem :title="$t('settings.location')">
-      <div>
+      <div @click="settingsStore.setUseLocation(true)">
         {{ $t('settings.on') }}
-        <CheckboxItem
-            @click="settingsStore.setUseLocation(true)"
-            :checked="settingsStore.useLocation" />
+        <CheckboxItem :checked="settingsStore.useLocation" />
       </div>
-      <div>
+      <div @click="settingsStore.setUseLocation(false)">
         {{ $t('settings.off') }}
-        <CheckboxItem
-            @click="settingsStore.setUseLocation(false)"
-            :checked="!settingsStore.useLocation" />
+        <CheckboxItem :checked="!settingsStore.useLocation" />
       </div>
     </SettingsItem>
   </div>

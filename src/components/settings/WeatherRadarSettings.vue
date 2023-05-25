@@ -1,16 +1,12 @@
 <template>
   <SettingsItem :title="$t('settings.weatherRadar')">
-    <div>
+    <div @click="settingsStore.setWeatherRadar(true)">
       {{ $t('settings.on') }}
-      <CheckboxItem
-          @click="settingsStore.setWeatherRadar(true)"
-          :checked="settingsStore.weatherRadar" />
+      <CheckboxItem :checked="settingsStore.weatherRadar" />
     </div>
-    <div>
+    <div @click="settingsStore.setWeatherRadar(false)">
       {{ $t('settings.off') }}
-      <CheckboxItem
-          @click="settingsStore.setWeatherRadar(false)"
-          :checked="!settingsStore.weatherRadar" />
+      <CheckboxItem :checked="!settingsStore.weatherRadar" />
     </div>
   </SettingsItem>
 </template>

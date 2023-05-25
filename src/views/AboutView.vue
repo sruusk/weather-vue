@@ -62,7 +62,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import BackNavigation from "@/components/BackNavigation.vue";
-import CreditsItem from "@/components/settings/CreditsItem.vue";
+import CreditsItem from "@/components/CreditsItem.vue";
 import FMIOpenDataIcon from "@/components/icons/FMIOpenDataIcon.vue";
 import VueIcon from "@/components/icons/VueIcon.vue";
 

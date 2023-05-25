@@ -1,22 +1,16 @@
 <template>
   <SettingsItem :title="$t('settings.language')">
-    <div>
+    <div @click="settingsStore.setLanguage('fi')">
       Suomeksi
-      <CheckboxItem
-          @click="settingsStore.setLanguage('fi')"
-          :checked="settingsStore.language === 'fi'"/>
+      <CheckboxItem :checked="settingsStore.language === 'fi'"/>
     </div>
-    <div>
+    <div @click="settingsStore.setLanguage('sv')">
       På svenska
-      <CheckboxItem
-          @click="settingsStore.setLanguage('sv')"
-          :checked="settingsStore.language === 'sv'" />
+      <CheckboxItem :checked="settingsStore.language === 'sv'" />
     </div>
-    <div>
+    <div @click="settingsStore.setLanguage('en')">
       In English
-      <CheckboxItem
-          @click="settingsStore.setLanguage('en')"
-          :checked="settingsStore.language === 'en'" />
+      <CheckboxItem :checked="settingsStore.language === 'en'" />
     </div>
   </SettingsItem>
 </template>

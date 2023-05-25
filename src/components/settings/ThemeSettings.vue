@@ -1,10 +1,9 @@
 <template>
   <div class="settings">
     <SettingsItem :title="$t('settings.theme.theme')">
-      <div v-for="theme in themeStore.themes">
+      <div v-for="theme in themeStore.themes" @click="settingsStore.setTheme(theme.name)">
         {{ $t(`settings.theme.${theme.name}`) }}
         <ThemeCheckbox
-            @click="settingsStore.setTheme(theme.name)"
             :checked="settingsStore.theme === theme.name"
             :color="theme.colours.backgroundLight"
         />

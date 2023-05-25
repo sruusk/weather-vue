@@ -1,17 +1,13 @@
 <template>
   <div class="settings">
     <SettingsItem :title="$t('settings.animatedSymbols')">
-      <div>
+      <div @click="settingsStore.setUseAnimations(true)">
         {{ $t('settings.on') }}
-        <CheckboxItem
-            @click="settingsStore.setUseAnimations(true)"
-            :checked="settingsStore.useAnimations" />
+        <CheckboxItem :checked="settingsStore.useAnimations" />
       </div>
-      <div>
+      <div @click="settingsStore.setUseAnimations(false)">
         {{ $t('settings.off') }}
-        <CheckboxItem
-            @click="settingsStore.setUseAnimations(false)"
-            :checked="!settingsStore.useAnimations" />
+        <CheckboxItem :checked="!settingsStore.useAnimations" />
       </div>
     </SettingsItem>
   </div>
