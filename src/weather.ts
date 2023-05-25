@@ -1,7 +1,7 @@
 // noinspection NonAsciiCharacters
 
 import type {ForecastLocation, TimeSeriesObservation, Weather, ObservationStation, ObservationStationLocation, DayLength, OpenWeather} from './types';
-import { get5DayForecastLatLon, getHourlyForecastLatLon } from "@/openweather";
+import { get5DayForecastLatLon, getHourlyForecastLatLon, reverseGeocoding } from "@/openweather";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
 const parser = new XMLParser({
@@ -38,14 +38,28 @@ function getBaseWithDays(offset: number, days: number) {
     return baseUrl + getStartAndEndTimeQuery(start, end);
 }
 
-function getWeatherNextHour(place: string) {
+function getWeatherNextHour(lat: number, lon: number): Promise<Weather> {
     const url = baseUrl + getStartAndEndTimeQuery(new Date(), new Date(Date.now() + 2 * 60 * 60 * 1000)) // Get next 2 hours to make sure we get anything
-        + `&place=${place}`
+        + `&latlon=${lat},${lon}`
         + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
         + `&parameters=${params.join(',')}`;
 
     const xml = getXml(url);
-    return parseWeather(xml);
+    const weather = parseWeather(xml);
+    return weather.then((value) => {
+        if(value.temperature?.length) return value;
+        else return getHourlyForecastLatLon(lat, lon).then((value) => {
+            return new Promise((resolve) => {
+                reverseGeocoding(lat, lon).then((location) => {
+                    resolve({
+                        ...value,
+                        location,
+                        updated: new Date()
+                    });
+                });
+            });
+        });
+    });
 }
 
 function getWeather(place: string) {
@@ -73,12 +87,16 @@ function getWeatherByLatLon(lat: number, lon: number) {
     + `&parameters=${params.join(',')}`;
 
     const xml = getXml(url);
-    return mergeWeather(parseWeather(xml), get5DayForecastLatLon(lat, lon));
+    return mergeWeather(parseWeather(xml).then(weather => {
+        if(weather.temperature?.length) return weather;
+        else return getHourlyForecastLatLon(lat, lon) as Promise<Weather>;
+    }), get5DayForecastLatLon(lat, lon));
 }
+
 function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenWeather>) {
     return new Promise((resolve, reject) => {
         Promise.all([shortWeather, longWeather]).then((values) => {
-            const short = values[0];
+            let short = values[0];
             let long = values[1];
             if(Object.keys(long).length === 0) resolve(short);
             else if(Object.keys(short).length <= 1) resolve( { ...short, ...long } as Weather );
@@ -155,7 +173,12 @@ function parseWeather(xml: Promise<any>) {
     return new Promise((resolve, reject) => {
         xml.then(async (json) => {
             if(json['ExceptionReport']) {
-                console.warn('FMI API returned exception report', json['ExceptionReport']);
+                const text = json['ExceptionReport']['Exception']?.['ExceptionText'];
+                if(text) {
+                    if(Array.isArray(text)) console.warn('FMI API returned exception report\n', text.join('\n'));
+                    else console.warn('FMI API returned exception report\n', text);
+                }
+                else console.warn('FMI API returned exception report\n', json['ExceptionReport']);
                 const cityName = json['ExceptionReport']['Exception']['ExceptionText'][0].split('\'')[1];
                 resolve({
                     location: {

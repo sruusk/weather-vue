@@ -3,12 +3,13 @@
     <BackNavigation class="navigation">
       <input
           type="text"
-          :placeholder="placeholder"
+          :placeholder="`${this.$t('settings.inputLocation')}, ${this.$t('settings.forExample')}: Kaivopuisto Helsinki`"
           class="input"
           ref="searchInput"
           @keydown.enter="search"
           v-model="searchString" />
     </BackNavigation>
+    <ListSelection v-if="selection.length" :items="selection" @select="handleSelect" />
     <div class="favourites-list">
       <div class="favourites-header">
         <div class="favourites-header-text">{{ $t("settings.favourites") }}</div>
@@ -35,10 +36,13 @@ import countries from "i18n-iso-countries";
 import {useFavouritesStore, useSettingsStore} from "@/stores";
 import BackNavigation from "@/components/BackNavigation.vue";
 import type {ForecastLocation} from "@/types";
+import ListSelection from "@/components/ListSelection.vue";
+import {search as findLocation} from "@/openweather";
 
 export default defineComponent({
   name: "FavouritesView",
   components: {
+    ListSelection,
     BackNavigation
   },
   setup() {
@@ -54,13 +58,7 @@ export default defineComponent({
   data() {
     return {
       searchString: "",
-      message: ""
-    }
-  },
-  computed: {
-    placeholder() {
-      if(this.message.length) return this.message;
-      return `${this.$t('settings.inputLocation')}, ${this.$t('settings.forExample')}: Kaivopuisto Helsinki`
+      selection: [] as any[]
     }
   },
   methods: {
@@ -83,12 +81,26 @@ export default defineComponent({
         if(!weather.location.region) throw new Error("Invalid location");
         this.favouritesStore.addFavourite(weather.location);
       }).catch((error) => {
-        console.error("Error while searching for location", error);
-        this.message = "Error! Location not found";
+        findLocation(this.searchString).then(list => {
+          if(list) this.selection = list;
+        });
       }).finally(() => {
         this.searchString = "";
       })
     },
+    handleSelect(selected: any) {
+      const country = countries.getName(selected.country, 'en');
+      this.favouritesStore.addFavourite({
+        name: selected.name,
+            country: country,
+            region: selected.state || country,
+            lat: selected.lat,
+            lon: selected.lon,
+            identifier: ''
+      });
+      this.selection = [];
+    },
+    findLocation,
     translateRegion(location: ForecastLocation) {
       if(location.region === location.country) {
         const countryCode = location.country.length === 2 ? location.country : countries.getAlpha2Code(location.country, 'en');

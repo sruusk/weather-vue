@@ -1,5 +1,35 @@
 import { OpenWeatherApiKey } from "@/contants";
-import type {TimeSeriesObservation, OpenWeather, Warnings} from "@/types";
+import countries from "i18n-iso-countries";
+import type {TimeSeriesObservation, OpenWeather, Warnings, ForecastLocation} from "@/types";
+
+export function search(str: string): Promise<void | {name: string, lat: number, lon: number, country: string, state: string}[]> {
+    str = str.replace(",", " ");
+    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURI(str)}&limit=5&appid=${OpenWeatherApiKey}`;
+    return fetch(url).then(response => response.json()).then(list => list.map((data: { name: string; lat: number; lon: number; country: string; state: string; }) => {
+        return {
+            name: data.name,
+            lat: data.lat,
+            lon: data.lon,
+            country: data.country,
+            state: data.state
+        }
+    }))
+}
+
+export function reverseGeocoding(lat: number, lon: number): Promise<ForecastLocation> {
+    const url = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${OpenWeatherApiKey}`;
+    return fetch(url).then(response => response.json()).then(data => {
+        const country = countries.getName(data[0].country, 'en');
+        return {
+            name: data[0].name,
+            identifier: '',
+            region: data[0].state || country,
+            country: country,
+            lat: data[0].lat,
+            lon: data[0].lon,
+        }
+    })
+}
 
 export function get5DayForecastLatLon(lat: number, lon: number) {
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${OpenWeatherApiKey}`;

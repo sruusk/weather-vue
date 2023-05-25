@@ -74,9 +74,10 @@ export const useWeatherStore = defineStore('weather', {
             useObservationsStore().changeLocation(location.location);
         },
         async changeLocation(location: ForecastLocation) {
-            if(!location) return;
-            useObservationsStore().changeLocation(location);
+            if(!location || (location.lat === this.currentLocation?.lat && location.lon === this.currentLocation?.lon)) return;
+            if(location.country === 'Finland') useObservationsStore().changeLocation(location);
             this.currentWeather = await Weather.getWeatherByLatLon(location.lat, location.lon);
+            this.currentWeather.location = location;
         }
     },
 

@@ -38,14 +38,27 @@ export const useFavouritesStore = defineStore('favourites', {
                 weatherStore.changeLocation(favourite);
             })
             localStorage.setItem('favourites', JSON.stringify(this.favourites));
-            //if(this.favourites.length === 1 && weatherStore.locatingFailed) weatherStore.changeLocation(favourite);
         },
         removeFavourite(favourite: ForecastLocation) {
             const weatherStore = useWeatherStore();
+            const index = this.favourites.findIndex(fav => fav.lat === favourite.lat && fav.lon === favourite.lon);
             this.favourites = this.favourites.filter(fav => fav.lat !== favourite.lat && fav.lon !== favourite.lon);
             localStorage.setItem('favourites', JSON.stringify(this.favourites));
             if(this.favourites.length === 0 && !weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
-            else if(weatherStore.locatingFailed && weatherStore.currentLocation?.name !== this.favourites[0]?.name && this.favourites.length > 0) weatherStore.changeLocation(this.favourites[0]);
+            else if(
+                weatherStore.currentLocation.lat === favourite.lat
+                && weatherStore.currentLocation.lon === favourite.lon
+                && !weatherStore.locatingFailed) {
+                if(this.favourites.length > index) weatherStore.changeLocation(this.favourites[index]);
+                else weatherStore.changeLocation(this.favourites[index - 1]);
+            } else if(
+                weatherStore.currentLocation.lat === favourite.lat
+                && weatherStore.currentLocation.lon === favourite.lon
+                && weatherStore.locatingFailed
+                && this.favourites.length > 0) {
+                if(this.favourites.length > index) weatherStore.changeLocation(this.favourites[index]);
+                else weatherStore.changeLocation(this.favourites[index - 1]);
+            }
         },
         removeAllFavourites() {
             const weatherStore = useWeatherStore();
@@ -55,10 +68,10 @@ export const useFavouritesStore = defineStore('favourites', {
         },
         getWeather(favourite: ForecastLocation) {
             return new Promise<void>((resolve) => {
-                Weather.getWeatherNextHour(`${favourite.name},${favourite.region}`).then((weather) => {
+                Weather.getWeatherNextHour(favourite.lat, favourite.lon).then((weather) => {
                     this.favouriteWeathers.push({
                         "time": `${(new Date(new Date().setHours(new Date().getHours() + 1))).getHours()}:00`,
-                        "location": weather.location,
+                        "location": favourite,
                         "temperature": weather.temperature[0].value,
                         "windDirection": weather.windDirection[0].value,
                         "windSpeed": weather.windSpeed[0].value,

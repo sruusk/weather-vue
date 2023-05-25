@@ -165,7 +165,8 @@ export default defineConfig({
                 }, {
                     urlPattern: ({ url }) => {
                         if(url.hostname === 'opendata.fmi.fi') return true
-                        if(url.hostname === 'api.openweathermap.org') return true
+                        if( url.href.includes('api.openweathermap.org/data/2.5/forecast')
+                            || url.href.includes('api.openweathermap.org/data/3.0/onecall') ) return true
                         if(url.href.includes('www.ilmatieteenlaitos.fi/geoserver/alert/')) return true
                     },
                     method: 'GET',
@@ -173,7 +174,7 @@ export default defineConfig({
                     options: {
                         cacheName: 'weather-data-cache',
                         cacheableResponse: {
-                            statuses: [0, 200]
+                            statuses: [0, 200, 400]
                         },
                         expiration: {
                             maxAgeSeconds: 60 * 10 // 10 minutes
@@ -210,6 +211,18 @@ export default defineConfig({
                         },
                         expiration: {
                             maxAgeSeconds: 60 * 10 // 10 minutes
+                        }
+                    }
+                }, {
+                    urlPattern: ({ url }) => {
+                        if(url.href.includes('api.openweathermap.org/geo/1.0')) return true
+                    },
+                    method: 'GET',
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'geocoding-cache',
+                        cacheableResponse: {
+                            statuses: [0, 200]
                         }
                     }
                 }],

@@ -57,20 +57,16 @@ export default defineComponent({
   },
   data() {
     return {
-      slideBypass: false
     }
   },
   watch: {
     "weatherStore.currentLocation": function () {
       const currentLocation = this.weatherStore.currentLocation;
       const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
-      this.slideBypass = true;
       // @ts-ignore
       if(this.carousel) this.carousel.slideTo(index || 0);
     },
-    "favouritesStore.favourites": function () {
-      this.slideBypass = true;
-      // @ts-ignore
+    "favouritesStore.favourites": function () { // @ts-ignore
       if(this.favouritesStore.favourites.length === 0) this.carousel.slideTo(0);
     }
   },
@@ -90,19 +86,8 @@ export default defineComponent({
   },
   methods: {
     async handleSlide(data : { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
-      if(this.slideBypass) {
-        this.slideBypass = false;
-        return;
-      }
       const { currentSlideIndex } = data;
-      if(currentSlideIndex === 0) {
-        if(this.weatherStore.gpsLocation) await this.weatherStore.changeLocation(this.weatherStore.gpsLocation);
-        else await this.weatherStore.changeLocation(this.favouritesStore.favourites[0]);
-      }
-      else {
-        const fav = this.favouritesStore.favourites[this.weatherStore.gpsLocation ? currentSlideIndex - 1 : currentSlideIndex];
-        await this.weatherStore.changeLocation(fav);
-      }
+      await this.weatherStore.changeLocation(this.locations[currentSlideIndex]);
     },
     getHourWeather(weather: WeatherType | undefined): HourWeather {
       if(!weather) return undefined as unknown as HourWeather;

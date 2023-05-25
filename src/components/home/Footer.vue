@@ -1,4 +1,5 @@
 <template>
+  <div style="height: 120px;" />
   <div class="footer">
     <FMIOpenDataIcon class="logo" />
     <div class="disclaimer">{{ $t('home.weatherProvider') }}</div>
@@ -25,6 +26,9 @@ export default defineComponent({
   align-items: center;
   background-color: var(--backgroundLight);
   flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 .logo {
   height: 84px;
