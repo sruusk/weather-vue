@@ -1,24 +1,35 @@
 <template>
-  <div class="main">
+  <div class="slider">
     <div class="day"
          v-for="day in days"
          :key="day.getTime()"
-          @click="goToDay(day)"
+         @click="goToDay(day)"
          :id="'ten-day-slider-' + day.getDate()"
          :class="day.toDateString() === selectedDay.toDateString() ? 'selected' : ''"
     >
       <div class="day-header">{{ getShortDayName(day) }}</div>
       <img :src="getWeatherIcon(day)" alt="Weather icon" />
       <div class="day-temp">{{ tempPrefix(getDayTemp(day)) + getDayTemp(day) }} °C</div>
+      <div class="glance-bar-day">
+        <div v-for="hour in getWeatherForDay(day)?.precipitation ?? []"
+             :key="hour.time.getHours()"
+             class="glance-bar-hour"
+             :style="{
+             backgroundColor: getGlanceColour(hour.value),
+             minWidth: `${getGlanceWidth(hour.time)}px`
+           }"
+        />
+      </div>
     </div>
   </div>
-  <div class="glance-bar"></div>
+  <div class="glance-background" />
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue';
 import {useWeatherStore, useSettingsStore} from "@/stores";
 import 'vue3-carousel/dist/carousel.css'
+import type {Weather} from "@/types";
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
 export default defineComponent({
@@ -49,12 +60,15 @@ export default defineComponent({
   },
   data () {
     return {
-
+      left: 0,
     }
   },
   computed: {
     days() {
       return this.weatherStore.getDays();
+    },
+    hours() {
+      return this.weatherStore.currentWeather?.precipitation.map(observation => observation.time) ?? [];
     }
   },
   methods: {
@@ -73,22 +87,46 @@ export default defineComponent({
     tempPrefix(temp: number) {
       return temp > 0 ? "+" : "-";
     },
+    getGlanceColour(precipitation: number): string {
+      if(precipitation < 0.1) return 'var(--backgroundLight)';
+      if(precipitation < 0.2) return '#0a9afd';
+      if(precipitation < 0.5) return '#05cba9';
+      if(precipitation < 1) return '#8be414';
+      if(precipitation < 2) return '#eeee14';
+      if(precipitation < 4) return '#f7a314';
+      if(precipitation < 6) return '#fd4f3c';
+      if(precipitation > 6) return '#f73a14';
+      return 'var(--backgroundDarkest)';
+    },
+    getWeatherForDay(day: Date): Weather {
+      return this.weatherStore.getWeather(day);
+    },
+    getGlanceWidth(hour: Date): number {
+      const index = this.hours.indexOf(hour);
+      const nextHour = this.hours[index + 1];
+      if(!nextHour || !hour) return 2.5;
+      return Math.max(((nextHour.getTime() - hour.getTime()) / (1000 * 60 * 60)) * 2.5, 2.5); // 2.5px per hour
+    }
   }
 })
 </script>
 
 <style scoped>
-.main {
-  display: inline-grid;
-  grid-template-columns: repeat(10, 1fr);
+.slider {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   background-color: var(--backgroundLighter);
   box-shadow: inset 0 20px 10px -10px rgba(0, 0, 0, 0.2);
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
-.main::-webkit-scrollbar {
+.slider::-webkit-scrollbar {
   display: none;
 }
 .day {
@@ -97,7 +135,7 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   width: 60px;
-  height: 95px;
+  min-width: 60px;
   cursor: pointer;
 }
 .day img {
@@ -122,9 +160,29 @@ export default defineComponent({
 .selected {
   background-color: var(--selectedLight);
 }
-.glance-bar {
-  background-color: var(--backgroundLight);
+.glance-bar-day {
+  background-color: var(--background);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
   height: 9px;
+  width: 60px;
+  min-width: 60px;
+}
+.day:nth-of-type(1) .glance-bar-day {
+  justify-content: flex-end;
+}
+.glance-bar-hour {
+  height: 9px;
+  width: calc(100% / 24);
+}
+.glance-background {
   width: 100%;
+  height: 9px;
+  background-color: var(--background);
+  z-index: -1;
+  margin-top: -9px;
 }
 </style>

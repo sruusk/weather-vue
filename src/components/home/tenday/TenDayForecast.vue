@@ -66,7 +66,6 @@ export default defineComponent({
 
 <style scoped>
 .main {
-  height: 430px;
   overflow: hidden;
   background-color: var(--backgroundDarkest);
   contain: content;
@@ -76,7 +75,6 @@ export default defineComponent({
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
   height: 45px;
   padding: 0 10px;
 }
