@@ -1,19 +1,31 @@
 <template>
-  <div style="height: 120px;" />
-  <div class="footer">
+  <div :style="{ height: footerHeight }" />
+  <div class="footer" ref="footer">
     <FMIOpenDataIcon class="logo" />
     <div class="disclaimer">{{ $t('home.weatherProvider') }}</div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import {defineComponent, ref} from 'vue';
 import FMIOpenDataIcon from "@/components/icons/FMIOpenDataIcon.vue";
 
 export default defineComponent({
   name: "Footer.vue",
   components: {
     FMIOpenDataIcon
+  },
+  setup() {
+    const footer = ref(null);
+    return {
+      footer
+    }
+  },
+  computed: {
+    footerHeight() {
+      // @ts-ignore
+      return this.footer ? this.footer.scrollHeight + "px" : "0px";
+    }
   }
 })
 </script>
