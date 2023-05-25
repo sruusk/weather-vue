@@ -51,18 +51,17 @@ export default defineComponent({
   },
   data() {
     return {
-      dayLength: "Loading..."
     }
-  },
-  created() {
-    const dayLength = getDayLength(this.weather.location);
-    this.dayLength = `${dayLength.sunrise} - ${dayLength.sunset}`
   },
   computed: {
     pop() {
       // @ts-ignore
       const value = this.weatherStore.currentWeather?.probabilityOfPrecipitation?.at(0).value;
       return value !== undefined ? value : -1;
+    },
+    dayLength() {
+      const dayLength = getDayLength(this.weather.location);
+      return `${dayLength.sunrise} - ${dayLength.sunset}`
     }
   }
 })

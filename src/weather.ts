@@ -412,12 +412,22 @@ export function getDayLength(location: ForecastLocation) {
 // @ts-ignore
 import SunCalc from 'suncalc';
 function calculateSunPosition(location: ForecastLocation) {
-    const times = SunCalc.getTimes(new Date(), location.lat, location.lon)
+    const times = SunCalc.getTimes(new Date((new Date()).setHours(12, 0, 0, 0)), location.lat, location.lon)
+    const isMidnightSun = isNaN(times.sunrise.getTime());
+    const { start, end } = isMidnightSun ? calculateMidnightSun(location) : { start: new Date(), end: new Date() };
     return {
-        sunrise: times.sunrise.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"}),
-        sunset: times.sunset.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"}),
+        sunrise: !isMidnightSun ? times.sunrise.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"}) : start.toLocaleDateString("fi-FI", {day: "numeric", month: "numeric"}),
+        sunset: !isMidnightSun ? times.sunset.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"}) : end.toLocaleDateString("fi-FI", {day: "numeric", month: "numeric"}),
         lengthofday: `${Math.floor((times.sunset.getTime() - times.sunrise.getTime()) / 1000 / 60 / 60)}h ${Math.floor(((times.sunset.getTime() - times.sunrise.getTime()) / 1000 / 60) % 60)}min`,
     } as DayLength;
+}
+
+function calculateMidnightSun(location: ForecastLocation): { start: Date, end: Date } {
+    const start = new Date((new Date()).setHours(12, 0, 0, 0));
+    const end = new Date((new Date()).setHours(12, 0, 0, 0));
+    while(isNaN(SunCalc.getTimes(start, location.lat, location.lon).sunrise.getTime())) start.setDate(start.getDate() - 1);
+    while(isNaN(SunCalc.getTimes(end, location.lat, location.lon).sunset.getTime())) end.setDate(end.getDate() + 1);
+    return { start, end };
 }
 
 export default {
