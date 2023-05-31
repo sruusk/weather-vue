@@ -213,6 +213,7 @@ function parseWeather(xml: Promise<any>) {
             weather.windSpeed = weather.windSpeed.filter((value) => !isNaN(value.value)).concat(oneCall.windSpeed.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
             weather.windGust = weather.windGust.filter((value) => !isNaN(value.value)).concat(oneCall.windGust.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
             weather.precipitation = weather.precipitation.filter((value) => !isNaN(value.value)).concat(oneCall.precipitation.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+            weather.probabilityOfPrecipitation = weather.probabilityOfPrecipitation.filter((value) => !isNaN(value.value)).concat(oneCall.probabilityOfPrecipitation.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
             weather.weatherSymbol = weather.weatherSymbol.filter((value) => !isNaN(value.value)).concat(oneCall.weatherSymbol.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
             weather.feelsLike = weather.feelsLike.filter((value) => !isNaN(value.value)).concat(oneCall.feelsLike.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
 
