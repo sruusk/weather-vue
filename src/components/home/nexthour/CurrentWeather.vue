@@ -57,17 +57,36 @@ export default defineComponent({
   },
   data() {
     return {
+      active: true,
+      runAfterActive: () => {},
     }
+  },
+  activated() {
+    this.active = true;
+    this.$nextTick(() => {
+      this.runAfterActive();
+      this.runAfterActive = () => {};
+    });
+  },
+  deactivated() {
+    this.active = false;
   },
   watch: {
     "weatherStore.currentLocation": function () {
       const currentLocation = this.weatherStore.currentLocation;
-      const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
-      // @ts-ignore
-      if(this.carousel) this.carousel.slideTo(index || 0);
+      this.runAfterActive = () => {
+        const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
+        // @ts-ignore
+        if(this.carousel) this.carousel.slideTo(index || 0);
+      }
+      if(this.active) this.runAfterActive();
     },
-    "favouritesStore.favourites": function () { // @ts-ignore
-      if(this.favouritesStore.favourites.length === 0) this.carousel.slideTo(0);
+    "favouritesStore.favourites": function () {
+      this.runAfterActive = () => {
+        // @ts-ignore
+        if(this.favouritesStore.favourites.length === 0) this.carousel.slideTo(0);
+      }
+      if(this.active) this.runAfterActive();
     }
   },
   computed: {
