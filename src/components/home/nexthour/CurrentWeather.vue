@@ -4,7 +4,7 @@
     <div :class="{ 'isLocation': weatherStore.gpsLocation }" class="header">
       <!-- The v-if is here to prevent bugs when the carousel is not active/visible -->
       <Carousel
-          v-if="active"
+          v-if="active || !runAfterActive"
           ref="carousel"
           :wrap-around="true"
           @slide-end="handleSlide"
@@ -62,38 +62,37 @@ export default defineComponent({
   data() {
     return {
       active: true,
-      runAfterActive: () => { },
+      runAfterActive: undefined as undefined | (() => void),
       prevLocations: [] as any[]
     }
   },
   activated() {
     this.active = true;
     this.$nextTick(() => {
-      this.runAfterActive();
-      this.runAfterActive = () => { };
+      if(this.runAfterActive) this.runAfterActive();
     });
   },
   deactivated() {
-
+    this.active = false;
   },
   watch: {
     "weatherStore.currentLocation": function () {
-      this.active = false;
       const currentLocation = this.weatherStore.currentLocation;
       this.runAfterActive = () => {
         const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
         // @ts-ignore
-        if (this.carousel) this.carousel.slideTo(index || 0);
+        if(this.carousel) this.carousel.slideTo(index || 0);
+        this.runAfterActive = undefined;
       }
-      if (this.active) this.runAfterActive();
+      if(this.active) this.runAfterActive();
     },
     "favouritesStore.favourites": function () {
-      this.active = false;
       this.runAfterActive = () => {
         // @ts-ignore
-        if (this.favouritesStore.favourites.length === 0) this.carousel.slideTo(0);
+        if(this.favouritesStore.favourites.length === 0) this.carousel.slideTo(0);
+        this.runAfterActive = undefined;
       }
-      if (this.active) this.runAfterActive();
+      if(this.active) this.runAfterActive();
     }
   },
   computed: {
