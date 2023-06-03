@@ -55,9 +55,11 @@ export const useWeatherStore = defineStore('weather', {
                         this.status = "";
                     });
                 }, () => {
+                    console.log("Location denied");
                     loadWeather(); // Location denied
                 });
             } else {
+                console.log("Geolocation not supported");
                 loadWeather(); // Geolocation not supported
             }
         },

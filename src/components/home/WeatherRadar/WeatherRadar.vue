@@ -1,6 +1,11 @@
 <template>
   <div class="weather-radar-container">
-    <div class="header">{{ $t('home.weatherRadar') }}</div>
+    <div class="header">
+      <div>
+        {{ $t('home.weatherRadar') }}
+      </div>
+      <ReloadIcon class="reload-icon" @click="reloadRadar" />
+    </div>
     <div class="radar" :class="{ 'invert': themeStore.theme.invertRadar }">
       <div id="fmi-animation-time" ref="animationTime" />
       <div id="fmi-animator" class="fmi-animator" ref="animator" />
@@ -28,11 +33,13 @@ import { defineComponent, ref } from 'vue';
 import MarkerIcon from "@/components/icons/MarkerIcon.vue";
 import MetOClient from "@fmidev/metoclient";
 import config from "@/components/home/WeatherRadar/config.json";
-import {useThemeStore, useWeatherStore} from "@/stores";
+import {useThemeStore, useWeatherStore, useSettingsStore} from "@/stores";
+import ReloadIcon from "@/components/icons/ReloadIcon.vue";
 
 export default defineComponent({
   name: "WeatherRadar.vue",
   components: {
+    ReloadIcon,
     MarkerIcon, // TODO: Add this to template
   },
   props: {
@@ -102,9 +109,9 @@ export default defineComponent({
     '$route'( to ) {
       if (this.newLocation && to.name === "home") {
         // Wait for the map to be rendered before updating the location
-        setTimeout(() => {
+        this.$nextTick(() => {
           this.updateLocation();
-        }, 1000);
+        });
         this.newLocation = false;
       }
     },
@@ -166,7 +173,13 @@ export default defineComponent({
       } catch (e) {
           console.error("MetOClient error", e);
       }
-    }
+    },
+    reloadRadar() {
+      useSettingsStore().setWeatherRadar(false);
+      this.$nextTick(() => {
+        useSettingsStore().setWeatherRadar(true);
+      });
+    },
   },
 })
 </script>
@@ -186,12 +199,25 @@ export default defineComponent({
 }
 .header {
   height: 45px;
-  padding: 0 0 0 12px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.header > div {
+  margin-left: 12px;
   font-size: 14px;
   line-height: 45px;
   font-weight: 500;
   color: white;
 }
+.header > svg {
+  margin-right: 12px;
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
 .radar {
   width: 100%;
   height: 100%;

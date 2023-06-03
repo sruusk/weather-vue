@@ -82,7 +82,8 @@ export default defineComponent({
         this.favouritesStore.addFavourite(weather.location);
       }).catch(() => {
         findLocation(this.searchString).then(list => {
-          if(list) this.selection = list;
+          if(list?.length) this.selection = list;
+          else alert("No results found");
         });
       }).finally(() => {
         this.searchString = "";
