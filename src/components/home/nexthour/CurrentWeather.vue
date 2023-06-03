@@ -66,6 +66,8 @@ export default defineComponent({
     this.$nextTick(() => {
       this.runAfterActive();
       this.runAfterActive = () => {};
+      // @ts-ignore
+      this.carousel?.restartCarousel();
     });
   },
   deactivated() {
