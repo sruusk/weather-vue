@@ -64,10 +64,14 @@ export default defineComponent({
   activated() {
     this.active = true;
     this.$nextTick(() => {
-      this.runAfterActive();
-      this.runAfterActive = () => {};
       // @ts-ignore
       this.carousel?.restartCarousel();
+      this.runAfterActive();
+      this.runAfterActive = () => {};
+      this.$nextTick(() => {
+        // @ts-ignore
+        this.carousel?.restartCarousel();
+      });
     });
   },
   deactivated() {
