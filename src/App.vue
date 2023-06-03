@@ -53,6 +53,11 @@ export default defineComponent({
     window.addEventListener('beforeinstallprompt', (e) => {
       this.deferredPrompt = e;
     });
+    window.addEventListener('appinstalled', () => {
+      this.installed = true;
+      localStorage.setItem('installed', 'true');
+    });
+    this.installed = localStorage.getItem('installed') === 'true';
   },
   created() {
     this.themeStore.setTheme(this.settingsStore.theme);
@@ -69,7 +74,7 @@ export default defineComponent({
     useAlertsStore().init();
   },
   mounted() {
-    this.installed = this.isInstalled();
+    if(!this.installed) this.installed = this.isInstalled();
   },
   methods: {
     closeDrawer() {
