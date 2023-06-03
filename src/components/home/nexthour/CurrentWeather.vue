@@ -4,7 +4,7 @@
     <div :class="{ 'isLocation': weatherStore.gpsLocation }" class="header">
       <!-- The v-if is here to prevent bugs when the carousel is not active/visible -->
       <Carousel
-          v-if="this.active"
+          v-if="active"
           ref="carousel"
           :wrap-around="true"
           @slide-end="handleSlide"
@@ -95,7 +95,7 @@ export default defineComponent({
     }
   },
   computed: {
-    locations() {
+    locations(): any[] {
       if (this.weatherStore.gpsLocation) {
         return [
           {
