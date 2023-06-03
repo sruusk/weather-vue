@@ -74,10 +74,11 @@ export default defineComponent({
     });
   },
   deactivated() {
-    this.active = false;
+
   },
   watch: {
     "weatherStore.currentLocation": function () {
+      this.active = false;
       const currentLocation = this.weatherStore.currentLocation;
       this.runAfterActive = () => {
         const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
@@ -87,6 +88,7 @@ export default defineComponent({
       if (this.active) this.runAfterActive();
     },
     "favouritesStore.favourites": function () {
+      this.active = false;
       this.runAfterActive = () => {
         // @ts-ignore
         if (this.favouritesStore.favourites.length === 0) this.carousel.slideTo(0);
