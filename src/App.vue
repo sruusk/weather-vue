@@ -109,6 +109,9 @@ export default defineComponent({
       // For Android
       if(window.matchMedia('(display-mode: standalone)').matches) return true
 
+      // For Chromium on Windows
+      if(window.matchMedia('(display-mode: window-controls-overlay)').matches) return true
+
       // If neither is true, it's not installed
       return false
     }
