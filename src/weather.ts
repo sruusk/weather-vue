@@ -30,16 +30,18 @@ function getTimeFromNow(days: number) {
 
 function getBaseWithDays(offset: number, days: number) {
     let start = getTimeFromNow(offset);
-    const end = getTimeFromNow(offset + days);
+    let end = getTimeFromNow(offset + days);
     if(offset) start.setMinutes(0, 0, 0);
     while(offset && start.getHours() % 3 !== 0) { // Start time must be divisible by 3
         start = new Date(start.getTime() + 60 * 60 * 1000); // Add one hour
     }
+    start = new Date(start.setHours(0, 0, 0, 0));
+    end = new Date(end.setHours(23, 59, 59, 999));
     return baseUrl + getStartAndEndTimeQuery(start, end);
 }
 
 function getWeatherNextHour(lat: number, lon: number): Promise<Weather> {
-    const url = baseUrl + getStartAndEndTimeQuery(new Date(), new Date(Date.now() + 2 * 60 * 60 * 1000)) // Get next 2 hours to make sure we get anything
+    const url = getBaseWithDays(0, 3)
         + `&latlon=${lat},${lon}`
         + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
         + `&parameters=${params.join(',')}`;
@@ -216,6 +218,18 @@ function parseWeather(xml: Promise<any>) {
             weather.probabilityOfPrecipitation = weather.probabilityOfPrecipitation.filter((value) => !isNaN(value.value)).concat(oneCall.probabilityOfPrecipitation.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
             weather.weatherSymbol = weather.weatherSymbol.filter((value) => !isNaN(value.value)).concat(oneCall.weatherSymbol.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
             weather.feelsLike = weather.feelsLike.filter((value) => !isNaN(value.value)).concat(oneCall.feelsLike.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
+
+            // remove values from the past
+            const now = new Date();
+            weather.humidity = weather.humidity.filter((value) => value.time >= now);
+            weather.temperature = weather.temperature.filter((value) => value.time >= now);
+            weather.windDirection = weather.windDirection.filter((value) => value.time >= now);
+            weather.windSpeed = weather.windSpeed.filter((value) => value.time >= now);
+            weather.windGust = weather.windGust.filter((value) => value.time >= now);
+            weather.precipitation = weather.precipitation.filter((value) => value.time >= now);
+            weather.probabilityOfPrecipitation = weather.probabilityOfPrecipitation.filter((value) => value.time >= now);
+            weather.weatherSymbol = weather.weatherSymbol.filter((value) => value.time >= now);
+            weather.feelsLike = weather.feelsLike.filter((value) => value.time >= now);
 
             resolve(weather);
         }).catch((error) => {
