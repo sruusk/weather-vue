@@ -3,8 +3,8 @@
 A simple weather app built with Vue.js utilizing the OpenData API from the Finnish Meteorological Institute
 and the OpenWeatherMap API.
 
-This uses the OpenData as the primary source of weather data,
-but the OpenWeatherMap is used to complement the data when FMI OpenData does not have enough data available.
+This uses FMI OpenData as the primary source of weather data,
+but OpenWeatherMap is used to complement the data when FMI OpenData does not have enough data available.
 
 ### Weather Icons used in this project
 This project uses the [Weather Icons by Bas Milius](https://github.com/basmilius/weather-icons).
