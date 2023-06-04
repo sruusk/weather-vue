@@ -155,7 +155,7 @@ export default defineComponent({
   display: flex;
   overflow-x: clip;
   width: 100%;
-  max-width: calc(3/4 * 100vh);
+  max-width: calc(max(3/4 * 100vh, 600px));
   background-color: var(--background);
 
   /* Default theme to help the editor resolve the variables */

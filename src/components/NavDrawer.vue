@@ -76,7 +76,7 @@ export default defineComponent({
   contain: content;
 }
 .nav-drawer.open {
-  min-width: calc(min(80vw, 3/4 * 100vh * 0.8));
+  min-width: calc(min(80vw, max(3/4 * 100vh, 600px) * 0.8));
 }
 .nav-drawer.closed {
   min-width: 0;
