@@ -39,7 +39,7 @@ job("Deploy") {
                 echo Run type check
                 npm run type-check
                 echo Run build ...
-                npm run build
+                npm run build-only
                 echo Deploying...
                 apt update
                 apt install -y sshpass

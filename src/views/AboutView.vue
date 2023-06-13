@@ -48,13 +48,19 @@
         Bas Milius - Meteocons
       </a>
     </CreditsItem>
-    <CreditsItem
-      title="Vue.js"
-      :content="$t('about.madeWithVue')"
+    <CreditsItem title="Vue.js"
+                 :content="$t('about.madeWithVue')"
     >
       <a href="https://vuejs.org/" target="_blank">
         <VueIcon style="height: 70px;" />
       </a>
+    </CreditsItem>
+    <CreditsItem :title="$t('about.openSource')"
+                 content=""
+    >
+      <router-link :to="{ name: 'licenses' }" style="color: white;">
+        {{ $t('about.viewLicenses') }}
+      </router-link>
     </CreditsItem>
   </div>
 </template>

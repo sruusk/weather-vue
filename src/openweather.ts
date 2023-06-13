@@ -2,6 +2,8 @@ import { OpenWeatherApiKey } from "@/contants";
 import countries from "i18n-iso-countries";
 import type {TimeSeriesObservation, OpenWeather, Warnings, ForecastLocation} from "@/types";
 
+if(!OpenWeatherApiKey) window.alert("OpenWeather API key not set!");
+
 export function search(str: string): Promise<void | {name: string, lat: number, lon: number, country: string, state: string}[]> {
     str = str.replace(",", " ");
     const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURI(str)}&limit=5&appid=${OpenWeatherApiKey}`;

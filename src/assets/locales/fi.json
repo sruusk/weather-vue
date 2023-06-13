@@ -8,7 +8,8 @@
     "settings": "Asetukset",
     "about": "Tietoja sovelluksesta",
     "install": "Asenna sovellus",
-    "symbols": "Säämerkkien selitykset"
+    "symbols": "Säämerkkien selitykset",
+    "licenses": "Avoimen lähdekoodin lisenssit"
   },
   "language": "Kieli",
   "languageName": "Suomi",
@@ -119,7 +120,9 @@
     "additionalData": "Pidemmät sääennusteet ja sateen todennäköisyys.",
     "icons": "Kuvakkeet",
     "weatherSymbols": "Säämerkit",
-    "madeWithVue": ""
+    "madeWithVue": "",
+    "openSource": "Avoin lähdekoodi",
+    "viewLicenses": "Näytä lisenssit"
   },
   "symbols": {
     "animated": "Animoidut",
