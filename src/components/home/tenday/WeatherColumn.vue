@@ -86,8 +86,8 @@ export default defineComponent({
   align-items: center;
 }
 .weather-column__feelslike svg {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
 }
 .weather-column__feelslike-value {
   margin-top: -16px;

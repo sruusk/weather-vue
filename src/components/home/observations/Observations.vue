@@ -1,45 +1,52 @@
 <template>
   <div class="header" v-if="observationsStore.stations.length">{{ $t('home.weatherObservations') }}</div>
   <div class="observations-carousel" v-if="observationsStore.stations.length">
-    <Carousel ref="carousel" :wrap-around="true">
-      <Slide v-for="station in observationsStore.stations" :key="station.location.name">
+    <Splide ref="splide" :options="options">
+      <SplideSlide v-for="station in observationsStore.stations" :key="station.location.name">
         <ObservationItem :station="station" class="item" />
-      </Slide>
-      <template #addons>
-        <Pagination />
-      </template>
-    </Carousel>
+      </SplideSlide>
+    </Splide>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
-import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import ObservationItem from "@/components/home/observations/ObservationItem.vue";
 import {useObservationsStore} from "@/stores";
 
 export default defineComponent({
   name: "ObservationsElement",
   setup() {
-    const carousel = ref(null);
+    const splide = ref(null);
     const observationsStore = useObservationsStore();
     return {
-      carousel,
+      splide,
       observationsStore
     };
   },
   components: {
-    Carousel,
-    Slide,
-    Pagination,
-    Navigation,
     ObservationItem
+  },
+  data() {
+    return {
+      options: {
+        type: 'loop',
+        perPage: 1,
+        perMove: 1,
+        flickMaxPages: 1,
+        pagination: true,
+        gap: '2rem',
+        arrows: false,
+      },
+    }
   },
   watch: {
     "observationsStore.stations": function () {
       // @ts-ignore
-      if(this.carousel) this.carousel.slideTo(0);
+      this.$nextTick(() => {
+        // @ts-ignore
+        this.splide.go(0);
+      });
     }
   },
 })
@@ -67,27 +74,5 @@ export default defineComponent({
   width: 100%;
   align-self: flex-start;
   contain: content;
-}
-
-/*noinspection ALL*/
-.carousel__pagination {
-  top: -20px; /* Make gap for the page indicators */
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-}
-:deep(.carousel__pagination-button){
-  height: 20px;
-  width: 20px;
-}
-:deep(.carousel__pagination-button::after) {
-  background-color: #FFFFFF7F;
-  border-radius: 5px;
-  width: 8px;
-  height: 8px;
-}
-:deep(.carousel__pagination-button--active::after) {
-  background-color: #fdfdfe;
 }
 </style>

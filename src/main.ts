@@ -1,27 +1,22 @@
 import { createApp } from 'vue'
-// @ts-ignore // No type definitions available
-import VueMobileDetection from "vue-mobile-detection";
-import { createI18n } from 'vue-i18n'
-import countries from 'i18n-iso-countries';
 import App from './App.vue'
 import { createPinia } from "pinia";
 import router from './router'
+// @ts-ignore // No type definitions available
+import VueMobileDetection from "vue-mobile-detection";
+import countries from 'i18n-iso-countries';
+import VueSplide from '@splidejs/vue-splide';
 import './registerServiceWorker';
+import { createI18n } from 'vue-i18n';
 import {DefaultLanguage} from "@/contants";
+
+// Import styles
+import '@splidejs/vue-splide/css';
 
 // Import locales
 import en from '@/assets/locales/en.json'
 import fi from '@/assets/locales/fi.json'
 import sv from '@/assets/locales/sv.json'
-
-// Import country names
-Promise.all([
-    import('i18n-iso-countries/langs/en.json'),
-    import('i18n-iso-countries/langs/fi.json'),
-    import('i18n-iso-countries/langs/sv.json')
-]).then((c) => {
-    for(const country of c) countries.registerLocale(country);
-});
 
 const i18n = createI18n({
     locale: DefaultLanguage,
@@ -30,6 +25,15 @@ const i18n = createI18n({
         fi,
         sv
     }
+});
+
+// Import country names
+Promise.all([
+    import('i18n-iso-countries/langs/en.json'),
+    import('i18n-iso-countries/langs/fi.json'),
+    import('i18n-iso-countries/langs/sv.json')
+]).then((c) => {
+    for(const country of c) countries.registerLocale(country);
 });
 
 const pinia = createPinia();
@@ -43,5 +47,6 @@ app.use(pinia)
 app.use(router)
 app.use(VueMobileDetection);
 app.use(i18n);
+app.use(VueSplide);
 
 app.mount('#app')

@@ -193,4 +193,23 @@ body {
   justify-content: center;
   background-color: #1e1e1e;
 }
+
+/* Splide styling */
+/*noinspection CssUnusedSymbol*/
+.splide__pagination {
+  top: -1.5em !important;
+  bottom: unset !important;
+}
+/*noinspection CssUnusedSymbol*/
+.splide__pagination__page {
+  background-color: #FFFFFF7F !important;
+  border-radius: 5px !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+/*noinspection CssUnusedSymbol*/
+.splide__pagination__page.is-active {
+  background-color: #fdfdfe !important;
+  transform: unset !important;
+}
 </style>

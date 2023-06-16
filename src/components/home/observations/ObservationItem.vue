@@ -50,6 +50,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .location-details {
   font-size: 10px;
   font-weight: 300;
@@ -57,6 +62,7 @@ export default defineComponent({
   grid-template-columns: repeat(5, auto);
   grid-gap: 3px;
   align-items: center;
+  width: max-content;
 }
 .location-details .dot {
   font-size: 6px;

@@ -3,13 +3,13 @@
   <div class="main">
     <div :class="{ 'isLocation': weatherStore.gpsLocation }" class="header">
       <!-- The v-if is here to prevent bugs when the carousel is not active/visible -->
-      <Carousel
+      <Splide
           v-if="active || !runAfterActive"
-          ref="carousel"
-          :wrap-around="true"
-          @slide-end="handleSlide"
+          ref="splide"
+          :options="options"
+          @splide:move="handleSlide"
       >
-        <Slide
+        <SplideSlide
             v-for="fav in locations"
             :key="fav.name + fav.gps ? '-gps' : fav.region"
         >
@@ -23,11 +23,8 @@
               :weather="nextHourWeather"
               class="item current-location"
           />
-        </Slide>
-        <template #addons>
-          <Pagination/>
-        </template>
-      </Carousel>
+        </SplideSlide>
+      </Splide>
     </div>
   </div>
 </template>
@@ -35,35 +32,39 @@
 <script lang="ts">
 import type {HourWeather, Weather as WeatherType} from "@/types";
 import {defineComponent, ref} from 'vue';
-import 'vue3-carousel/dist/carousel.css'
-import {Carousel, Navigation, Pagination, Slide} from 'vue3-carousel'
 import LocationItem from "@/components/home/nexthour/LocationItem.vue";
 import {useFavouritesStore, useWeatherStore} from "@/stores";
+import type { Splide } from "@splidejs/vue-splide";
 
 export default defineComponent({
   name: "CurrentWeather.vue",
   components: {
     LocationItem,
-    Carousel,
-    Slide,
-    Pagination,
-    Navigation,
   },
   setup() {
-    const carousel = ref(null);
+    const splide = ref(null);
     const weatherStore = useWeatherStore();
     const favouritesStore = useFavouritesStore();
+
     return {
-      carousel,
+      splide,
       weatherStore,
       favouritesStore
     };
   },
   data() {
     return {
-      active: true,
+      active: true, // These are still needed to prevent bugs when splide is not active/visible
       runAfterActive: undefined as undefined | (() => void),
-      prevLocations: [] as any[]
+      options: {
+        type: 'loop',
+        perPage: 1,
+        perMove: 1,
+        flickMaxPages: 1,
+        pagination: true,
+        gap: '2rem',
+        arrows: false,
+      },
     }
   },
   activated() {
@@ -81,7 +82,7 @@ export default defineComponent({
       this.runAfterActive = () => {
         const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
         // @ts-ignore
-        if(this.carousel) this.carousel.slideTo(index || 0);
+        if(this.splide) this.splide.go(index || 0);
         this.runAfterActive = undefined;
       }
       if(this.active) this.runAfterActive();
@@ -89,7 +90,7 @@ export default defineComponent({
     "favouritesStore.favourites": function () {
       this.runAfterActive = () => {
         // @ts-ignore
-        if(this.favouritesStore.favourites.length === 0) this.carousel.slideTo(0);
+        if(this.favouritesStore.favourites.length === 0) this.splide.go(0);
         this.runAfterActive = undefined;
       }
       if(this.active) this.runAfterActive();
@@ -116,9 +117,8 @@ export default defineComponent({
     },
   },
   methods: {
-    async handleSlide(data: { currentSlideIndex: number, prevSlideIndex: number, slidesCount: number }) {
-      const {currentSlideIndex} = data;
-      await this.weatherStore.changeLocation(this.locations[currentSlideIndex]);
+    async handleSlide( splide: typeof Splide, index: number ) {
+      await this.weatherStore.changeLocation(this.locations[index]);
     },
     getHourWeather(weather: WeatherType | undefined): HourWeather {
       if (!weather) return undefined as unknown as HourWeather;
@@ -143,8 +143,8 @@ export default defineComponent({
 <style scoped>
 .main {
   height: 280px;
-  width: 100%;
-  padding: calc(env(titlebar-area-height, 0px) / 2 + 60px) 0 0 0;
+  width: calc(100% - 20px);
+  padding: calc(env(titlebar-area-height, 0px) / 2 + 60px) 10px 0 10px;
   background-image: var(--backgroundGradient);
   border-bottom: 1px solid rgba(145, 149, 194, 0.2);
   box-shadow: #00000070 0 0 5px 3px;
@@ -153,66 +153,7 @@ export default defineComponent({
 
 .item {
   width: 100%;
-  padding: 10px;
+  padding: 10px 0;
   contain: content;
-}
-
-/*noinspection CssUnusedSymbol*/
-.carousel__pagination {
-  top: calc(-30px + env(titlebar-area-height, 0px) / 4);
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-}
-
-:deep(.carousel__pagination-button) {
-  height: 20px;
-  width: 20px;
-}
-
-:deep(.carousel__pagination-button::after) {
-  background-color: #FFFFFF7F;
-  border-radius: 5px;
-  width: 8px;
-  height: 8px;
-}
-
-:deep(.carousel__pagination-button--active::after) {
-  background-color: #fdfdfe;
-}
-
-.isLocation :deep(.carousel__pagination-item:nth-of-type(1) .carousel__pagination-button) {
-  background-image: url("@/assets/images/location.svg");
-  filter: brightness(0.8);
-  background-size: 40%;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 20px;
-  height: 20px;
-}
-
-.isLocation :deep(.carousel__pagination-item:nth-of-type(1) .carousel__pagination-button--active) {
-  background-image: url("@/assets/images/location.svg");
-  filter: brightness(1);
-  background-size: 40%;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 20px;
-  height: 20px;
-}
-
-.isLocation :deep(.carousel__pagination-item:nth-of-type(1) .carousel__pagination-button::after) {
-  background-color: unset;
-  border-radius: unset;
-  width: unset;
-  height: unset;
-}
-
-.isLocation :deep(.carousel__pagination-item:nth-of-type(1) .carousel__pagination-button--active::after) {
-  background-color: unset;
-  border-radius: unset;
-  width: unset;
-  height: unset;
 }
 </style>

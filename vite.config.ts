@@ -1,4 +1,5 @@
 import {fileURLToPath, URL} from 'node:url'
+// @ts-ignore
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 import {defineConfig} from 'vite'

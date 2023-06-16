@@ -126,9 +126,15 @@ export default defineComponent({
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 2px 10px;
+  padding: 2px 0;
   width: 100%;
   font-size: 13px;
   font-weight: 300;
+}
+.title {
+  padding-left: 10px;
+}
+.value {
+  padding-right: 10px;
 }
 </style>

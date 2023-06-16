@@ -47,7 +47,7 @@ export default defineComponent({
     setTimeout(() => {
       const lang = this.settingsStore.language;
       // @ts-ignore
-      const day = this.$route.params.day || 0
+      const day: string = this.$route.params.day || 0;
       // @ts-ignore
       new Vue({
         el: '#alert-client-app', // @ts-ignore
@@ -93,6 +93,8 @@ export default defineComponent({
 .warnings {
   width: 100%;
 }
+
+/*noinspection CssUnusedSymbol*/
 .loading {
   max-height: 100vh;
 }

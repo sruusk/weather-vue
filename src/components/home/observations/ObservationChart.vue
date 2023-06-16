@@ -178,6 +178,9 @@ export default defineComponent({
         }
       }
     })
+    this.$nextTick(() => {
+      this.chartObject.resize();
+    });
   },
   methods: {
     formatDate(date: Date) {
@@ -199,7 +202,7 @@ export default defineComponent({
 <style scoped>
 .observation-chart {
   width: 100%;
-  padding: 20px 5px;
+  padding: 20px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -207,5 +210,6 @@ export default defineComponent({
 .observation-chart canvas {
   width: 100%;
   height: 100%;
+  padding: 0 5px;
 }
 </style>

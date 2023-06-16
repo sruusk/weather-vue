@@ -28,18 +28,10 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import {useWeatherStore, useSettingsStore} from "@/stores";
-import 'vue3-carousel/dist/carousel.css'
 import type {Weather} from "@/types";
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
 export default defineComponent({
   name: "TenDaySlider.vue",
-  components: {
-    Carousel,
-    Slide,
-    Pagination,
-    Navigation
-  },
   props: {
     goToDay: {
       type: Function,

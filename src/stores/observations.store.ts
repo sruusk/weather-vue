@@ -21,7 +21,7 @@ export const useObservationsStore = defineStore('observations', {
             getObservationsForClosestStations(location.lat, location.lon, 4)
                 .then((stations) => {
                     //console.log("Observation stations", stations);
-                    this.weatherStations = stations;
+                    this.weatherStations = stations.filter((station) => station.temperatureHistory?.length);
                 })
                 .catch((error) => {
                     console.error(error);

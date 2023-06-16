@@ -101,7 +101,9 @@ export default defineComponent({
     'weatherStore.currentLocation': {
       handler: function () {
         if(this.weatherStore.currentLocation.country !== "Finland") return;
-        if(this.$route.name === "home") this.updateLocation();
+        if(this.$route.name === "home") this.$nextTick(() => {
+          this.updateLocation();
+        });
         else this.newLocation = true;
       },
       deep: true,
@@ -261,6 +263,7 @@ export default defineComponent({
   cursor: pointer;
 }
 
+/*noinspection CssUnusedSymbol*/
 .fmi-time-option.selected {
   background-color: rgba(53, 89, 185, 0.8);
 }
