@@ -156,4 +156,22 @@ export default defineComponent({
   padding: 10px 0;
   contain: content;
 }
+
+/*noinspection CssUnusedSymbol*/
+.main :deep([role="presentation"]):nth-of-type(1) .splide__pagination__page {
+  background-image: url("@/assets/images/location.svg") !important;
+  filter: brightness(0.8);
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 20px !important;
+  height: 20px !important;
+  background-color: unset !important;
+  margin: 5px -2px 0 0;
+}
+
+/*noinspection CssUnusedSymbol*/
+.main :deep([role="presentation"]):nth-of-type(1) .splide__pagination__page.is-active {
+  filter: brightness(1);
+}
 </style>
