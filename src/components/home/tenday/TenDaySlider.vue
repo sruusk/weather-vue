@@ -113,7 +113,7 @@ export default defineComponent({
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  background-color: var(--backgroundLighter);
+  background-color: var(--backgroundDark);
   box-shadow: inset 0 20px 10px -10px rgba(0, 0, 0, 0.2);
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -132,8 +132,8 @@ export default defineComponent({
 }
 .day img {
   margin-top: -5px;
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
 }
 .day-header {
   font-size: 13px;
