@@ -212,4 +212,8 @@ body {
   background-color: #fdfdfe !important;
   transform: unset !important;
 }
+/*noinspection CssUnusedSymbol*/
+.splide__pagination__page:hover {
+  opacity: 1 !important;
+}
 </style>
