@@ -106,6 +106,9 @@
     "inputLocation": "Input location",
     "forExample": "for example",
     "animatedSymbols": "Animated symbols",
+    "forecastInterval": "Forecast interval",
+    "oneHour": "1 hour",
+    "threeHours": "3 hours",
     "theme": {
       "theme": "Theme",
       "blue": "Blue",

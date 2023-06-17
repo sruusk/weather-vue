@@ -20,7 +20,7 @@ import SettingsItem from "@/components/settings/SettingsItem.vue";
 import CheckboxItem from "@/components/settings/CheckboxItem.vue";
 
 export default defineComponent({
-  name: "LocationSettings.vue",
+  name: "LocationSettings",
   components: {
     SettingsItem,
     CheckboxItem

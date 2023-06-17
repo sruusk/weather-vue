@@ -1,23 +1,23 @@
 <template>
-  <div class="main"
+  <div :id="'ten-day-detailed-' + day.getDate()"
        ref="dayItem"
-       :id="'ten-day-detailed-' + day.getDate()">
+       class="main">
     <div class="header">{{ formattedDate }}</div>
     <div class="weather">
       <div v-for="hour in hours" :key="hour.getTime()">
         <div class="hour">
-          {{ hour.toLocaleTimeString($t('meta.localeString'), { hour: 'numeric', minute: 'numeric', hour12: false }) }}
+          {{ hour.toLocaleTimeString($t('meta.localeString'), {hour: 'numeric', minute: 'numeric', hour12: false}) }}
         </div>
-        <WeatherColumn :weather="weatherStore.getWeather(day, hour.getHours())" />
+        <WeatherColumn :weather="weatherStore.getWeather(day, hour.getHours())"/>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import {useWeatherStore} from "@/stores";
-import type { Weather, TimeSeriesObservation } from '@/types';
+import {defineComponent, ref} from 'vue';
+import {useSettingsStore, useWeatherStore} from "@/stores";
+import type {TimeSeriesObservation, Weather} from '@/types';
 import WeatherColumn from "@/components/home/tenday/WeatherColumn.vue";
 
 export default defineComponent({
@@ -38,27 +38,28 @@ export default defineComponent({
   setup() {
     const dayItem = ref(null)
     const weatherStore = useWeatherStore();
+    const settingsStore = useSettingsStore();
     return {
       dayItem,
-      weatherStore
+      weatherStore,
+      settingsStore
     }
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
     formattedDate() {
-      if(this.hours.length <= 1) return this.day.toLocaleDateString(this.$t('meta.localeString'), { weekday: 'short' });
-      return this.day.toLocaleDateString(this.$t('meta.localeString'), { weekday: 'long' })
-          + ' '
-          + this.day.toLocaleDateString('fi-FI', { day: 'numeric', month: 'numeric' });
-      },
-      hours() {
+      if (this.hours.length <= 1) return this.day.toLocaleDateString(this.$t('meta.localeString'), {weekday: 'short'});
+      return this.day.toLocaleDateString(this.$t('meta.localeString'), {weekday: 'long'})
+        + ' '
+        + this.day.toLocaleDateString('fi-FI', {day: 'numeric', month: 'numeric'});
+    },
+    hours() {
       return this.weather.temperature.map((hour: TimeSeriesObservation) => {
-        return hour.time;
-      });
+        if(hour.time.getHours() % this.settingsStore.forecastInterval === 0) return hour.time;
+        else return undefined;
+      }).filter(a => a !== undefined) as Date[];
     }
   }
 })
@@ -68,6 +69,7 @@ export default defineComponent({
 .main {
   contain: content;
 }
+
 .header {
   font-size: 13px;
   font-weight: bold;
@@ -77,6 +79,7 @@ export default defineComponent({
   height: 20px;
   text-transform: capitalize;
 }
+
 .weather {
   display: flex;
   flex-direction: row;
@@ -84,6 +87,7 @@ export default defineComponent({
   align-items: center;
   background-color: var(--backgroundDarker);
 }
+
 .hour {
   font-size: 12px;
   font-weight: normal;

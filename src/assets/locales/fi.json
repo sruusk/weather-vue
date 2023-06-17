@@ -106,6 +106,9 @@
     "inputLocation": "Syötä sijainti",
     "forExample": "esimerkiksi",
     "animatedSymbols": "Animoidut kuvakkeet",
+    "forecastInterval": "Ennusteväli",
+    "oneHour": "1 tunti",
+    "threeHours": "3 tuntia",
     "theme": {
       "theme": "Teema",
       "blue": "Sininen",

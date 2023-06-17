@@ -9,6 +9,7 @@ interface State {
         weatherRadar: boolean;
         theme: string;
         useAnimations: boolean;
+        forecastInterval: number;
     }
 }
 
@@ -20,7 +21,8 @@ export const useSettingsStore = defineStore('settings', {
                 useLocation: true,
                 weatherRadar: true,
                 theme: 'blue',
-                useAnimations: true
+                useAnimations: true,
+                forecastInterval: 1
             }))
         }
     },
@@ -52,6 +54,11 @@ export const useSettingsStore = defineStore('settings', {
         setUseAnimations(useAnimations: boolean) {
             this.settings.useAnimations = useAnimations;
             localStorage.setItem('settings', JSON.stringify(this.settings));
+        },
+
+        setForecastInterval(interval: number) {
+            this.settings.forecastInterval = interval;
+            localStorage.setItem('settings', JSON.stringify(this.settings));
         }
     },
 
@@ -60,6 +67,7 @@ export const useSettingsStore = defineStore('settings', {
         useLocation: state => state.settings.useLocation,
         weatherRadar: state => state.settings.weatherRadar,
         theme: state => state.settings.theme,
-        useAnimations: state => state.settings.useAnimations
+        useAnimations: state => state.settings.useAnimations,
+        forecastInterval: state => state.settings.forecastInterval
     }
 });

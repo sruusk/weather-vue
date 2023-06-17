@@ -106,6 +106,9 @@
     "inputLocation": "Ange plats",
     "forExample": "till exempel",
     "animatedSymbols": "Animerade symboler",
+    "forecastInterval": "Prognosintervall",
+    "oneHour": "1 timme",
+    "threeHours": "3 timmar",
     "theme": {
       "theme": "Theme",
       "blue": "Blue",

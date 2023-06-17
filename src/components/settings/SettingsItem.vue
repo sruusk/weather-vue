@@ -13,7 +13,7 @@
 import {defineComponent} from 'vue';
 
 export default defineComponent({
-  name: "SettingsItem.vue",
+  name: "SettingsItem",
   props: {
     title: String
   }

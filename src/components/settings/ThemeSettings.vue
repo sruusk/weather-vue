@@ -19,7 +19,7 @@ import ThemeCheckbox from "@/components/settings/ThemeCheckbox.vue";
 import {useSettingsStore, useThemeStore} from "@/stores";
 
 export default defineComponent({
-    name: "ThemeSettings.vue",
+    name: "ThemeSettings",
     components: {
         SettingsItem,
         ThemeCheckbox
