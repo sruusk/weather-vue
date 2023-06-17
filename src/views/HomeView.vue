@@ -8,7 +8,11 @@
       <SearchIcon class="search navigation-button" style="height: 24px;" @click.stop="openSearch"/>
     </div>
     <div v-else class="loader">
-      <BreedingRhombusSpinner :animation-duration="1500" :color="'#62b8e7'" />
+      <RadarSpinner
+        :animation-duration="2000"
+        :size="120"
+        color="#62b8e7"
+      />
       <div class="loader-text">
         {{ !online
           ? $t('home.offline')
@@ -42,7 +46,7 @@
 import { defineComponent } from "vue";
 import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
-import { BreedingRhombusSpinner } from 'epic-spinners'
+import {OrbitSpinner, RadarSpinner} from 'epic-spinners'
 import CurrentWeather from "@/components/home/nexthour/CurrentWeather.vue";
 import WarningsBar from "@/components/home/warnings/WarningsBar.vue";
 import TenDayForecast from "@/components/home/tenday/TenDayForecast.vue";
@@ -54,7 +58,8 @@ import { useWeatherStore, useFavouritesStore, useSettingsStore, useAlertsStore }
 export default defineComponent({
   name: "HomeView",
   components: {
-    BreedingRhombusSpinner,
+    RadarSpinner,
+    OrbitSpinner,
     HamburgerIcon,
     CurrentWeather,
     WarningsBar,
