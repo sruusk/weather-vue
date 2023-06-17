@@ -13,17 +13,22 @@ interface State {
     }
 }
 
+const defaults = {
+    language: DefaultLanguage,
+    useLocation: true,
+    weatherRadar: true,
+    theme: 'blue',
+    useAnimations: true,
+    forecastInterval: 1
+}
+
 export const useSettingsStore = defineStore('settings', {
     state: (): State => {
         return {
-            settings: JSON.parse(localStorage.getItem('settings') || JSON.stringify({
-                language: DefaultLanguage,
-                useLocation: true,
-                weatherRadar: true,
-                theme: 'blue',
-                useAnimations: true,
-                forecastInterval: 1
-            }))
+            settings: {
+                ...defaults,
+                ...JSON.parse(localStorage.getItem('settings') || JSON.stringify(defaults))
+            }
         }
     },
 
