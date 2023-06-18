@@ -64,6 +64,7 @@ export default defineComponent({
         pagination: true,
         gap: '2rem',
         arrows: false,
+        waitForTransition: true
       },
     }
   },
