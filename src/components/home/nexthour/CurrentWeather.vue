@@ -8,6 +8,7 @@
           ref="splide"
           :options="options"
           @splide:move="handleSlide"
+          @splide:drag="handleDragStart"
       >
         <SplideSlide
             v-for="fav in locations"
@@ -37,7 +38,7 @@ import {useFavouritesStore, useWeatherStore} from "@/stores";
 import type { Splide } from "@splidejs/vue-splide";
 
 export default defineComponent({
-  name: "CurrentWeather.vue",
+  name: "CurrentWeather",
   components: {
     LocationItem,
   },
@@ -61,11 +62,14 @@ export default defineComponent({
         perPage: 1,
         perMove: 1,
         flickMaxPages: 1,
+        flickPower: 300,
         pagination: true,
         gap: '2rem',
         arrows: false,
-        waitForTransition: true
+        waitForTransition: false
       },
+      slideTimeout: null as null | ReturnType<typeof setTimeout>,
+      dragging: false
     }
   },
   activated() {
@@ -119,7 +123,13 @@ export default defineComponent({
   },
   methods: {
     async handleSlide( splide: typeof Splide, index: number ) {
-      await this.weatherStore.changeLocation(this.locations[index]);
+      if (this.slideTimeout) clearTimeout(this.slideTimeout);
+      this.slideTimeout = setTimeout(() => {
+        this.weatherStore.changeLocation(this.locations[index]);
+      }, 1000);
+    },
+    handleDragStart() {
+      if (this.slideTimeout) clearTimeout(this.slideTimeout);
     },
     getHourWeather(weather: WeatherType | undefined): HourWeather {
       if (!weather) return undefined as unknown as HourWeather;

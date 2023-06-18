@@ -36,8 +36,7 @@
       && settingsStore.weatherRadar
       && weatherStore.currentLocation.country === 'Finland'"
     />
-    <Observations v-if="!isLoading && weatherStore.currentLocation.country === 'Finland'"
-                  :location="weatherStore.currentLocation" />
+    <Observations v-if="!isLoading && weatherStore.currentLocation.country === 'Finland'" />
     <Footer />
   </main>
 </template>

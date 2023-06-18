@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <BackNavigation class="navigation">
+    <BackNavigation>
       <input
           type="text"
           :placeholder="`${$t('settings.inputLocation')}, ${$t('settings.forExample')}: Kaivopuisto Helsinki`"
@@ -116,9 +116,6 @@ export default defineComponent({
 <style scoped>
 .main {
   width: 100%;
-}
-.navigation {
-  background-color: var(--backgroundSettingsItem);
 }
 .input {
   width: 100%;

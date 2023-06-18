@@ -283,10 +283,13 @@ export function getObservationsForClosestStations(lat: number, lon: number, coun
     return new Promise((resolve, reject) => {
         getClosestStations(lat, lon, count).then((stations) => {
             const promises = stations.map((station) => {
-                return getObservationsForStation(station);
+                return getObservationsForStation(station).catch((error) => {
+                    console.log(error);
+                    return null;
+                });
             });
             Promise.all(promises).then((values) => {
-                resolve(values);
+                resolve(values.filter((value) => value != null) as Array<ObservationStation>);
             }).catch((error) => {
                 reject(error);
             });
@@ -320,6 +323,10 @@ function getObservationsForStation(station: ObservationStationLocation) {
     return new Promise((resolve, reject) => {
         getXml(url).then((json) => {
             const data = json['wfs:FeatureCollection']['wfs:member'];
+            if(!data) {
+                reject('No data for station ' + station.identifier);
+                return;
+            }
             const temperatureHistory = parseTimeSeriesObservation(data[1]).filter((item) => !isNaN(item.value));
             const precipitationHistory = parseTimeSeriesObservation(data[6]).filter((item) => !isNaN(item.value));
             const weather = {

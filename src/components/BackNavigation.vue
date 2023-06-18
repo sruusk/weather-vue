@@ -14,7 +14,7 @@ import {defineComponent} from 'vue';
 import BackArrowIcon from "@/components/icons/BackArrowIcon.vue";
 
 export default defineComponent({
-  name: "BackNavigation.vue",
+  name: "BackNavigation",
   components: {
     BackArrowIcon
   }
