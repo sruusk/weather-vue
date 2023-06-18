@@ -66,7 +66,8 @@ export default defineComponent({
         pagination: true,
         gap: '2rem',
         arrows: false,
-        waitForTransition: false
+        waitForTransition: false,
+        autoplay: false
       },
       slideTimeout: null as null | ReturnType<typeof setTimeout>,
       dragging: false

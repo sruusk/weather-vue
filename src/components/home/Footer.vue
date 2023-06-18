@@ -25,6 +25,7 @@ export default defineComponent({
   align-items: center;
   background-color: var(--backgroundLight);
   flex-direction: column;
+  max-height: 100px
 }
 .logo {
   height: 84px;
