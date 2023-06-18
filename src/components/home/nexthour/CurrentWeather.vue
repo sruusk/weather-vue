@@ -21,7 +21,7 @@
           <LocationItem
               v-else
               :weather="nextHourWeather"
-              class="item current-location"
+              class="item"
           />
         </SplideSlide>
       </Splide>
@@ -158,7 +158,7 @@ export default defineComponent({
 }
 
 /*noinspection CssUnusedSymbol*/
-.main :deep([role="presentation"]):nth-of-type(1) .splide__pagination__page {
+.main > .isLocation :deep([role="presentation"]):nth-of-type(1) .splide__pagination__page {
   background-image: url("@/assets/images/location.svg") !important;
   filter: brightness(0.8);
   background-size: 40%;
@@ -171,7 +171,7 @@ export default defineComponent({
 }
 
 /*noinspection CssUnusedSymbol*/
-.main :deep([role="presentation"]):nth-of-type(1) .splide__pagination__page.is-active {
+.main > .isLocation :deep([role="presentation"]):nth-of-type(1) .splide__pagination__page.is-active {
   filter: brightness(1);
 }
 </style>

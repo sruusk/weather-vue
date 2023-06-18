@@ -37,10 +37,10 @@ export default defineComponent({
     }
   },
   created() {
-      window.addEventListener("resize", this.myEventHandler);
+      window.addEventListener("resize", this.resizeHandler);
   },
   unmounted() {
-      window.removeEventListener("resize", this.myEventHandler);
+      window.removeEventListener("resize", this.resizeHandler);
   },
   activated() {
     if(this.chartObject !== null) this.chartObject.resize();
@@ -189,7 +189,7 @@ export default defineComponent({
         minute: "2-digit",
       });
     },
-    myEventHandler() { // Resize chart after window resize event finished
+    resizeHandler() { // Resize chart after window resize event finished
       clearTimeout(this.windowResizeTimeout);
       this.windowResizeTimeout = setTimeout(() => {
         this.chartObject.resize();
