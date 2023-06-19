@@ -289,7 +289,10 @@ export function getObservationsForClosestStations(lat: number, lon: number, coun
                 });
             });
             Promise.all(promises).then((values) => {
-                resolve(values.filter((value) => value != null) as Array<ObservationStation>);
+                resolve(
+                    (values.filter((value) => value != null) as Array<ObservationStation>)
+                        .filter((station) => station.temperatureHistory?.length)
+                );
             }).catch((error) => {
                 reject(error);
             });
