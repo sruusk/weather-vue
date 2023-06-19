@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import Weather  from '@/weather';
+import Weather from "@/weather";
+import WeatherWorker from "@/workers/weather?worker";
 import {useFavouritesStore, useSettingsStore, useObservationsStore} from "@/stores";
 import type { Weather as WeatherType, ForecastLocation } from '@/types';
 
@@ -63,23 +64,49 @@ export const useWeatherStore = defineStore('weather', {
                 loadWeather(); // Geolocation not supported
             }
         },
-        async setGpsLocation(lat: number, lon: number) {
+        setGpsLocation(lat: number, lon: number) {
             console.log("Setting GPS location", lat, lon);
-            if(!lat || !lon) return;
-            const location = await Weather.getWeatherByLatLon(lat, lon);
-            if(!location.location.lat || !location.location.lon){
-                location.location.lat = lat;
-                location.location.lon = lon;
-            }
-            this.currentWeather = location;
-            this.locationWeather = location;
-            useObservationsStore().changeLocation(location.location);
+            return new Promise<void>((resolve) => {
+                if(!lat || !lon) return resolve();
+                const setLocation = (weather: WeatherType) => {
+                    if(!weather.location.lat || !weather.location.lon){
+                        weather.location.lat = lat;
+                        weather.location.lon = lon;
+                    }
+                    this.currentWeather = weather;
+                    this.locationWeather = weather;
+                    useObservationsStore().changeLocation(weather.location);
+                    resolve();
+                }
+                if(window.Worker) {
+                    const worker = new WeatherWorker();
+                    worker.onmessage = (event) => {
+                        setLocation(event.data as WeatherType);
+                    }
+                    worker.postMessage({ lat, lon });
+                } else Weather.getWeatherByLatLon(lat, lon).then(setLocation);
+            });
         },
-        async changeLocation(location: ForecastLocation) {
-            if(!location || (location.lat === this.currentLocation?.lat && location.lon === this.currentLocation?.lon)) return;
-            if(location.country === 'Finland') useObservationsStore().changeLocation(location);
-            this.currentWeather = await Weather.getWeatherByLatLon(location.lat, location.lon);
-            this.currentWeather.location = location;
+        changeLocation(location: ForecastLocation) {
+            return new Promise<void>((resolve) => {
+                if( !location
+                    || (location.lat === this.currentLocation?.lat && location.lon === this.currentLocation?.lon)
+                ) return resolve();
+                if(location.country === 'Finland') useObservationsStore().changeLocation(location);
+                if(window.Worker) {
+                    const worker = new WeatherWorker();
+                    worker.onmessage = (event) => {
+                        this.currentWeather = event.data as WeatherType;
+                        this.currentWeather.location = location;
+                        resolve();
+                    }
+                    worker.postMessage({ lat: location.lat, lon: location.lon });
+                } else Weather.getWeatherByLatLon(location.lat, location.lon).then((weather) => {
+                    this.currentWeather = weather;
+                    this.currentWeather.location = location;
+                    resolve();
+                });
+            });
         }
     },
 
