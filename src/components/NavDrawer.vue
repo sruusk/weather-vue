@@ -17,6 +17,9 @@
     >
       {{ $t("routes.install") }}
     </NavItem>
+    <div class="footer">
+      <span class="version">{{ $t("version:") }} {{ EXECUTION_NUMBER || "dev" }}</span>
+    </div>
   </div>
 </template>
 
@@ -43,6 +46,11 @@ export default defineComponent({
     },
   },
   emits: ["close", "install"],
+  data() {
+    return {
+      EXECUTION_NUMBER: import.meta.env.VITE_EXECUTION_NUMBER,
+    };
+  },
   computed: {
     routes() {
       return routes.filter(route => route.showInMenu)
@@ -95,5 +103,22 @@ export default defineComponent({
   min-width: 200px;
   width: 200px;
   height: 30px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  min-width: calc(min(80vw, max(3/4 * 100vh, 600px) * 0.8));
+  left: 0;
+  right: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  text-transform: capitalize;
+}
+.version {
+  color: lightgray;
+  font-size: 0.8em;
 }
 </style>

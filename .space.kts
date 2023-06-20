@@ -32,6 +32,7 @@ job("Deploy") {
         env["passwd"] = Secrets("weather-pass")
         env["VITE_OPEN_WEATHER"] = Secrets("openweather")
         env["SENTRY_AUTH_TOKEN"] = Secrets("sentry")
+        env["VITE_EXECUTION_NUMBER"] = env["JB_SPACE_EXECUTION_NUMBER"]
         shellScript {
             interpreter = "/bin/sh"
             content = """

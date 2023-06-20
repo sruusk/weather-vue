@@ -231,7 +231,7 @@ export default defineConfig({
             }
         }),
         sentryVitePlugin({
-            org: "samuli-ruuskanen",
+            org: "a32",
             project: "weather-vue",
 
             // Auth tokens can be obtained from https://sentry.io/settings/account/api/auth-tokens/
