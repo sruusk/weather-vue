@@ -31,6 +31,7 @@ job("Deploy") {
     container("Run deploy script", image = "node:16") {
         env["passwd"] = Secrets("weather-pass")
         env["VITE_OPEN_WEATHER"] = Secrets("openweather")
+        env["SENTRY_AUTH_TOKEN"] = Secrets("sentry")
         shellScript {
             interpreter = "/bin/sh"
             content = """
