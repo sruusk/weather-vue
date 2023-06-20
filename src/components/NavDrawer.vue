@@ -18,7 +18,7 @@
       {{ $t("routes.install") }}
     </NavItem>
     <div class="footer">
-      <span class="version">{{ $t("version:") }} {{ EXECUTION_NUMBER || "dev" }}</span>
+      <span class="version">{{ $t("version") }}: {{ EXECUTION_NUMBER || "dev" }}</span>
     </div>
   </div>
 </template>
