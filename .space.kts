@@ -29,10 +29,10 @@ job("Deploy") {
 
 
     container("Run deploy script", image = "node:16") {
-        env["passwd"] = Secrets("weather-pass")
-        env["VITE_OPEN_WEATHER"] = Secrets("openweather")
-        env["SENTRY_AUTH_TOKEN"] = Secrets("sentry")
-        env["VITE_EXECUTION_NUMBER"] = env["JB_SPACE_EXECUTION_NUMBER"]
+        env["passwd"] = "{{ project:weather-pass }}"
+        env["VITE_OPEN_WEATHER"] = "{{ project:openweather }}"
+        env["SENTRY_AUTH_TOKEN"] = "{{ project:sentry }}"
+        env["VITE_EXECUTION_NUMBER"] = "{{ run:number }}"
         shellScript {
             interpreter = "/bin/sh"
             content = """
