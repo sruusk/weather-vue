@@ -88,21 +88,22 @@ export default defineComponent({
     tempPrefix(temp: number) {
       return temp > 0 ? "+" : "-";
     },
-    share() {
+    async share() {
       this.loading = true;
-      this.captureNodeScreenshot().then((image: any) => {
-        navigator.share({
+      try {
+        const image: any = await this.captureNodeScreenshot();
+        await navigator.share({
           title: 'Weather',
           text: `${this.$t('home.nextHourForecastFor')} ${this.weather.location.name}, ${this.weather.location.region}`,
           url: "https://weather.a32.fi",
           files: [image]
-        }).catch((error: any) => {
-          console.log('Error sharing', error);
-          window.alert('Error sharing');
-        }).finally(() => {
-          this.loading = false;
         });
-      });
+      } catch (error) {
+        console.log('Error sharing', error);
+        window.alert('Error sharing');
+      } finally {
+        this.loading = false;
+      }
     },
     captureNodeScreenshot() {
       return new Promise(resolve => {
