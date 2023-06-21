@@ -17,12 +17,10 @@
           <LocationItem
               v-if="!fav.gps"
               :weather="favouritesStore.getFavouriteWeather(fav) || getHourWeather(weatherStore.currentWeather)"
-              class="item"
           />
           <LocationItem
               v-else
               :weather="nextHourWeather"
-              class="item"
           />
         </SplideSlide>
       </Splide>
@@ -159,11 +157,6 @@ export default defineComponent({
   background-image: var(--backgroundGradient);
   border-bottom: 1px solid rgba(145, 149, 194, 0.2);
   box-shadow: #00000070 0 0 5px 3px;
-  contain: content;
-}
-
-.item {
-  padding: 10px;
   contain: content;
 }
 

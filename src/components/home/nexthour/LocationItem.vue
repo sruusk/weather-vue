@@ -1,6 +1,6 @@
 <!--suppress JSVoidFunctionReturnValueUsed -->
 <template>
-  <div v-if="weather && Object.keys(weather).length" ref="item">
+  <div v-if="weather && Object.keys(weather).length" ref="item" class="item">
     <h2 v-if="weather.location.region">
       {{ weather.location.name }}, {{ region }}
     </h2>
@@ -16,7 +16,9 @@
     <div class="details">
       <div class="feelslike-row">
         <div class="time">
-          <ShareButton @click="share" v-if="canShare">{{ $t('home.share') }}</ShareButton>
+          <ShareButton class="share-button" @click="share" v-if="canShare">
+            {{ loading ? `${$t('home.loading')}...` : $t('home.share') }}
+          </ShareButton>
           <ClockIcon class="timeIcon" />
           <span class="time-value">{{ weather.time }}</span>
         </div>
@@ -31,7 +33,7 @@
 import type { HourWeather } from "@/types";
 import { defineComponent, ref } from 'vue';
 // @ts-ignore
-import domtoimage from 'dom-to-image-more';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import countries from "i18n-iso-countries";
 import ClockIcon from "@/components/icons/ClockIcon.vue";
 import ShareButton from "@/components/home/nexthour/ShareButton.vue";
@@ -87,6 +89,7 @@ export default defineComponent({
       return temp > 0 ? "+" : "-";
     },
     share() {
+      this.loading = true;
       this.captureNodeScreenshot().then((image: any) => {
         navigator.share({
           title: 'Weather',
@@ -96,16 +99,24 @@ export default defineComponent({
         }).catch((error: any) => {
           console.log('Error sharing', error);
           window.alert('Error sharing');
+        }).finally(() => {
+          this.loading = false;
         });
       });
     },
     captureNodeScreenshot() {
       return new Promise(resolve => {
-        domtoimage.toBlob(this.item as any, { bgcolor: '#3a4da5' })
-            .then(function (blob : any) {
+        toBlob(this.item as any, {
+          backgroundColor: '#3a4da5',
+          filter: (node: any) => {
+            const exclusionClasses = ['share-button'];
+            return !exclusionClasses.some((classname) => node.classList?.contains(classname));
+          }})
+            .then(function (blob) {
+              // @ts-ignore
               const file = new File([blob], 'weather.png', { type: 'image/png' });
               resolve(file);
-            }).catch(function (error: any) {
+            }).catch(function (error) {
               console.error('oops, something went wrong!', error);
               window.alert('Error sharing');
             });
@@ -116,6 +127,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.item {
+  padding: 10px;
+  contain: content;
+}
 h2 {
   font-size: 1.1rem;
   color: white;
