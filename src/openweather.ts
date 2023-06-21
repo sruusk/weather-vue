@@ -126,7 +126,7 @@ function oneCallToWeather(forecastList: any): OpenWeather {
         const time = new Date(forecast.dt * 1000);
         weather.humidity.push({ time, value: forecast.humidity });
         weather.temperature.push({ time, value: forecast.temp });
-        weather.probabilityOfPrecipitation.push({ time, value: forecast.pop });
+        weather.probabilityOfPrecipitation.push({ time, value: Math.round(forecast.pop * 100) });
         weather.windDirection.push({ time, value: forecast.wind_deg });
         weather.windSpeed.push({ time, value: forecast.wind_speed });
         weather.windGust.push({ time, value: forecast.wind_gust });
@@ -157,7 +157,7 @@ function oneCallDailyToWeather(daily: any, start: Date): OpenWeather {
         Object.entries(times).forEach(([key, time]) => {
             weather.humidity.push({ time, value: forecast.humidity });
             weather.temperature.push({ time, value: forecast.temp[key] });
-            weather.probabilityOfPrecipitation.push({ time, value: forecast.pop });
+            weather.probabilityOfPrecipitation.push({ time, value: Math.round(forecast.pop * 100) });
             weather.windDirection.push({ time, value: forecast.wind_deg });
             weather.windSpeed.push({ time, value: forecast.wind_speed });
             weather.windGust.push({ time, value: forecast.wind_gust });
@@ -175,7 +175,7 @@ function toWeather(forecastList: any): OpenWeather {
         const time = new Date(forecast.dt * 1000);
         weather.humidity.push({ time, value: forecast.main.humidity });
         weather.temperature.push({ time, value: forecast.main.temp });
-        weather.probabilityOfPrecipitation.push({ time, value: forecast.pop });
+        weather.probabilityOfPrecipitation.push({ time, value: Math.round(forecast.pop * 100) });
         weather.windDirection.push({ time, value: forecast.wind.deg });
         weather.windSpeed.push({ time, value: forecast.wind.speed });
         weather.windGust.push({ time, value: forecast.wind.gust });
