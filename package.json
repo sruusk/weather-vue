@@ -15,7 +15,6 @@
     "@fmidev/metoclient": "^6.8.13",
     "@fmidev/smartmet-alert-client": "^3.8.4",
     "@intlify/unplugin-vue-i18n": "0.8.2",
-    "@sentry/vue": "^7.56.0",
     "@splidejs/vue-splide": "github:rriixx/vue-splide#fix-type-errors",
     "chart.js": "^4.3.0",
     "dom-to-image-more": "^3.1.6",
@@ -30,6 +29,7 @@
     "vue-router": "^4.2.2"
   },
   "devDependencies": {
+    "@sentry/vue": "^7.56.0",
     "@sentry/vite-plugin": "^2.3.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/tsconfig": "^0.1.3",

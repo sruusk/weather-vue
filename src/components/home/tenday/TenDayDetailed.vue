@@ -23,7 +23,7 @@ export default defineComponent({
     const weatherStore = useWeatherStore();
     return {
       slider,
-      weatherStore
+      weatherStore,
     }
   },
   components: {
@@ -51,13 +51,20 @@ export default defineComponent({
       this.getDayPositions();
     });
   },
+  activated() {
+    this.$nextTick(() => {
+      this.getDayPositions();
+      this.$nextTick(() => {
+        if(!this.displayedDay) return;
+        this.scrollToDay(this.displayedDay, true);
+      });
+    });
+  },
   watch: {
     selectedDay: {
       handler: function () {
         if(!this.selectedDay) return;
-        // @ts-ignore
-        this.slider?.querySelector(`#ten-day-detailed-${this.selectedDay.getDate()}`)
-            .scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        this.scrollToDay(this.selectedDay);
       },
       deep: true
     },
@@ -65,8 +72,9 @@ export default defineComponent({
       this.$nextTick(() => {
         this.getDayPositions();
         this.goToDay(this.days?.[0]);
+        if(this.days) this.scrollToDay(this.days?.[0], true);
       });
-    }
+    },
   },
   computed: {
     isMobile() {
@@ -100,6 +108,7 @@ export default defineComponent({
     getDayPositions() {
       // @ts-ignore
       const children = this.slider?.children;
+      this.dayPositions = {};
       for(let i = 0; i < children.length; i++) {
           const child = children[i];
           // @ts-ignore
@@ -108,6 +117,11 @@ export default defineComponent({
           if(!date) continue;
           this.dayPositions[position] = date;
       }
+    },
+    scrollToDay(date: Date, instant = false) {
+      // @ts-ignore
+      this.slider?.querySelector(`#ten-day-detailed-${date.getDate()}`)
+          .scrollIntoView({ behavior: instant ? 'instant' : 'smooth', block: 'nearest', inline: 'start' });
     }
   },
 })
