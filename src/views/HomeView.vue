@@ -156,6 +156,7 @@ main::-webkit-scrollbar {
   margin-top: 50px;
   font-size: 18px;
   font-weight: 400;
+  width: max-content;
 }
 .drop-enter-active, .drop-leave-active {
   transition: height 1s ease-in-out, margin 1s ease-in-out;

@@ -119,9 +119,15 @@ export default defineComponent({
       }
     },
     scrollToDay(date: Date, instant = false) {
+      const left = Object.entries(this.dayPositions).find(([, day]) => day.getDate() === date.getDate());
+      if(!left) return;
+      // @ts-ignore
+      this.slider?.scrollTo({ left: parseInt(left[0]), behavior: instant ? 'instant' : 'smooth' });
+      /*
       // @ts-ignore
       this.slider?.querySelector(`#ten-day-detailed-${date.getDate()}`)
-          .scrollIntoView({ behavior: instant ? 'instant' : 'smooth', block: 'nearest', inline: 'start' });
+          .scrollIntoView({ behavior: instant ? 'instant' : 'smooth', block: "nearest", inline: 'start' });
+       */
     }
   },
 })
