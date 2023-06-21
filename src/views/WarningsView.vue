@@ -129,4 +129,8 @@ export default defineComponent({
   display: flex;
   justify-content: center;
 }
+.alert-client :deep(h3),
+.alert-client :deep(nav) {
+  margin-left: 10px !important;
+}
 </style>
