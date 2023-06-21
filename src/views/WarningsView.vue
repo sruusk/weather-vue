@@ -40,32 +40,12 @@ export default defineComponent({
   },
   data() {
     return {
-      loading: true
+      loading: true,
+      vue: null
     }
   },
   created() {
-    setTimeout(() => {
-      const lang = this.settingsStore.language;
-      // @ts-ignore
-      const day: string = this.$route.params.day || 0;
-      // @ts-ignore
-      new Vue({
-        el: '#alert-client-app', // @ts-ignore
-        render: function(h) { // @ts-ignore
-          return h(SmartMetAlertClient, {
-            props: {
-              language: lang,
-              theme: 'dark',
-              selectedDay: parseInt(day),
-              staticDays: true,
-              startFrom: 'updated',
-              regionListEnabled: true
-            }
-          });
-        }
-      });
-    }, 300); // Delay to allow the nav drawer to close
-
+    setTimeout(this.create, 300); // Delay to allow the nav drawer to close
     this.waitForLoad();
   },
   activated() { // @ts-ignore
@@ -73,6 +53,12 @@ export default defineComponent({
       const days = this.alertClient?.querySelectorAll(".nav-item > a"); // @ts-ignore
       if(days) days[this.$route.params.day].click();
     }
+  },
+  watch: {
+    "settingsStore.language": function() {
+      // @ts-ignore
+      this.vue.lang = this.settingsStore.language;
+    },
   },
   methods: {
     waitForLoad() {
@@ -84,6 +70,29 @@ export default defineComponent({
           this.waitForLoad();
         }
       }, 500);
+    },
+    create() {
+      const data = {
+        lang: this.settingsStore.language, // @ts-ignore
+        day: parseInt(this.$route.params.day || 0)
+      }
+      // @ts-ignore
+      this.vue = new Vue({
+        el: '#alert-client-app', // @ts-ignore
+        data: data,
+        render: function(h: any) { // @ts-ignore
+          return h(SmartMetAlertClient, {
+            props: {
+              language: this.lang,
+              theme: 'dark',
+              selectedDay: this.day,
+              staticDays: true,
+              startFrom: 'updated',
+              regionListEnabled: true
+            }
+          });
+        }
+      });
     }
   }
 })
