@@ -155,8 +155,7 @@ export default defineComponent({
 <style scoped>
 .main {
   height: 280px;
-  width: calc(100% - 20px);
-  padding: calc(env(titlebar-area-height, 0px) / 2 + 60px) 10px 0 10px;
+  padding: calc(env(titlebar-area-height, 0px) / 2 + 60px) 0 0 0;
   background-image: var(--backgroundGradient);
   border-bottom: 1px solid rgba(145, 149, 194, 0.2);
   box-shadow: #00000070 0 0 5px 3px;
@@ -164,8 +163,7 @@ export default defineComponent({
 }
 
 .item {
-  width: 100%;
-  padding: 10px 0;
+  padding: 10px;
   contain: content;
 }
 
