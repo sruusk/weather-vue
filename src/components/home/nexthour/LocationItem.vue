@@ -89,6 +89,7 @@ export default defineComponent({
       return temp > 0 ? "+" : "-";
     },
     async share() {
+      if(this.loading) return;
       this.loading = true;
       try {
         const image: any = await this.captureNodeScreenshot();
