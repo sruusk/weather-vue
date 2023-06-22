@@ -4,36 +4,44 @@
       <div>
         {{ $t('home.weatherRadar') }}
       </div>
-      <ReloadIcon class="reload-icon" @click="reloadRadar" />
-    </div>
-    <div class="radar" :class="{ 'invert': themeStore.theme.invertRadar }">
-      <div id="fmi-animation-time" ref="animationTime" />
-      <div id="fmi-animator" class="fmi-animator" ref="animator" />
-      <div id="fmi-animation-time-options"
-           :style="showTimeOptions ? 'display: unset;' : 'display: none;'" >
-        <div id="fmi-time-option-15m"
-             class="fmi-time-option"
-             :class="{selected: timeStep === 15}"
-              @click.stop="timeStep = 15; setAnimationTime();">15</div>
-        <div id="fmi-time-option-30m"
-             class="fmi-time-option"
-              :class="{selected: timeStep === 30}"
-              @click.stop="timeStep = 30; setAnimationTime();">30</div>
-        <div id="fmi-time-option-60m" class="fmi-time-option"
-              :class="{selected: timeStep === 60}"
-              @click.stop="timeStep = 60; setAnimationTime();">60</div>
+      <div>
+        <div ref="zoom" class="zoom"/>
+        <ReloadIcon @click="reloadRadar"/>
       </div>
+    </div>
+    <div :class="{ 'invert': themeStore.theme.invertRadar }" class="radar">
+      <div id="fmi-animation-time" ref="animationTime"/>
+      <div id="fmi-animator" ref="animator" class="fmi-animator"/>
+      <div id="fmi-animation-time-options"
+           :style="showTimeOptions ? 'display: unset;' : 'display: none;'">
+        <div id="fmi-time-option-15m"
+             :class="{selected: timeStep === 15}"
+             class="fmi-time-option"
+             @click.stop="timeStep = 15; setAnimationTime();">15
+        </div>
+        <div id="fmi-time-option-30m"
+             :class="{selected: timeStep === 30}"
+             class="fmi-time-option"
+             @click.stop="timeStep = 30; setAnimationTime();">30
+        </div>
+        <div id="fmi-time-option-60m" :class="{selected: timeStep === 60}"
+             class="fmi-time-option"
+             @click.stop="timeStep = 60; setAnimationTime();">60
+        </div>
+      </div>
+      <MarkerIcon class="marker"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 // @ts-nocheck
-import { defineComponent, ref } from 'vue';
+import {defineComponent, ref} from 'vue';
 import MarkerIcon from "@/components/icons/MarkerIcon.vue";
 import MetOClient from "@fmidev/metoclient";
+import Zoom from 'ol/control/Zoom.js';
 import config from "@/components/home/WeatherRadar/config.json";
-import {useThemeStore, useWeatherStore, useSettingsStore} from "@/stores";
+import {useSettingsStore, useThemeStore, useWeatherStore} from "@/stores";
 import ReloadIcon from "@/components/icons/ReloadIcon.vue";
 
 export default defineComponent({
@@ -51,12 +59,14 @@ export default defineComponent({
   setup() {
     const animationTime = ref(null);
     const animator = ref(null);
+    const zoom = ref(null);
     const themeStore = useThemeStore();
     const weatherStore = useWeatherStore();
 
     return {
       animationTime,
       animator,
+      zoom,
       themeStore,
       weatherStore,
     }
@@ -66,6 +76,7 @@ export default defineComponent({
       timeStep: 15,
       showTimeOptions: false,
       metoclient: null,
+      zoomCtrl: null,
       map: null,
       timeStepButton: null,
       timeSlider: null,
@@ -73,9 +84,9 @@ export default defineComponent({
     }
   },
   mounted() {
-    if(this.$route.name !== 'home') {
-        this.newLocation = true;
-        return;
+    if (this.$route.name !== 'home') {
+      this.newLocation = true;
+      return;
     }
 
     config.center = this.center;
@@ -87,10 +98,11 @@ export default defineComponent({
     });
   },
   beforeUnmount() {
-    if(this.metoclient) {
-        try {
-            this.metoclient.destroy();
-        } catch (e) {}
+    if (this.metoclient) {
+      try {
+        this.metoclient.destroy();
+      } catch (e) {
+      }
     }
   },
   watch: {
@@ -100,15 +112,15 @@ export default defineComponent({
     },
     'weatherStore.currentLocation': {
       handler: function () {
-        if(this.weatherStore.currentLocation.country !== "Finland") return;
-        if(this.$route.name === "home") this.$nextTick(() => {
+        if (this.weatherStore.currentLocation.country !== "Finland") return;
+        if (this.$route.name === "home") this.$nextTick(() => {
           this.updateLocation();
         });
         else this.newLocation = true;
       },
       deep: true,
     },
-    '$route'( to ) {
+    '$route'(to) {
       if (this.newLocation && to.name === "home") {
         // Wait for the map to be rendered before updating the location
         this.$nextTick(() => {
@@ -122,20 +134,31 @@ export default defineComponent({
     // convert from lat and long to ETRS89/UTM zone 35N (N-E)
     // (EPSG:3067) (ETRS89 / TM35FIN(E,N)) (https://epsg.io/3067)
     center() {
-      const { lat, lon } = this.weatherStore.currentLocation;
+      const {lat, lon} = this.weatherStore.currentLocation;
       const [x, y] = MetOClient.transform([lon, lat], 'EPSG:4326', 'EPSG:3067');
       return [x, y];
     }
   },
   methods: {
     renderCallback() {
-      if(this.autoPlay) this.metoclient.play({
+      if (this.autoPlay) this.metoclient.play({
         delay: 1000,
         time: Date.now()
       });
 
       this.map = this.metoclient.get('map');
       this.timeSlider = this.metoclient.get('timeSlider');
+
+
+      if(this.zoomCtrl) {
+        this.zoomCtrl.setMap(this.map);
+      } else {
+        this.zoomCtrl = new Zoom({
+          className: 'zoom',
+          target: this.zoom
+        });
+        this.map.addControl(this.zoomCtrl)
+      }
 
       this.timeStepButton = this.animator.querySelector('.fmi-metoclient-timeslider-step-button');
       this.timeStepButton.textContent = this.timeStep;
@@ -150,11 +173,11 @@ export default defineComponent({
       const time = this.timeStep;
       const newConfig = this.metoclient.get('options');
       newConfig.layers.find((layer: any) => layer.id === "radar").time.range =
-          `every ${time} minute for 4 times history`;
+        `every ${time} minute for 4 times history`;
       newConfig.layers.find((layer: any) => layer.id === "forecast").time.range =
-          `every ${time} minute for 4 times history AND every ${time} minute for 4 times future`;
+        `every ${time} minute for 4 times history AND every ${time} minute for 4 times future`;
       newConfig.layers.find((layer: any) => layer.id === "flash").time.range =
-          `every ${time} minute for 4 times history`;
+        `every ${time} minute for 4 times history`;
       this.metoclient.set('options', newConfig);
     },
     updateAnimationTime() {
@@ -164,17 +187,23 @@ export default defineComponent({
       config.center = this.center;
       console.log("Setting new location to MetOClient", config.center);
       try {
-          try {
-              this.metoclient.destroy();
-          } catch (e) {}
-          this.metoclient = new MetOClient(config);
-          this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
-              // statements to handle any exceptions
-              console.error("MetOClient render error", error);
-          });
+        try {
+          this.metoclient.destroy();
+        } catch (e) {
+        }
+        this.metoclient = new MetOClient(config);
+        this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
+          // statements to handle any exceptions
+          console.error("MetOClient render error", error);
+        });
       } catch (e) {
-          console.error("MetOClient error", e);
+        console.error("MetOClient error", e);
       }
+    },
+    updateZoom(zoom: number) {
+      const newConfig = this.metoclient.get('options');
+      newConfig.zoom = zoom;
+      this.metoclient.set('options', newConfig);
     },
     reloadRadar() {
       useSettingsStore().setWeatherRadar(false);
@@ -191,7 +220,7 @@ export default defineComponent({
 .weather-radar-container {
   width: 100%;
   height: 100vw;
-  max-height: calc(max(3/4 * 100vh, 600px));
+  max-height: calc(max(3 / 4 * 100vh, 600px));
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -199,6 +228,7 @@ export default defineComponent({
   background-color: var(--backgroundMediumLight);
   contain: content;
 }
+
 .header {
   height: 45px;
   display: flex;
@@ -206,18 +236,46 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
 }
+
 .header > div {
   margin-left: 12px;
   font-size: 14px;
   line-height: 45px;
   font-weight: 500;
   color: white;
+  display: flex;
+  align-items: center;
 }
-.header > svg {
+
+.header > div > * {
   margin-right: 12px;
-  width: 24px;
-  height: 24px;
+}
+
+.header > div > svg {
+  width: 30px;
+  height: 30px;
   fill: white;
+}
+
+.zoom {
+  height: 100%;
+}
+
+.zoom :deep(.zoom) {
+  position: relative;
+  background-color: unset;
+  display: flex;
+}
+
+.zoom :deep(.zoom button) {
+  width: 28px;
+  height: 28px;
+  margin: 0 5px 0 0;
+  border-radius: 50%;
+  border: white 2px solid;
+  background-color: unset;
+  color: white;
+  font-weight: 800;
 }
 
 .radar {
@@ -229,6 +287,7 @@ export default defineComponent({
 :global(.invert #fmi-animator .ol-layers) {
   filter: hue-rotate(180deg) saturate(1.5) invert(1);
 }
+
 .fmi-animator {
   width: 100%;
   height: 100%;
@@ -269,7 +328,7 @@ export default defineComponent({
 }
 
 /*noinspection CssUnusedSymbol*/
-#fmi-animation-time,#fmi-fullscreen-animation-time {
+#fmi-animation-time, #fmi-fullscreen-animation-time {
   z-index: 1000;
   position: absolute;
   margin: 10px;
@@ -286,6 +345,13 @@ export default defineComponent({
 /*noinspection CssUnusedSymbol*/
 #fmi-fullscreen-animation-time {
   top: 16px;
+}
+
+.marker {
+  position: absolute;
+  left: calc(50% - 8px);
+  top: calc(50% - 6px);
+  height: 26px;
 }
 </style>
 <style>
