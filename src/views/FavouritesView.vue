@@ -19,12 +19,20 @@
           {{ $t("settings.deleteAll") }}
         </div>
       </div>
-      <div class="favourite" v-for="fav in favouritesStore.favourites" :key="fav.name">
-        <div class="favourite-name">{{ fav.name }}, {{ translateRegion(fav) }}</div>
-        <div class="favourite-button" @click="favouritesStore.removeFavourite(fav)">
-          <div class="remove-button">-</div>
+      <draggable v-model="favouritesStore.favourites">
+        <div class="favourite" v-for="fav in favouritesStore.favourites" :key="fav.name">
+          <div class="drag-indicator">
+            <div class="arrows">
+              <span>▲</span>
+              <span>▼</span>
+            </div>
+          </div>
+          <div class="favourite-name">{{ fav.name }}, {{ translateRegion(fav) }}</div>
+          <div class="favourite-button" @click="favouritesStore.removeFavourite(fav)">
+            <div class="remove-button">-</div>
+          </div>
         </div>
-      </div>
+      </draggable>
     </div>
   </div>
 </template>
@@ -34,6 +42,7 @@ import {defineComponent, ref} from 'vue';
 import Weather from "@/weather";
 import countries from "i18n-iso-countries";
 import {useFavouritesStore, useSettingsStore} from "@/stores";
+import { VueDraggableNext } from 'vue-draggable-next'
 import BackNavigation from "@/components/BackNavigation.vue";
 import type {ForecastLocation} from "@/types";
 import ListSelection from "@/components/ListSelection.vue";
@@ -43,7 +52,8 @@ export default defineComponent({
   name: "FavouritesView",
   components: {
     ListSelection,
-    BackNavigation
+    BackNavigation,
+    draggable: VueDraggableNext
   },
   setup() {
     const searchInput = ref(null) as any
@@ -131,7 +141,7 @@ export default defineComponent({
   color: white;
   font-size: 12px;
 }
-.favourites-list > div {
+.favourites-list > div:first-of-type, .favourite {
   border-bottom: var(--backgroundLight) 1px solid;
 }
 .favourites-header {
@@ -155,9 +165,12 @@ export default defineComponent({
   align-items: center;
   margin: 0 20px;
   height: 50px;
+  cursor: grab;
 }
 .favourite-name {
   font-weight: 400;
+  width: 100%;
+  margin-left: 10px;
 }
 .favourite-button {
   cursor: pointer;
@@ -171,5 +184,16 @@ export default defineComponent({
   text-align: center;
   border-radius: 50%;
   background-color: darkred;
+}
+.drag-indicator {
+  display: flex;
+  flex-direction: row;
+}
+.arrows {
+  display: flex;
+  flex-direction: column;
+  height: 32px;
+  justify-content: center;
+  font-size: 8px;
 }
 </style>

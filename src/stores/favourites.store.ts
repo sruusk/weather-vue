@@ -85,6 +85,9 @@ export const useFavouritesStore = defineStore('favourites', {
                     resolve();
                 });
             });
+        },
+        setFavourites(favourites: ForecastLocation[]) {
+            this.favourites = favourites;
         }
     },
 

@@ -95,6 +95,15 @@ export default defineComponent({
       this.runAfterActive = () => {
         // @ts-ignore
         if(this.favouritesStore.favourites.length === 0) this.splide.go(0);
+        this.$nextTick(() => {
+          const currentLocation = this.weatherStore.currentLocation;
+          const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
+          // @ts-ignore
+          if(index != this.splide.index) {
+            // @ts-ignore
+            this.splide.go(index || 0);
+          }
+        });
         this.runAfterActive = undefined;
       }
       if(this.active) this.runAfterActive();
