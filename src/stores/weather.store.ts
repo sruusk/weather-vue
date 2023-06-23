@@ -51,7 +51,7 @@ export const useWeatherStore = defineStore('weather', {
                 this.status = "home.locating"
                 navigator.geolocation.getCurrentPosition((position) => {
                     this.status = "home.loadingForecast";
-                    console.log("Got location with accuracy", position.coords.accuracy);
+                    console.log("Got location with accuracy of", Math.round(position.coords.accuracy), "meters");
                     this.setGpsLocation(position.coords.latitude, position.coords.longitude).then(() => {
                         this.locatingComplete = true;
                         this.status = "";
