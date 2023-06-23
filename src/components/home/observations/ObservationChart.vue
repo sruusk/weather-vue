@@ -57,7 +57,6 @@ export default defineComponent({
       stepSize = Math.ceil((tempMax - tempMin) / 4);
       if((tempMax - tempMin) % stepSize !== 0) tempMax += stepSize - ((tempMax - tempMin) % stepSize);
       if((tempMax - tempMin) / stepSize < 4) tempMax += stepSize;
-      console.log(tempMin, tempMax, (tempMax - tempMin), (tempMax - tempMin) / stepSize, (tempMax - tempMin) % stepSize, stepSize)
     }
     if (this.temperature?.length) {
       datasets.push({
