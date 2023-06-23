@@ -48,8 +48,16 @@ export default defineComponent({
   mounted() {
     const datasets = [] as any[];
     let tempMin = 0;
-    //@ts-ignore
-    if(this.temperature?.length) tempMin = Math.min(...this.temperature.map((item) => item.value));
+    let tempMax = 0;
+    let stepSize = 1;
+    if(this.temperature?.length) {
+      tempMin = Math.floor(Math.min(...this.temperature.map((item) => item.value)));
+      tempMax = Math.ceil(Math.max(...this.temperature.map((item) => item.value)));
+      if(tempMax - tempMin < 5) tempMax = tempMin + 5;
+      stepSize = Math.ceil((tempMax - tempMin) / 4);
+      if((tempMax - tempMin) / stepSize < 4) tempMax += stepSize;
+      console.log(tempMin, tempMax, (tempMax - tempMin), (tempMax - tempMin) / stepSize, (tempMax - tempMin) % stepSize, stepSize)
+    }
     if (this.temperature?.length) {
       datasets.push({
         label: 'ºC',
@@ -99,8 +107,10 @@ export default defineComponent({
             beginAtZero: false,
             type: 'linear',
             alignToPixels: true,
-            suggestedMax: tempMin + 5,
+            min: tempMin,
+            max: tempMax,
             ticks: {
+              stepSize: stepSize,
               count: 5,
               color: [
                   "white",
