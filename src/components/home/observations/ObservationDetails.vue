@@ -28,7 +28,7 @@ export default defineComponent({
       measurements[this.$t('home.wind')] = `${this.station.windSpeed} m/s`;
       measurements[this.$t('home.windGust')] = `${this.station.windGust} m/s`;
       measurements[this.$t('home.pressure')] = `${this.station.pressure} hPa`;
-      measurements[this.$t('home.snowDepth')] = `${this.station.snowDepth} cm`;
+      measurements[this.$t('home.snowDepth')] = `${this.station.snowDepth ? Math.max(this.station.snowDepth, 0) : undefined} cm`;
       measurements[this.$t('home.cloudiness')] = `${this.cloudinessText} (${this.station.cloudiness}/8)`;
       measurements[this.$t('home.visibility')] = this.formattedVisibility;
       measurements[this.$t('home.precipitationRate')] = `${this.station.precipitation} mm/h`;
