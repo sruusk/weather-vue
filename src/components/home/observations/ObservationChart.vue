@@ -53,7 +53,7 @@ export default defineComponent({
     if(this.temperature?.length) {
       tempMin = Math.floor(Math.min(...this.temperature.map((item) => item.value)));
       tempMax = Math.ceil(Math.max(...this.temperature.map((item) => item.value)));
-      if(tempMax - tempMin < 5) tempMax = tempMin + 5;
+      if(tempMax - tempMin < 4) tempMax = tempMin + 4;
       stepSize = Math.ceil((tempMax - tempMin) / 4);
       if((tempMax - tempMin) % stepSize !== 0) tempMax += stepSize - ((tempMax - tempMin) % stepSize);
       if((tempMax - tempMin) / stepSize < 4) tempMax += stepSize;
