@@ -51,6 +51,7 @@ export const useWeatherStore = defineStore('weather', {
                 this.status = "home.locating"
                 navigator.geolocation.getCurrentPosition((position) => {
                     this.status = "home.loadingForecast";
+                    console.log("Got location with accuracy", position.coords.accuracy);
                     this.setGpsLocation(position.coords.latitude, position.coords.longitude).then(() => {
                         this.locatingComplete = true;
                         this.status = "";
@@ -58,6 +59,10 @@ export const useWeatherStore = defineStore('weather', {
                 }, () => {
                     console.log("Location denied");
                     loadWeather(); // Location denied
+                }, {
+                    enableHighAccuracy: true,
+                    maximumAge: 0,
+                    timeout: 5000
                 });
             } else {
                 console.log("Geolocation not supported");
