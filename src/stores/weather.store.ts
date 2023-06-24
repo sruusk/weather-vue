@@ -49,20 +49,30 @@ export const useWeatherStore = defineStore('weather', {
             else if (navigator.geolocation) {
                 console.log("Getting location...");
                 this.status = "home.locating"
-                navigator.geolocation.getCurrentPosition((position) => {
+                const positionCallback = (position: GeolocationPosition) => {
                     this.status = "home.loadingForecast";
                     console.log("Got location with accuracy of", Math.round(position.coords.accuracy), "meters");
                     this.setGpsLocation(position.coords.latitude, position.coords.longitude).then(() => {
                         this.locatingComplete = true;
                         this.status = "";
                     });
-                }, () => {
-                    console.log("Location denied");
-                    loadWeather(); // Location denied
+                };
+                navigator.geolocation.getCurrentPosition(positionCallback, (positionError) => {
+                    console.error(`Geolocation error ${positionError?.code} ${positionError?.message}`);
+                    if(positionError?.code === GeolocationPositionError.TIMEOUT) {
+                        navigator.geolocation.getCurrentPosition(positionCallback, () => {
+                            loadWeather();
+                        }, {
+                            enableHighAccuracy: false,
+                            maximumAge: 300000, // 5 minutes
+                            timeout: 5000
+                        });
+                    }
+                    else loadWeather(); // Location denied
                 }, {
                     enableHighAccuracy: true,
                     maximumAge: 0,
-                    timeout: 5000
+                    timeout: 10000
                 });
             } else {
                 console.log("Geolocation not supported");
