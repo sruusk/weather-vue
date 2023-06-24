@@ -74,10 +74,8 @@ export const useWeatherStore = defineStore('weather', {
             return new Promise<void>((resolve) => {
                 if(!lat || !lon) return resolve();
                 const setLocation = (weather: WeatherType) => {
-                    if(!weather.location.lat || !weather.location.lon){
-                        weather.location.lat = lat;
-                        weather.location.lon = lon;
-                    }
+                    weather.location.lat = lat;
+                    weather.location.lon = lon;
                     this.currentWeather = weather;
                     this.locationWeather = weather;
                     useObservationsStore().changeLocation(weather.location);
