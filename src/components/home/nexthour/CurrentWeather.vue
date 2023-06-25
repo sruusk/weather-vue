@@ -179,7 +179,7 @@ export default defineComponent({
   width: 20px !important;
   height: 20px !important;
   background-color: unset !important;
-  margin: 5px -2px 0 0;
+  margin: 5px 2px 0 0 !important;
 }
 
 /*noinspection CssUnusedSymbol*/

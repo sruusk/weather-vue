@@ -206,6 +206,7 @@ body {
   border-radius: 5px !important;
   width: 8px !important;
   height: 8px !important;
+  margin: 3px 7px !important;
 }
 /*noinspection CssUnusedSymbol*/
 .splide__pagination__page.is-active {
