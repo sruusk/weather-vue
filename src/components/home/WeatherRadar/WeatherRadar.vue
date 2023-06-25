@@ -48,7 +48,7 @@ export default defineComponent({
   name: "WeatherRadar.vue",
   components: {
     ReloadIcon,
-    MarkerIcon, // TODO: Add this to template
+    MarkerIcon,
   },
   props: {
     autoPlay: {
@@ -284,7 +284,7 @@ export default defineComponent({
 }
 
 /*noinspection CssUnusedSymbol*/
-:global(.invert #fmi-animator .ol-layers) {
+:deep(.invert #fmi-animator .ol-layers) {
   filter: hue-rotate(180deg) saturate(1.5) invert(1);
 }
 
@@ -352,6 +352,10 @@ export default defineComponent({
   left: calc(50% - 8px);
   top: calc(50% - 6px);
   height: 26px;
+}
+
+.invert .marker {
+  filter: hue-rotate(180deg) saturate(1.5) invert(1);
 }
 </style>
 <style>
