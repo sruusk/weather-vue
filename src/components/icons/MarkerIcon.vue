@@ -13,8 +13,10 @@
     </g>
   </svg>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'MarkerIcon',
   props: {
     fill: {
@@ -22,5 +24,5 @@ export default {
       default: '#15124E',
     }
   }
-}
+});
 </script>

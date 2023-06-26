@@ -6,7 +6,7 @@
       </div>
       <div>
         <div ref="zoom" class="zoom"/>
-        <ReloadIcon @click="reloadRadar"/>
+        <!-- <ReloadIcon @click="reloadRadar"/> -->
       </div>
     </div>
     <div :class="{ 'invert': themeStore.theme.invertRadar }" class="radar">
@@ -80,15 +80,9 @@ export default defineComponent({
       map: null,
       timeStepButton: null,
       timeSlider: null,
-      newLocation: false,
     }
   },
   mounted() {
-    if (this.$route.name !== 'home') {
-      this.newLocation = true;
-      return;
-    }
-
     config.center = this.center;
     // https://github.com/fmidev/metoclient#constructor
     this.metoclient = new MetOClient(config);
@@ -112,22 +106,9 @@ export default defineComponent({
     },
     'weatherStore.currentLocation': {
       handler: function () {
-        if (this.weatherStore.currentLocation.country !== "Finland") return;
-        if (this.$route.name === "home") this.$nextTick(() => {
-          this.updateLocation();
-        });
-        else this.newLocation = true;
+        this.updateLocation();
       },
       deep: true,
-    },
-    '$route'(to) {
-      if (this.newLocation && to.name === "home") {
-        // Wait for the map to be rendered before updating the location
-        this.$nextTick(() => {
-          this.updateLocation();
-        });
-        this.newLocation = false;
-      }
     },
   },
   computed: {
@@ -135,8 +116,7 @@ export default defineComponent({
     // (EPSG:3067) (ETRS89 / TM35FIN(E,N)) (https://epsg.io/3067)
     center() {
       const {lat, lon} = this.weatherStore.currentLocation;
-      const [x, y] = MetOClient.transform([lon, lat], 'EPSG:4326', 'EPSG:3067');
-      return [x, y];
+      return MetOClient.transform([lon, lat], 'EPSG:4326', 'EPSG:3067');
     }
   },
   methods: {
@@ -184,8 +164,11 @@ export default defineComponent({
       this.animationTime.textContent = this.timeSlider.getClock();
     },
     updateLocation() {
+      console.log("Setting new location to MetOClient", this.center);
+      this.metoclient.get('map').getView().setCenter(this.center);
+      /*
       config.center = this.center;
-      console.log("Setting new location to MetOClient", config.center);
+
       try {
         try {
           this.metoclient.destroy();
@@ -198,7 +181,7 @@ export default defineComponent({
         });
       } catch (e) {
         console.error("MetOClient error", e);
-      }
+      }*/
     },
     updateZoom(zoom: number) {
       const newConfig = this.metoclient.get('options');
