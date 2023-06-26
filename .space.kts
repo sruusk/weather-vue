@@ -29,6 +29,7 @@ job("Deploy") {
 
 
     container("Run deploy script", image = "node:16") {
+      	env["addr"] = "{{ project.address }}"
         env["passwd"] = "{{ project:weather-pass }}"
         env["VITE_OPEN_WEATHER"] = "{{ project:openweather }}"
         env["SENTRY_AUTH_TOKEN"] = "{{ project:sentry }}"
@@ -46,9 +47,9 @@ job("Deploy") {
                 apt update
                 apt install -y sshpass
                 Echo Removing previous deployment
-                sshpass -p ${'$'}passwd ssh weather@weather.a32.fi "rm -R dist && mkdir dist"
+                sshpass -p ${'$'}passwd ssh ${'$'}addr "rm -R dist && mkdir dist"
                 Echo Transferring files to server
-                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* weather@weather.a32.fi:/opt/www/weather/dist/
+                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* ${'$'}addr:/opt/www/weather/dist/
                 echo Deployment complete!
             """
         }
