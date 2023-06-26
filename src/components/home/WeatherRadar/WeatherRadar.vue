@@ -230,16 +230,6 @@ export default defineComponent({
   align-items: center;
 }
 
-.header > div > * {
-  margin-right: 12px;
-}
-
-.header > div > svg {
-  width: 30px;
-  height: 30px;
-  fill: white;
-}
-
 .zoom {
   height: 100%;
 }
@@ -253,7 +243,7 @@ export default defineComponent({
 .zoom :deep(.zoom button) {
   width: 28px;
   height: 28px;
-  margin: 0 5px 0 0;
+  margin: 0 12px 0 0;
   border-radius: 50%;
   border: white 2px solid;
   background-color: unset;
