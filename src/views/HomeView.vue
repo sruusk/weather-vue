@@ -87,7 +87,7 @@ export default defineComponent({
   },
   created() {
     if(!this.online) {
-      window.addEventListener("online", this.setOnline, { once: true });
+      window.addEventListener("online", () => { this.online = true; }, { once: true });
     }
   },
   emits: ["open"],
@@ -103,9 +103,6 @@ export default defineComponent({
     openSearch() {
       // @ts-ignore
       this.$router.push("/favourites");
-    },
-    setOnline() {
-      this.online = true;
     },
   },
 });

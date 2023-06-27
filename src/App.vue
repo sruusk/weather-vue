@@ -1,26 +1,28 @@
 <template>
   <NavDrawer
-      :open="drawerOpen"
       :is-installed="installed"
+      :open="drawerOpen"
       @close="closeDrawer"
-      @install="installPWA" />
+      @install="installPWA"
+  />
   <RouterView
-      @open="openDrawer"
-      @click="handleClick"
-      :class="{'open' : drawerOpen}"
+      id="router-view"
       v-slot="{ Component }"
-      id="router-view" >
+      :class="{'open' : drawerOpen}"
+      @click="closeDrawer"
+      @open="openDrawer"
+  >
     <keep-alive :include="['HomeView', 'WarningsView']">
-      <component :is="Component" />
+      <component :is="Component"/>
     </keep-alive>
   </RouterView>
 </template>
 
 <script lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import { defineComponent } from 'vue'
+import {RouterLink, RouterView} from 'vue-router'
+import {defineComponent} from 'vue'
 import NavDrawer from "@/components/NavDrawer.vue";
-import { useWeatherStore, useFavouritesStore, useSettingsStore, useThemeStore, useAlertsStore } from "@/stores";
+import {useAlertsStore, useFavouritesStore, useSettingsStore, useThemeStore, useWeatherStore} from "@/stores";
 
 export default defineComponent({
   name: 'App',
@@ -34,11 +36,13 @@ export default defineComponent({
     const favouritesStore = useFavouritesStore();
     const settingsStore = useSettingsStore();
     const themeStore = useThemeStore();
+    const alertsStore = useAlertsStore();
     return {
-        weatherStore,
-        favouritesStore,
-        settingsStore,
-        themeStore,
+      weatherStore,
+      favouritesStore,
+      settingsStore,
+      themeStore,
+      alertsStore,
     };
   },
   data() {
@@ -62,35 +66,30 @@ export default defineComponent({
   created() {
     this.themeStore.setTheme(this.settingsStore.theme);
     this.$i18n.locale = this.settingsStore.language;
-    if(navigator.onLine) {
+    if (navigator.onLine) {
       this.favouritesStore.init();
       this.weatherStore.init();
-    }
-    else window.addEventListener('online', () => {
+      this.alertsStore.init();
+    } else window.addEventListener('online', () => {
       this.favouritesStore.init();
       this.weatherStore.init();
-    }, { once: true });
+      this.alertsStore.init();
+    }, {once: true});
 
-    useAlertsStore().init();
   },
   mounted() {
-    if(!this.installed) this.installed = this.isInstalled();
+    if (!this.installed) this.installed = this.isInstalled();
   },
   methods: {
     closeDrawer() {
-      this.drawerOpen = false
+      this.drawerOpen = false;
     },
     openDrawer() {
-      this.drawerOpen = !this.drawerOpen
-    },
-    handleClick() {
-      if(this.drawerOpen) {
-        this.closeDrawer()
-      }
+      this.drawerOpen = true;
     },
     installPWA() {
       console.log('installing PWA');
-      if(this.deferredPrompt && !this.isInstalled()) {
+      if (this.deferredPrompt && !this.isInstalled()) {
         this.deferredPrompt.prompt();
         this.deferredPrompt.userChoice.then((choiceResult: any) => {
           if (choiceResult.outcome === 'accepted') {
@@ -104,14 +103,11 @@ export default defineComponent({
     },
     isInstalled() {
       //@ts-ignore For iOS
-      if(window.navigator.standalone) return true
-
+      if (window.navigator.standalone) return true
       // For Android
-      if(window.matchMedia('(display-mode: standalone)').matches) return true
-
+      if (window.matchMedia('(display-mode: standalone)').matches) return true
       // For Chromium on Windows
-      if(window.matchMedia('(display-mode: window-controls-overlay)').matches) return true
-
+      if (window.matchMedia('(display-mode: window-controls-overlay)').matches) return true
       // If neither is true, it's not installed
       return false
     }
@@ -126,21 +122,25 @@ export default defineComponent({
   font-weight: 100;
   src: local("Roboto Thin"), url("@/assets/fonts/Roboto-Thin.ttf") format("truetype");
 }
+
 @font-face {
   font-family: "Roboto";
   font-weight: 300;
   src: local("Roboto Light"), url("@/assets/fonts/Roboto-Light.ttf") format("truetype");
 }
+
 @font-face {
   font-family: "Roboto";
   font-weight: 500;
   src: local("Roboto Medium"), url("@/assets/fonts/Roboto-Medium.ttf") format("truetype");
 }
+
 @font-face {
   font-family: "Roboto";
   font-weight: normal;
   src: local("Roboto"), url("@/assets/fonts/Roboto-Regular.ttf") format("truetype");
 }
+
 @font-face {
   font-family: "Roboto";
   font-weight: bold;
@@ -155,7 +155,7 @@ export default defineComponent({
   display: flex;
   overflow-x: clip;
   width: 100%;
-  max-width: calc(max(3/4 * 100vh, 600px));
+  max-width: calc(max(3 / 4 * 100vh, 600px));
   background-color: var(--background);
 
   /* Default theme to help the editor resolve the variables */
@@ -166,7 +166,7 @@ export default defineComponent({
   --backgroundLight: #274498;
   --backgroundLighter: #3559b9;
   --backgroundLightest: #5582cd;
-  --backgroundGradient: linear-gradient(200deg,#5582cd 0%,#242282 100%);
+  --backgroundGradient: linear-gradient(200deg, #5582cd 0%, #242282 100%);
   --backgroundMediumLight: #253e80;
   --backgroundObservations: linear-gradient(180deg, #456fc8 0%, #242282 100%);
   --backgroundSettingsItem: #253478;
@@ -200,6 +200,7 @@ body {
   top: -1.5em !important;
   bottom: unset !important;
 }
+
 /*noinspection CssUnusedSymbol*/
 .splide__pagination__page {
   background-color: #FFFFFF7F !important;
@@ -208,11 +209,13 @@ body {
   height: 8px !important;
   margin: 3px 7px !important;
 }
+
 /*noinspection CssUnusedSymbol*/
 .splide__pagination__page.is-active {
   background-color: #fdfdfe !important;
   transform: unset !important;
 }
+
 /*noinspection CssUnusedSymbol*/
 .splide__pagination__page:hover {
   opacity: 1 !important;

@@ -1,7 +1,6 @@
 import {fileURLToPath, URL} from 'node:url'
 // @ts-ignore
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
-import { sentryVitePlugin } from "@sentry/vite-plugin";
 
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -230,14 +229,6 @@ export default defineConfig({
                 }],
             }
         }),
-        sentryVitePlugin({
-            org: "a32",
-            project: "weather-vue",
-
-            // Auth tokens can be obtained from https://sentry.io/settings/account/api/auth-tokens/
-            // and need `project:releases` and `org:read` scopes
-            authToken: process.env.SENTRY_AUTH_TOKEN,
-        }),
     ],
     resolve: {
         alias: {
@@ -249,6 +240,5 @@ export default defineConfig({
             esmExternals: true
         },
         target: 'esnext',
-        sourcemap: true,
     }
 })
