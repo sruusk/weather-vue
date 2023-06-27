@@ -28,7 +28,7 @@ job("Deploy") {
     }
 
     parameters {
-      text("address", value = "{{ project:address }}")
+      secret("address", value = "{{ project:address }}")
     }
     
     container("Run deploy script", image = "node:16") {
