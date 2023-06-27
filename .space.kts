@@ -33,6 +33,10 @@ job("Deploy") {
         env["VITE_OPEN_WEATHER"] = "{{ project:openweather }}"
         env["SENTRY_AUTH_TOKEN"] = "{{ project:sentry }}"
         env["VITE_EXECUTION_NUMBER"] = "{{ run:number }}"
+      	parameters {
+          text("address", value = "{{ project:address }}")
+        }
+        
         shellScript {
             interpreter = "/bin/sh"
             content = """
@@ -46,9 +50,9 @@ job("Deploy") {
                 apt update
                 apt install -y sshpass
                 Echo Removing previous deployment
-                sshpass -p ${'$'}passwd ssh {{ project:address }} "rm -R dist && mkdir dist"
+                sshpass -p ${'$'}passwd ssh {{ address }} "rm -R dist && mkdir dist"
                 Echo Transferring files to server
-                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* {{ project:address }}:/opt/www/weather/dist/
+                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* {{ address }}:/opt/www/weather/dist/
                 echo Deployment complete!
             """
         }
