@@ -27,16 +27,16 @@ job("Deploy") {
 		}
     }
 
-
+    parameters {
+      text("address", value = "{{ project:address }}")
+    }
+    
     container("Run deploy script", image = "node:16") {
         env["passwd"] = "{{ project:weather-pass }}"
         env["VITE_OPEN_WEATHER"] = "{{ project:openweather }}"
         env["SENTRY_AUTH_TOKEN"] = "{{ project:sentry }}"
         env["VITE_EXECUTION_NUMBER"] = "{{ run:number }}"
-      	parameters {
-          text("address", value = "{{ project:address }}")
-        }
-        
+
         shellScript {
             interpreter = "/bin/sh"
             content = """
