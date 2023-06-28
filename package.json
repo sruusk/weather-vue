@@ -26,6 +26,7 @@
     "suncalc": "^1.9.0",
     "vue": "^3.2.45",
     "vue-draggable-next": "^2.2.1",
+    "vue-mobile-detection": "^2.0.1",
     "vue-router": "^4.2.2"
   },
   "devDependencies": {

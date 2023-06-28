@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { createPinia } from "pinia";
 import router from './router'
+// @ts-ignore // No type definitions available
+import VueMobileDetection from "vue-mobile-detection";
 import countries from 'i18n-iso-countries';
 import VueSplide from '@splidejs/vue-splide';
 import './registerServiceWorker';
@@ -43,6 +45,7 @@ pinia.use(({ store }) => {
 const app = createApp(App)
 app.use(pinia)
 app.use(router)
+app.use(VueMobileDetection);
 app.use(i18n);
 app.use(VueSplide);
 
