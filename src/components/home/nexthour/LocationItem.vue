@@ -96,7 +96,7 @@ export default defineComponent({
         await navigator.share({
           title: 'Weather',
           text: `${this.$t('home.nextHourForecastFor')} ${this.weather.location.name}, ${this.weather.location.region}`,
-          url: location.protocol + '//' + location.hostname,
+          url: window.location.origin,
           files: [image]
         });
       } catch (error) {
