@@ -72,32 +72,28 @@ export default defineComponent({
     }
   },
   methods: {
-    search() {
+    async search() {
       this.searchInput.blur();
       this.searchString = this.searchString.trim();
-      if(this.searchString.includes(",")) {
-        const parts = this.searchString.split(",");
-        if(parts.length === 2) {
-          this.searchString = `${parts[0].trim()},${parts[1].trim()}`;
-        } else this.searchString = "Error!, Invalid input";
-      } else if(this.searchString.includes(" ")) {
+      let searchString = this.searchString;
+
+      if(searchString.includes(" ")) {
         const parts = this.searchString.split(" ");
-        if(parts.length === 2) {
-          this.searchString = `${parts[0].trim()},${parts[1].trim()}`;
-        } else this.searchString = "Error!, Invalid input";
+        if(parts.length > 1) searchString = `${parts.slice(0, parts.length - 1).join(" ").trim()},${parts[parts.length - 1].trim()}`;
+        console.log(searchString);
       }
 
-      Weather.getWeather(this.searchString).then((weather) => {
-        if(!weather.location.region) throw new Error("Invalid location");
+      let weather = await Weather.getWeather(searchString);
+      if(!weather.location.region && searchString.includes(','))
+        weather = await Weather.getWeather(searchString.replace(',', ' '));
+      if(weather.location.region) {
         this.favouritesStore.addFavourite(weather.location);
-      }).catch(() => {
-        findLocation(this.searchString).then(list => {
-          if(list?.length) this.selection = list;
-          else alert("No results found");
-        });
-      }).finally(() => {
-        this.searchString = "";
-      })
+      } else {
+        const list = await findLocation(this.searchString);
+        if(list?.length) this.selection = list;
+        else alert(this.$t('settings.noneFound'));
+      }
+      this.searchString = "";
     },
     handleSelect(selected: any) {
       const country = countries.getName(selected.country, 'en');

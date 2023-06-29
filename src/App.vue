@@ -85,7 +85,7 @@ export default defineComponent({
       this.drawerOpen = false;
     },
     openDrawer() {
-      this.drawerOpen = true;
+      this.drawerOpen = !this.drawerOpen;
     },
     installPWA() {
       console.log('installing PWA');

@@ -104,6 +104,7 @@
     "getWarnings": "Hae varoitukset",
     "favourites": "Suosikit",
     "deleteAll": "Poista kaikki",
+    "noneFound": "Ei hakutuloksia",
     "inputLocation": "Syötä sijainti",
     "forExample": "esimerkiksi",
     "animatedSymbols": "Animoidut kuvakkeet",
