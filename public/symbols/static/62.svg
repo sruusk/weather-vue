@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 0 64 64"
-   version="1.1"
-   id="svg336"
-   sodipodi:docname="62.svg"
-   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs340" />
-  <sodipodi:namedview
-     id="namedview338"
-     pagecolor="#505050"
-     bordercolor="#ffffff"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="1"
-     inkscape:deskcolor="#505050"
-     showgrid="false"
-     inkscape:zoom="15.65625"
-     inkscape:cx="31.968064"
-     inkscape:cy="32"
-     inkscape:window-width="2560"
-     inkscape:window-height="1377"
-     inkscape:window-x="2992"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg336" />
-  <path
-     d="M43.67,45.5H46.5a7,7,0,0,0,0-14l-.32,0a10.49,10.49,0,0,0-19.11-8,7,7,0,0,0-10.57,6,7.21,7.21,0,0,0,.1,1.14A7.5,7.5,0,0,0,18,45.5a4.19,4.19,0,0,0,.5,0v0"
-     fill="none"
-     stroke="#e5e7eb"
-     stroke-linecap="round"
-     stroke-linejoin="round"
-     stroke-width="3"
-     id="path324" />
-  <line
-     x1="23.815149"
-     y1="48.523014"
-     x2="23.035151"
-     y2="53.463017"
-     fill="none"
-     stroke="#33aaff"
-     stroke-linecap="round"
-     stroke-miterlimit="10"
-     stroke-width="2"
-     id="line326" />
-  <line
-     x1="31.262255"
-     y1="48.650761"
-     x2="30.482256"
-     y2="53.590763"
-     fill="none"
-     stroke="#33aaff"
-     stroke-linecap="round"
-     stroke-miterlimit="10"
-     stroke-width="2"
-     id="line328" />
-  <line
-     x1="38.32613"
-     y1="48.650757"
-     x2="37.546131"
-     y2="53.590759"
-     fill="none"
-     stroke="#33aaff"
-     stroke-linecap="round"
-     stroke-miterlimit="10"
-     stroke-width="2"
-     id="line330" />
-  <polygon
-     points="25 36 21 48 25 48 23 58 33 44 27 44 31 36 25 36"
-     fill="#f59e0b"
-     id="polygon332" />
-  <polygon
-     points="35 31 31 43 35 43 33 53 43 39 37 39 41 31 35 31"
-     fill="#f59e0b"
-     id="polygon334" />
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        viewBox="0 0 64 64"
+        version="1.1"
+        id="svg336"
+        sodipodi:docname="62.svg"
+        inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+        xmlns="http://www.w3.org/2000/svg"
+>
+    <defs
+            id="defs340"/>
+    <sodipodi:namedview
+            id="namedview338"
+            pagecolor="#505050"
+            bordercolor="#ffffff"
+            borderopacity="1"
+            inkscape:showpageshadow="0"
+            inkscape:pageopacity="0"
+            inkscape:pagecheckerboard="1"
+            inkscape:deskcolor="#505050"
+            showgrid="false"
+            inkscape:zoom="15.65625"
+            inkscape:cx="31.968064"
+            inkscape:cy="32"
+            inkscape:window-width="2560"
+            inkscape:window-height="1377"
+            inkscape:window-x="2992"
+            inkscape:window-y="-8"
+            inkscape:window-maximized="1"
+            inkscape:current-layer="svg336"/>
+    <path
+            d="M43.67,45.5H46.5a7,7,0,0,0,0-14l-.32,0a10.49,10.49,0,0,0-19.11-8,7,7,0,0,0-10.57,6,7.21,7.21,0,0,0,.1,1.14A7.5,7.5,0,0,0,18,45.5a4.19,4.19,0,0,0,.5,0v0"
+            fill="none"
+            stroke="#e5e7eb"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+            id="path324"/>
+    <line
+            x1="23.815149"
+            y1="48.523014"
+            x2="23.035151"
+            y2="53.463017"
+            fill="none"
+            stroke="#33aaff"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="2"
+            id="line326"/>
+    <line
+            x1="31.262255"
+            y1="48.650761"
+            x2="30.482256"
+            y2="53.590763"
+            fill="none"
+            stroke="#33aaff"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="2"
+            id="line328"/>
+    <line
+            x1="38.32613"
+            y1="48.650757"
+            x2="37.546131"
+            y2="53.590759"
+            fill="none"
+            stroke="#33aaff"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="2"
+            id="line330"/>
+    <polygon
+            points="25 36 21 48 25 48 23 58 33 44 27 44 31 36 25 36"
+            fill="#f59e0b"
+            id="polygon332"/>
+    <polygon
+            points="35 31 31 43 35 43 33 53 43 39 37 39 41 31 35 31"
+            fill="#f59e0b"
+            id="polygon334"/>
 </svg>
