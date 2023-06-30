@@ -29,6 +29,20 @@ export const useFavouritesStore = defineStore('favourites', {
                     await this.getWeather(favourite);
                 }
                 this.loading = false;
+
+                const loop = () => {
+                    const currentTime = new Date();
+                    const nextHour = new Date((new Date()).setHours(currentTime.getHours() + 1, 0, 0, 0));
+                    const timeout = nextHour - currentTime;
+                    setTimeout(async () => {
+                        this.favouriteWeathers = [];
+                        for (const favourite of this.favourites) {
+                            await this.getWeather(favourite);
+                        }
+                        loop();
+                    }, timeout);
+                }
+                loop();
             }
         },
         addFavourite(favourite: ForecastLocation) {
