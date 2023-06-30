@@ -87,7 +87,7 @@ export const useWeatherStore = defineStore('weather', {
                 setTimeout(() => {
                     const now = new Date();
                     this.currentWeather = Object.fromEntries(
-                        Object.entries(this.currentWeather).map([key, value] => {
+                        Object.entries(this.currentWeather).map(([key, value]) => {
                             if (Array.isArray(value))
                                 value = value.filter((point) => point.time >= now);
                             return [key, value];
