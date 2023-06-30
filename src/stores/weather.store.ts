@@ -78,6 +78,25 @@ export const useWeatherStore = defineStore('weather', {
                 console.log("Geolocation not supported");
                 loadWeather(); // Geolocation not supported
             }
+
+            // Update currentWeather every hour on the dot.
+            const loop = () => {
+                const currentTime = new Date();
+                const nextHour = new Date((new Date()).setHours(currentTime.getHours() + 1, 0, 0, 0));
+                const timeout = nextHour - currentTime;
+                setTimeout(() => {
+                    const now = new Date();
+                    this.currentWeather = Object.fromEntries(
+                        Object.entries(this.currentWeather).map([key, value] => {
+                            if (Array.isArray(value))
+                                value = value.filter((point) => point.time >= now);
+                            return [key, value];
+                        })
+                    );
+                    loop();
+                }, timeout);
+            }
+            loop();
         },
         setGpsLocation(lat: number, lon: number) {
             console.log("Setting GPS location", lat, lon);
