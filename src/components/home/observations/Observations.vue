@@ -67,7 +67,7 @@ export default defineComponent({
   min-height: 550px;
   width: 100%;
   background-image: var(--backgroundObservations);
-  padding-top: 30px; /* Make gap for the page indicators */
+  padding-top: 35px; /* Make gap for the page indicators */
   contain: content;
 }
 .item {

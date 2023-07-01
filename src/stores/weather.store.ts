@@ -83,16 +83,16 @@ export const useWeatherStore = defineStore('weather', {
             const loop = () => {
                 const currentTime = new Date();
                 const nextHour = new Date((new Date()).setHours(currentTime.getHours() + 1, 0, 0, 0));
-                const timeout = nextHour - currentTime;
+                const timeout = nextHour.getTime() - currentTime.getTime();
                 setTimeout(() => {
                     const now = new Date();
                     this.currentWeather = Object.fromEntries(
-                        Object.entries(this.currentWeather).map(([key, value]) => {
+                        Object.entries(this.currentWeather as any).map(([key, value]) => {
                             if (Array.isArray(value))
                                 value = value.filter((point) => point.time >= now);
                             return [key, value];
                         })
-                    );
+                    ) as WeatherType;
                     loop();
                 }, timeout);
             }

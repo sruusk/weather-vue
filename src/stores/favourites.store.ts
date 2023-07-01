@@ -33,7 +33,7 @@ export const useFavouritesStore = defineStore('favourites', {
                 const loop = () => {
                     const currentTime = new Date();
                     const nextHour = new Date((new Date()).setHours(currentTime.getHours() + 1, 0, 0, 0));
-                    const timeout = nextHour - currentTime;
+                    const timeout = nextHour.getTime() - currentTime.getTime();
                     setTimeout(async () => {
                         this.favouriteWeathers = [];
                         for (const favourite of this.favourites) {
@@ -84,7 +84,7 @@ export const useFavouritesStore = defineStore('favourites', {
             return new Promise<void>((resolve) => {
                 Weather.getWeatherNextHour(favourite.lat, favourite.lon).then((weather) => {
                     this.favouriteWeathers.push({
-                        "time": `${(new Date(new Date().setHours(new Date().getHours() + 1))).getHours()}:00`,
+                        "time": `${weather.temperature[0].time.getHours()}:00`,
                         "location": favourite,
                         "temperature": weather.temperature[0].value,
                         "windDirection": weather.windDirection[0].value,

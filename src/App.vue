@@ -197,7 +197,7 @@ body {
 /* Splide styling */
 /*noinspection CssUnusedSymbol*/
 .splide__pagination {
-  top: -1.5em !important;
+  top: -25px !important;
   bottom: unset !important;
 }
 
@@ -212,8 +212,9 @@ body {
 
 /*noinspection CssUnusedSymbol*/
 .splide__pagination__page.is-active {
-  background-color: #fdfdfe !important;
+  background-color: #ffffff !important;
   transform: unset !important;
+  opacity: 1 !important;
 }
 
 /*noinspection CssUnusedSymbol*/
