@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <div class="item" v-for="item in items" :key="item.name" @click="select(item)">
+    <div v-for="item in items" :key="item.name" class="item" @click="select(item)">
       <span>{{ item.name }}{{ item.state ? `, ${item.state}` : '' }}, {{ fullCountryName(item.country) }}</span>
       <div class="add-button">+</div>
     </div>
@@ -16,7 +16,7 @@ export default defineComponent({
   name: "ListSelection",
   props: {
     items: {
-      type: Array as () => {name: string, lat: number, lon: number, country: string, state: string}[],
+      type: Array as () => { name: string, lat: number, lon: number, country: string, state: string }[],
       required: true
     }
   },
@@ -43,6 +43,7 @@ export default defineComponent({
   padding: 0 20px;
   margin-bottom: 40px;
 }
+
 .item {
   cursor: pointer;
   display: flex;
@@ -53,9 +54,11 @@ export default defineComponent({
   border-bottom: 1px solid var(--backgroundLight);
   color: white;
 }
+
 .item-info > span {
   margin-right: 10px;
 }
+
 .add-button {
   width: 25px;
   height: 25px;

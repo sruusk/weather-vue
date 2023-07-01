@@ -1,6 +1,6 @@
 <template>
-  <div class="checkbox" :class="{'checked' : checked}">
-    <CheckmarkIcon v-if="checked" />
+  <div :class="{'checked' : checked}" class="checkbox">
+    <CheckmarkIcon v-if="checked"/>
   </div>
 </template>
 
@@ -29,6 +29,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
 }
+
 .checkbox.checked {
   background-color: var(--backgroundLightest);
   filter: brightness(1.2);

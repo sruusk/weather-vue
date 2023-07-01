@@ -4,23 +4,23 @@
     <div :class="{ 'isLocation': weatherStore.gpsLocation }" class="header">
       <!-- The v-if is here to prevent bugs when the carousel is not active/visible -->
       <Splide
-          v-if="active || !runAfterActive"
-          ref="splide"
-          :options="options"
-          @splide:move="handleSlide"
-          @splide:drag="handleDragStart"
+        v-if="active || !runAfterActive"
+        ref="splide"
+        :options="options"
+        @splide:move="handleSlide"
+        @splide:drag="handleDragStart"
       >
         <SplideSlide
-            v-for="fav in locations"
-            :key="fav.name + fav.gps ? '-gps' : fav.region"
+          v-for="fav in locations"
+          :key="fav.name + fav.gps ? '-gps' : fav.region"
         >
           <LocationItem
-              v-if="!fav.gps"
-              :weather="favouritesStore.getFavouriteWeather(fav) || getHourWeather(weatherStore.currentWeather)"
+            v-if="!fav.gps"
+            :weather="favouritesStore.getFavouriteWeather(fav) || getHourWeather(weatherStore.currentWeather)"
           />
           <LocationItem
-              v-else
-              :weather="nextHourWeather"
+            v-else
+            :weather="nextHourWeather"
           />
         </SplideSlide>
       </Splide>
@@ -33,7 +33,7 @@ import type {HourWeather, Weather as WeatherType} from "@/types";
 import {defineComponent, ref} from 'vue';
 import LocationItem from "@/components/home/nexthour/LocationItem.vue";
 import {useFavouritesStore, useWeatherStore} from "@/stores";
-import type { Splide } from "@splidejs/vue-splide";
+import type {Splide} from "@splidejs/vue-splide";
 
 export default defineComponent({
   name: "CurrentWeather",
@@ -74,7 +74,7 @@ export default defineComponent({
   activated() {
     this.active = true;
     this.$nextTick(() => {
-      if(this.runAfterActive) this.runAfterActive();
+      if (this.runAfterActive) this.runAfterActive();
     });
   },
   deactivated() {
@@ -86,27 +86,27 @@ export default defineComponent({
       this.runAfterActive = () => {
         const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
         // @ts-ignore
-        if(this.splide) this.splide.go(index || 0);
+        if (this.splide) this.splide.go(index || 0);
         this.runAfterActive = undefined;
       }
-      if(this.active) this.runAfterActive();
+      if (this.active) this.runAfterActive();
     },
     "favouritesStore.favourites": function () {
       this.runAfterActive = () => {
         // @ts-ignore
-        if(this.favouritesStore.favourites.length === 0) this.splide.go(0);
+        if (this.favouritesStore.favourites.length === 0) this.splide.go(0);
         this.$nextTick(() => {
           const currentLocation = this.weatherStore.currentLocation;
           const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
           // @ts-ignore
-          if(index != this.splide.index) {
+          if (index != this.splide.index) {
             // @ts-ignore
             this.splide.go(index || 0);
           }
         });
         this.runAfterActive = undefined;
       }
-      if(this.active) this.runAfterActive();
+      if (this.active) this.runAfterActive();
     }
   },
   computed: {
@@ -130,7 +130,7 @@ export default defineComponent({
     },
   },
   methods: {
-    async handleSlide( splide: typeof Splide, index: number ) {
+    async handleSlide(splide: typeof Splide, index: number) {
       if (this.slideTimeout) clearTimeout(this.slideTimeout);
       this.slideTimeout = setTimeout(() => {
         this.weatherStore.changeLocation(this.locations[index]);

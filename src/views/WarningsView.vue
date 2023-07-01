@@ -1,16 +1,17 @@
 <!--suppress TypeScriptUnresolvedReference, ES6ShorthandObjectProperty, JSFunctionExpressionToArrowFunction -->
 <template>
-  <div class="warnings" :class="{ 'loading': loading }">
-    <BackNavigation> {{ $t('routes.warnings') }} </BackNavigation>
+  <div :class="{ 'loading': loading }" class="warnings">
+    <BackNavigation> {{ $t('routes.warnings') }}</BackNavigation>
     <orbit-spinner
-        v-if="loading"
-        class="spinner"
-        :animation-duration="1200"
-        :size="70"
-        color="#62b8e7"
+      v-if="loading"
+      :animation-duration="1200"
+      :size="70"
+      class="spinner"
+      color="#62b8e7"
     />
-    <div class="alert-client" ref="alertClient" :style="loading ? 'filter: blur(5px) brightness(0.3) saturate(0.5);' : ''">
-      <div id="alert-client-app" />
+    <div ref="alertClient" :style="loading ? 'filter: blur(5px) brightness(0.3) saturate(0.5);' : ''"
+         class="alert-client">
+      <div id="alert-client-app"/>
     </div>
   </div>
 </template>
@@ -18,7 +19,7 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import {useSettingsStore} from "@/stores";
-import { OrbitSpinner } from 'epic-spinners'
+import {OrbitSpinner} from 'epic-spinners'
 import BackNavigation from "@/components/BackNavigation.vue";
 import "@/assets/alert-client/vue.js";
 import "@/assets/alert-client/SmartMetAlertClient.umd.js";
@@ -49,13 +50,13 @@ export default defineComponent({
     this.waitForLoad();
   },
   activated() { // @ts-ignore
-    if(!this.loading && this.$route.params.day) { // @ts-ignore
+    if (!this.loading && this.$route.params.day) { // @ts-ignore
       const days = this.alertClient?.querySelectorAll(".nav-item > a"); // @ts-ignore
-      if(days) days[this.$route.params.day].click();
+      if (days) days[this.$route.params.day].click();
     }
   },
   watch: {
-    "settingsStore.language": function() {
+    "settingsStore.language": function () {
       // @ts-ignore
       this.vue.lang = this.settingsStore.language;
     },
@@ -80,7 +81,7 @@ export default defineComponent({
       this.vue = new Vue({
         el: '#alert-client-app', // @ts-ignore
         data: data,
-        render: function(h: any) { // @ts-ignore
+        render: function (h: any) { // @ts-ignore
           return h(SmartMetAlertClient, {
             props: {
               language: this.lang,
@@ -107,6 +108,7 @@ export default defineComponent({
 .loading {
   max-height: 100vh;
 }
+
 .warnings h1 {
   font-size: 2rem;
   font-weight: 700;
@@ -115,6 +117,7 @@ export default defineComponent({
   text-align: center;
   color: white;
 }
+
 .spinner {
   position: absolute;
   top: 50%;
@@ -124,11 +127,13 @@ export default defineComponent({
   border-radius: 50%;
   padding: 1rem;
 }
+
 .alert-client {
   width: 100%;
   display: flex;
   justify-content: center;
 }
+
 .alert-client :deep(h3),
 .alert-client :deep(nav) {
   margin-left: 10px !important;

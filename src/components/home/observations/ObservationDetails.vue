@@ -1,14 +1,14 @@
 <template>
- <div class="measurement-list">
-   <div class="measurement" v-for="(value, key) in measurements" :key="key">
-     <div class="title">{{ key }}</div>
-     <div class="value">{{ value }}</div>
-   </div>
- </div>
+  <div class="measurement-list">
+    <div v-for="(value, key) in measurements" :key="key" class="measurement">
+      <div class="title">{{ key }}</div>
+      <div class="value">{{ value }}</div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import type { ObservationStation } from "@/types";
+import type {ObservationStation} from "@/types";
 import {defineComponent} from 'vue';
 
 export default defineComponent({
@@ -40,25 +40,25 @@ export default defineComponent({
       if (this.station.visibility === undefined) return undefined;
       if (this.station.visibility < 1000) {
         return `${this.station.visibility} m`;
-      } else if(this.station.visibility >= 1000 && this.station.visibility < 5000) {
+      } else if (this.station.visibility >= 1000 && this.station.visibility < 5000) {
         return `${Math.round(this.station.visibility / 100) / 10} km`;
       } else return `${this.$t('home.over')} 50 km`;
     },
     cloudinessText() {
       const cloudiness = this.station.cloudiness;
-      if(cloudiness === undefined) return undefined;
+      if (cloudiness === undefined) return undefined;
 
-      if(cloudiness < 1) return this.$t('home.cloudinessText.clear');
-      if(cloudiness === 1 || cloudiness === 2) return this.$t('home.cloudinessText.almostClear');
-      if(cloudiness >= 3 && cloudiness <= 5) return this.$t('home.cloudinessText.partlyCloudy');
-      if(cloudiness === 6 || cloudiness === 7) return this.$t('home.cloudinessText.almostCloudy');
-      if(cloudiness === 8) return this.$t('home.cloudinessText.cloudy');
-      if(cloudiness === 9) return this.$t('home.cloudinessText.skyObscured');
+      if (cloudiness < 1) return this.$t('home.cloudinessText.clear');
+      if (cloudiness === 1 || cloudiness === 2) return this.$t('home.cloudinessText.almostClear');
+      if (cloudiness >= 3 && cloudiness <= 5) return this.$t('home.cloudinessText.partlyCloudy');
+      if (cloudiness === 6 || cloudiness === 7) return this.$t('home.cloudinessText.almostCloudy');
+      if (cloudiness === 8) return this.$t('home.cloudinessText.cloudy');
+      if (cloudiness === 9) return this.$t('home.cloudinessText.skyObscured');
       return '';
     },
     weatherText() {
       const code = this.station.weather;
-      if(code === undefined) return undefined;
+      if (code === undefined) return undefined;
 
       if (code === 0 || (code >= 20 && code <= 29)) return this.$t('home.weatherText.clear');
       if (code === 4 || code === 5) return this.$t('home.weatherText.hazeSmokeDusk');
@@ -121,6 +121,7 @@ export default defineComponent({
   flex-wrap: nowrap;
   justify-content: space-between;
 }
+
 .measurement {
   display: flex;
   flex-direction: row;
@@ -131,9 +132,11 @@ export default defineComponent({
   font-size: 13px;
   font-weight: 300;
 }
+
 .title {
   padding-left: 10px;
 }
+
 .value {
   padding-right: 10px;
 }

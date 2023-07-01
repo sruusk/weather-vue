@@ -1,12 +1,12 @@
 <template>
   <div class="settings">
     <BackNavigation>{{ $t('settings.settings') }}</BackNavigation>
-    <LanguageSettings />
-    <LocationSettings />
-    <WeatherRadarSettings />
-    <ForecastSettings />
-    <AnimationSettings />
-    <ThemeSettings />
+    <LanguageSettings/>
+    <LocationSettings/>
+    <WeatherRadarSettings/>
+    <ForecastSettings/>
+    <AnimationSettings/>
+    <ThemeSettings/>
   </div>
 </template>
 

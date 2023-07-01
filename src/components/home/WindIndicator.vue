@@ -1,13 +1,13 @@
 <template>
   <div class="wind-indicator">
     <WindArrow
-        class="wind-arrow"
-        v-if="!negative"
-        :style="`transform: rotate(${windDirection}deg);`"/>
+      v-if="!negative"
+      :style="`transform: rotate(${windDirection}deg);`"
+      class="wind-arrow"/>
     <WindArrowNegative
-        class="wind-arrow"
-        v-if="negative"
-        :style="`transform: rotate(${windDirection}deg);`"/>
+      v-if="negative"
+      :style="`transform: rotate(${windDirection}deg);`"
+      class="wind-arrow"/>
     <span class="wind-speed">{{ roundedWindSpeed }}</span>
   </div>
 </template>
@@ -45,7 +45,7 @@ export default defineComponent({
   },
   methods: {
     getIndicator() {
-      if(this.windSpeed === 0)
+      if (this.windSpeed === 0)
         return `/windarrows/${this.negative ? 'negative' : 'positive'}/0.svg`;
       else
         return `/windarrows/${this.negative ? 'negative' : 'positive'}/${this.getWindDirection().toLowerCase()}.svg`;
@@ -92,10 +92,12 @@ export default defineComponent({
   justify-content: flex-start;
   contain: content;
 }
+
 .wind-arrow {
   width: 45px;
   height: 45px;
 }
+
 .wind-speed {
   position: relative;
   width: 30px;

@@ -120,7 +120,7 @@ export default defineConfig({
                         ]
                     },
                     {
-                        name : "Settings",
+                        name: "Settings",
                         url: "/settings",
                         icons: [
                             {
@@ -151,9 +151,9 @@ export default defineConfig({
                     '**/*.{js,css,html,webp,jpg,svg,png,ico,webmanifest,txt,ttf,woff,woff2,otf,eot}'
                 ],
                 runtimeCaching: [{
-                    urlPattern: ({ url }) => {
-                        if(url.hostname === 'geo.stat.fi') return true
-                        if(url.hostname === 'd17g5uoxmlqldj.cloudfront.net') return true
+                    urlPattern: ({url}) => {
+                        if (url.hostname === 'geo.stat.fi') return true
+                        if (url.hostname === 'd17g5uoxmlqldj.cloudfront.net') return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',
@@ -164,11 +164,11 @@ export default defineConfig({
                         }
                     }
                 }, {
-                    urlPattern: ({ url }) => {
-                        if(url.hostname === 'opendata.fmi.fi') return true
-                        if( url.href.includes('api.openweathermap.org/data/2.5/forecast')
-                            || url.href.includes('api.openweathermap.org/data/3.0/onecall') ) return true
-                        if(url.href.includes('www.ilmatieteenlaitos.fi/geoserver/alert/')) return true
+                    urlPattern: ({url}) => {
+                        if (url.hostname === 'opendata.fmi.fi') return true
+                        if (url.href.includes('api.openweathermap.org/data/2.5/forecast')
+                            || url.href.includes('api.openweathermap.org/data/3.0/onecall')) return true
+                        if (url.href.includes('www.ilmatieteenlaitos.fi/geoserver/alert/')) return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',
@@ -182,10 +182,10 @@ export default defineConfig({
                         }
                     }
                 }, {
-                    urlPattern: ({ url }) => {
-                        if(url.hostname === 'alerts.fmi.fi') return true
-                        if(url.hostname === 'corsproxy.io') return true
-                        if(url.hostname === 'wwwi2.ymparisto.fi') return true
+                    urlPattern: ({url}) => {
+                        if (url.hostname === 'alerts.fmi.fi') return true
+                        if (url.hostname === 'corsproxy.io') return true
+                        if (url.hostname === 'wwwi2.ymparisto.fi') return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',
@@ -199,9 +199,9 @@ export default defineConfig({
                         }
                     }
                 }, {
-                    urlPattern: ({ url }) => {
-                        if(url.hostname === 'data.fmi.fi') return true
-                        if(url.hostname === 'openwms.fmi.fi') return true
+                    urlPattern: ({url}) => {
+                        if (url.hostname === 'data.fmi.fi') return true
+                        if (url.hostname === 'openwms.fmi.fi') return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',
@@ -215,8 +215,8 @@ export default defineConfig({
                         }
                     }
                 }, {
-                    urlPattern: ({ url }) => {
-                        if(url.href.includes('api.openweathermap.org/geo/1.0')) return true
+                    urlPattern: ({url}) => {
+                        if (url.href.includes('api.openweathermap.org/geo/1.0')) return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',

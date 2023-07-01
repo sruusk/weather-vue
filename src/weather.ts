@@ -1,9 +1,20 @@
 // noinspection NonAsciiCharacters
 
-import type {ForecastLocation, TimeSeriesObservation, Weather, ObservationStation, ObservationStationLocation, DayLength, OpenWeather} from './types';
-import { get5DayForecastLatLon, getHourlyForecastLatLon, reverseGeocoding } from "@/openweather";
+import type {
+    DayLength,
+    ForecastLocation,
+    ObservationStation,
+    ObservationStationLocation,
+    OpenWeather,
+    TimeSeriesObservation,
+    Weather
+} from './types';
+import {get5DayForecastLatLon, getHourlyForecastLatLon, reverseGeocoding} from "@/openweather";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
+// @ts-ignore
+import SunCalc from 'suncalc';
+
 const parser = new XMLParser({
     attributeNamePrefix: '@_',
     ignoreAttributes: false,
@@ -20,6 +31,7 @@ const params = [
     'FeelsLike'
 ];
 const baseUrl = 'https://opendata.fmi.fi/wfs?request=getFeature';
+
 function getStartAndEndTimeQuery(start: Date, end: Date) {
     return `&starttime=${start.toISOString()}&endtime=${end.toISOString()}`;
 }
@@ -31,8 +43,8 @@ function getTimeFromNow(days: number) {
 function getBaseWithDays(offset: number, days: number) {
     let start = getTimeFromNow(offset);
     let end = getTimeFromNow(offset + days);
-    if(offset) start.setMinutes(0, 0, 0);
-    while(offset && start.getHours() % 3 !== 0) { // Start time must be divisible by 3
+    if (offset) start.setMinutes(0, 0, 0);
+    while (offset && start.getHours() % 3 !== 0) { // Start time must be divisible by 3
         start = new Date(start.getTime() + 60 * 60 * 1000); // Add one hour
     }
     start = new Date(start.setHours(0, 0, 0, 0));
@@ -49,7 +61,7 @@ function getWeatherNextHour(lat: number, lon: number): Promise<Weather> {
     const xml = getXml(url);
     const weather = parseWeather(xml);
     return weather.then((value) => {
-        if(value.temperature?.length) return value;
+        if (value.temperature?.length) return value;
         else return getHourlyForecastLatLon(lat, lon).then((value) => {
             return new Promise((resolve) => {
                 reverseGeocoding(lat, lon).then((location) => {
@@ -74,9 +86,9 @@ function getWeather(place: string) {
     // &parameters=Humidity,Temperature,WindDirection,WindSpeedMS,WindGust,Precipitation1h,WeatherSymbol3
 
     const url = getBaseWithDays(0, 3)
-    + `&place=${place}`
-    + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
-    + `&parameters=${params.join(',')}`;
+        + `&place=${place}`
+        + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
+        + `&parameters=${params.join(',')}`;
 
     const xml = getXml(url);
     return parseWeather(xml);
@@ -84,13 +96,13 @@ function getWeather(place: string) {
 
 function getWeatherByLatLon(lat: number, lon: number) {
     const url = getBaseWithDays(0, 3)
-    + `&latlon=${lat},${lon}`
-    + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
-    + `&parameters=${params.join(',')}`;
+        + `&latlon=${lat},${lon}`
+        + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
+        + `&parameters=${params.join(',')}`;
 
     const xml = getXml(url);
     return mergeWeather(parseWeather(xml).then(weather => {
-        if(weather.temperature?.length) return weather;
+        if (weather.temperature?.length) return weather;
         else return getHourlyForecastLatLon(lat, lon) as Promise<Weather>;
     }), get5DayForecastLatLon(lat, lon));
 }
@@ -100,14 +112,14 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
         Promise.all([shortWeather, longWeather]).then((values) => {
             let short = values[0];
             let long = values[1];
-            if(Object.keys(long).length === 0) resolve(short);
-            else if(Object.keys(short).length <= 1) resolve( { ...short, ...long } as Weather );
+            if (Object.keys(long).length === 0) resolve(short);
+            else if (Object.keys(short).length <= 1) resolve({...short, ...long} as Weather);
 
             // Clip long forecast to start at short forecast end
             let shortEndTime = short.temperature[0].time;
-            for(const time of short.temperature.map((value) => value.time)) {
-                if(time.getTime() - shortEndTime.getTime() > 1000 * 60 * 60 * 3) break; // If there is a gap of more than 3 hours, stop
-                if(time > shortEndTime) shortEndTime = time;
+            for (const time of short.temperature.map((value) => value.time)) {
+                if (time.getTime() - shortEndTime.getTime() > 1000 * 60 * 60 * 3) break; // If there is a gap of more than 3 hours, stop
+                if (time > shortEndTime) shortEndTime = time;
             }
 
             long = {
@@ -165,7 +177,7 @@ function getXml(url: string, retries: number = 3) {
             })
             .catch((error) => {
                 console.error('Error fetching weather data', error);
-                if(retries > 0) resolve(getXml(url, retries - 1));
+                if (retries > 0) resolve(getXml(url, retries - 1));
                 else reject(error);
             });
     }) as Promise<any>;
@@ -174,13 +186,12 @@ function getXml(url: string, retries: number = 3) {
 function parseWeather(xml: Promise<any>) {
     return new Promise((resolve, reject) => {
         xml.then(async (json) => {
-            if(json['ExceptionReport']) {
+            if (json['ExceptionReport']) {
                 const text = json['ExceptionReport']['Exception']?.['ExceptionText'];
-                if(text) {
-                    if(Array.isArray(text)) console.warn('FMI API returned exception report\n', text.join('\n'));
+                if (text) {
+                    if (Array.isArray(text)) console.warn('FMI API returned exception report\n', text.join('\n'));
                     else console.warn('FMI API returned exception report\n', text);
-                }
-                else console.warn('FMI API returned exception report\n', json['ExceptionReport']);
+                } else console.warn('FMI API returned exception report\n', json['ExceptionReport']);
                 const cityName = json['ExceptionReport']['Exception']['ExceptionText'][0].split('\'')[1];
                 resolve({
                     location: {
@@ -326,7 +337,7 @@ function getObservationsForStation(station: ObservationStationLocation) {
     return new Promise((resolve, reject) => {
         getXml(url).then((json) => {
             const data = json['wfs:FeatureCollection']['wfs:member'];
-            if(!data) {
+            if (!data) {
                 reject('No data for station ' + station.identifier);
                 return;
             }
@@ -388,26 +399,26 @@ function getObservationStations(lat: number, lon: number) {
         xml.then((json) => {
             const stations = json['wfs:FeatureCollection']['wfs:member'] as Array<any>;
             const allStations = stations.map((station) => {
-                    const pos = station['ef:EnvironmentalMonitoringFacility']
-                        ['ef:representativePoint']
-                        ['gml:Point']
-                        ['gml:pos'].trim().split(' ');
-                    let description = station["ef:EnvironmentalMonitoringFacility"]["ef:belongsTo"];
-                    if(Array.isArray(description)) {
-                        // join all descriptions to one string
-                        description = description.map((desc: any) => desc["@_xlink:title"]).join(" ");
-                    } else description = description["@_xlink:title"];
-                    if(description.toLowerCase().includes("sääasema"))
-                        return {
-                            identifier: station['ef:EnvironmentalMonitoringFacility']['gml:identifier']["#text"],
-                            name: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("name"))["#text"],
-                            region: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("region"))["#text"],
-                            country: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("country"))["#text"],
-                            lat: parseFloat(pos[0]),
-                            lon: parseFloat(pos[1]),
-                            distance: distanceBetweenCoordinates([lat, lon], [parseFloat(pos[0]), parseFloat(pos[1])])
-                        } as ObservationStationLocation;
-                });
+                const pos = station['ef:EnvironmentalMonitoringFacility']
+                    ['ef:representativePoint']
+                    ['gml:Point']
+                    ['gml:pos'].trim().split(' ');
+                let description = station["ef:EnvironmentalMonitoringFacility"]["ef:belongsTo"];
+                if (Array.isArray(description)) {
+                    // join all descriptions to one string
+                    description = description.map((desc: any) => desc["@_xlink:title"]).join(" ");
+                } else description = description["@_xlink:title"];
+                if (description.toLowerCase().includes("sääasema"))
+                    return {
+                        identifier: station['ef:EnvironmentalMonitoringFacility']['gml:identifier']["#text"],
+                        name: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("name"))["#text"],
+                        region: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("region"))["#text"],
+                        country: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("country"))["#text"],
+                        lat: parseFloat(pos[0]),
+                        lon: parseFloat(pos[1]),
+                        distance: distanceBetweenCoordinates([lat, lon], [parseFloat(pos[0]), parseFloat(pos[1])])
+                    } as ObservationStationLocation;
+            });
             resolve(allStations as ObservationStationLocation[]);
         }).catch((error) => {
             reject(error);
@@ -434,15 +445,19 @@ export function getDayLength(location: ForecastLocation) {
     return calculateSunPosition(location)
 }
 
-// @ts-ignore
-import SunCalc from 'suncalc';
 function calculateSunPosition(location: ForecastLocation) {
     const times = SunCalc.getTimes(new Date((new Date()).setHours(12, 0, 0, 0)), location.lat, location.lon)
     const isMidnightSun = isNaN(times.sunrise.getTime());
-    const { start, end } = isMidnightSun ? calculateMidnightSun(location) : { start: new Date(), end: new Date() };
+    const {start, end} = isMidnightSun ? calculateMidnightSun(location) : {start: new Date(), end: new Date()};
     return {
-        sunrise: !isMidnightSun ? times.sunrise.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"}) : start.toLocaleDateString("fi-FI", {day: "numeric", month: "numeric"}),
-        sunset: !isMidnightSun ? times.sunset.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"}) : end.toLocaleDateString("fi-FI", {day: "numeric", month: "numeric"}),
+        sunrise: !isMidnightSun ? times.sunrise.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit"
+        }) : start.toLocaleDateString("fi-FI", {day: "numeric", month: "numeric"}),
+        sunset: !isMidnightSun ? times.sunset.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit"
+        }) : end.toLocaleDateString("fi-FI", {day: "numeric", month: "numeric"}),
         lengthofday: `${Math.floor((times.sunset.getTime() - times.sunrise.getTime()) / 1000 / 60 / 60)}h ${Math.floor(((times.sunset.getTime() - times.sunrise.getTime()) / 1000 / 60) % 60)}min`,
     } as DayLength;
 }
@@ -450,9 +465,9 @@ function calculateSunPosition(location: ForecastLocation) {
 function calculateMidnightSun(location: ForecastLocation): { start: Date, end: Date } {
     const start = new Date((new Date()).setHours(12, 0, 0, 0));
     const end = new Date((new Date()).setHours(12, 0, 0, 0));
-    while(isNaN(SunCalc.getTimes(start, location.lat, location.lon).sunrise.getTime())) start.setDate(start.getDate() - 1);
-    while(isNaN(SunCalc.getTimes(end, location.lat, location.lon).sunset.getTime())) end.setDate(end.getDate() + 1);
-    return { start, end };
+    while (isNaN(SunCalc.getTimes(start, location.lat, location.lon).sunrise.getTime())) start.setDate(start.getDate() - 1);
+    while (isNaN(SunCalc.getTimes(end, location.lat, location.lon).sunset.getTime())) end.setDate(end.getDate() + 1);
+    return {start, end};
 }
 
 export default {

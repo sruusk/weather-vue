@@ -130,7 +130,7 @@ export default defineComponent({
       this.timeSlider = this.metoclient.get('timeSlider');
 
 
-      if(this.zoomCtrl) {
+      if (this.zoomCtrl) {
         this.zoomCtrl.setMap(this.map);
       } else {
         this.zoomCtrl = new Zoom({

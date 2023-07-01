@@ -3,12 +3,12 @@
     <span>{{ tempPrefix(temperature) }}</span>
     <span>{{ Math.round(Math.abs(temperature)) }}</span>
     <span class="feelslike-unit">°C</span>
-    <BasicIcon class="icon" />
+    <BasicIcon class="icon"/>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import BasicIcon from "@/components/icons/feelslike/BasicIcon.vue";
 
 export default defineComponent({
@@ -40,14 +40,17 @@ export default defineComponent({
   color: #fff;
   margin-right: 12px;
 }
+
 .feelslike span {
   margin-bottom: 3px;
 }
+
 .feelslike-unit {
   font-weight: 400;
   color: #FFFFFF7F;
   margin-right: 15px;
 }
+
 .icon {
   width: 50px;
   height: 50px;

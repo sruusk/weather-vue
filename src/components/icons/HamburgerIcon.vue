@@ -1,13 +1,13 @@
 <template>
-  <svg width="25px" height="18px" viewBox="0 0 25 18" xmlns="http://www.w3.org/2000/svg">
-    <g id="layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <g id="etusivu-mobile-portrait" transform="translate(-13.000000, -16.000000)" fill="#FFFFFF">
+  <svg height="18px" viewBox="0 0 25 18" width="25px" xmlns="http://www.w3.org/2000/svg">
+    <g id="layouts" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
+      <g id="etusivu-mobile-portrait" fill="#FFFFFF" transform="translate(-13.000000, -16.000000)">
         <g id="header">
           <g id="menu-icon">
             <g id="lines" transform="translate(13.000000, 16.000000)">
-              <rect id="line" x="0" y="0" width="25" height="2" rx="1"></rect>
-              <rect id="line" x="0" y="8" width="25" height="2" rx="1"></rect>
-              <rect id="line" x="0" y="16" width="25" height="2" rx="1"></rect>
+              <rect id="line" height="2" rx="1" width="25" x="0" y="0"></rect>
+              <rect id="line" height="2" rx="1" width="25" x="0" y="8"></rect>
+              <rect id="line" height="2" rx="1" width="25" x="0" y="16"></rect>
             </g>
           </g>
         </g>

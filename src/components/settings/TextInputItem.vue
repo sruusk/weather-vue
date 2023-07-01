@@ -1,6 +1,6 @@
 <template>
   <div class="input-item">
-    <input type="text" :value="value" @input="updateValue" />
+    <input :value="value" type="text" @input="updateValue"/>
   </div>
 </template>
 
@@ -31,6 +31,7 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
 }
+
 input {
   width: 100%;
   padding: 5px;

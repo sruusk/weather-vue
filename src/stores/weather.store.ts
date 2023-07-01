@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import Weather from "@/weather";
 import WeatherWorker from "@/workers/weather?worker";
-import {useFavouritesStore, useSettingsStore, useObservationsStore} from "@/stores";
-import type { Weather as WeatherType, ForecastLocation } from '@/types';
+import {useFavouritesStore, useObservationsStore, useSettingsStore} from "@/stores";
+import type {ForecastLocation, Weather as WeatherType} from '@/types';
 
 const defaultLocation: ForecastLocation = {
     name: "Kaivopuisto",
@@ -32,12 +32,12 @@ export const useWeatherStore = defineStore('weather', {
 
     actions: {
         init() {
-            if(this.locatingComplete) return;
+            if (this.locatingComplete) return;
             const favouritesStore = useFavouritesStore();
             const loadWeather = () => {
                 this.status = "home.loadingForecast";
                 this.locatingComplete = true;
-                if(favouritesStore.favourites.length > 0) {
+                if (favouritesStore.favourites.length > 0) {
                     this.changeLocation(favouritesStore.favourites[0]).then(() => {
                         this.status = "";
                     });
@@ -45,7 +45,7 @@ export const useWeatherStore = defineStore('weather', {
                     this.status = "";
                 });
             }
-            if(!useSettingsStore().useLocation) loadWeather(); // Location disabled
+            if (!useSettingsStore().useLocation) loadWeather(); // Location disabled
             else if (navigator.geolocation) {
                 console.log("Getting location...");
                 this.status = "home.locating"
@@ -59,7 +59,7 @@ export const useWeatherStore = defineStore('weather', {
                 };
                 navigator.geolocation.getCurrentPosition(positionCallback, (positionError) => {
                     console.error(`Geolocation error ${positionError?.code} ${positionError?.message}`);
-                    if(positionError?.code === GeolocationPositionError.TIMEOUT) {
+                    if (positionError?.code === GeolocationPositionError.TIMEOUT) {
                         navigator.geolocation.getCurrentPosition(positionCallback, () => {
                             loadWeather();
                         }, {
@@ -67,8 +67,7 @@ export const useWeatherStore = defineStore('weather', {
                             maximumAge: 300000, // 5 minutes
                             timeout: 5000
                         });
-                    }
-                    else loadWeather(); // Location denied
+                    } else loadWeather(); // Location denied
                 }, {
                     enableHighAccuracy: true,
                     maximumAge: 0,
@@ -101,7 +100,7 @@ export const useWeatherStore = defineStore('weather', {
         setGpsLocation(lat: number, lon: number) {
             console.log("Setting GPS location", lat, lon);
             return new Promise<void>((resolve) => {
-                if(!lat || !lon) return resolve();
+                if (!lat || !lon) return resolve();
                 const setLocation = (weather: WeatherType) => {
                     weather.location.lat = lat;
                     weather.location.lon = lon;
@@ -110,29 +109,29 @@ export const useWeatherStore = defineStore('weather', {
                     useObservationsStore().changeLocation(weather.location);
                     resolve();
                 }
-                if(window.Worker) {
+                if (window.Worker) {
                     const worker = new WeatherWorker();
                     worker.onmessage = (event) => {
                         setLocation(event.data as WeatherType);
                     }
-                    worker.postMessage({ lat, lon });
+                    worker.postMessage({lat, lon});
                 } else Weather.getWeatherByLatLon(lat, lon).then(setLocation);
             });
         },
         changeLocation(location: ForecastLocation) {
             return new Promise<void>((resolve) => {
-                if( !location
+                if (!location
                     || (location.lat === this.currentLocation?.lat && location.lon === this.currentLocation?.lon)
                 ) return resolve();
-                if(location.country === 'Finland') useObservationsStore().changeLocation(location);
-                if(window.Worker) {
+                if (location.country === 'Finland') useObservationsStore().changeLocation(location);
+                if (window.Worker) {
                     const worker = new WeatherWorker();
                     worker.onmessage = (event) => {
                         this.currentWeather = event.data as WeatherType;
                         this.currentWeather.location = location;
                         resolve();
                     }
-                    worker.postMessage({ lat: location.lat, lon: location.lon });
+                    worker.postMessage({lat: location.lat, lon: location.lon});
                 } else Weather.getWeatherByLatLon(location.lat, location.lon).then((weather) => {
                     this.currentWeather = weather;
                     this.currentWeather.location = location;

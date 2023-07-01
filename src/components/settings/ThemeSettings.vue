@@ -4,8 +4,8 @@
       <div v-for="theme in themeStore.themes" @click="settingsStore.setTheme(theme.name)">
         {{ $t(`settings.theme.${theme.name}`) }}
         <ThemeCheckbox
-            :checked="settingsStore.theme === theme.name"
-            :color="theme.colours.backgroundLight"
+          :checked="settingsStore.theme === theme.name"
+          :color="theme.colours.backgroundLight"
         />
       </div>
     </SettingsItem>
@@ -19,19 +19,19 @@ import ThemeCheckbox from "@/components/settings/ThemeCheckbox.vue";
 import {useSettingsStore, useThemeStore} from "@/stores";
 
 export default defineComponent({
-    name: "ThemeSettings",
-    components: {
-        SettingsItem,
-        ThemeCheckbox
-    },
-    setup() {
-        const settingsStore = useSettingsStore();
-        const themeStore = useThemeStore();
-        return {
-            settingsStore,
-            themeStore
-        };
-    },
+  name: "ThemeSettings",
+  components: {
+    SettingsItem,
+    ThemeCheckbox
+  },
+  setup() {
+    const settingsStore = useSettingsStore();
+    const themeStore = useThemeStore();
+    return {
+      settingsStore,
+      themeStore
+    };
+  },
 })
 </script>
 

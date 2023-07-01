@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import * as themes from '@/assets/themes';
 import type {Theme} from "@/types";
-import {useSettingsStore} from "@/stores/settings.store";
 
 interface State {
     theme: Theme;
@@ -27,7 +26,5 @@ export const useThemeStore = defineStore('theme', {
         }
     },
 
-    getters: {
-
-    }
+    getters: {}
 });

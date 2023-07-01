@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import type { ForecastLocation, HourWeather } from '@/types';
+import {defineStore} from 'pinia';
+import type {ForecastLocation, HourWeather} from '@/types';
 import Weather from "@/weather";
 import {useWeatherStore} from "@/stores/weather.store";
 
@@ -58,19 +58,19 @@ export const useFavouritesStore = defineStore('favourites', {
             const index = this.favourites.findIndex(fav => fav.lat === favourite.lat && fav.lon === favourite.lon);
             this.favourites = this.favourites.filter(fav => fav.lat !== favourite.lat && fav.lon !== favourite.lon);
             localStorage.setItem('favourites', JSON.stringify(this.favourites));
-            if(this.favourites.length === 0 && !weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
-            else if(
+            if (this.favourites.length === 0 && !weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
+            else if (
                 weatherStore.currentLocation.lat === favourite.lat
                 && weatherStore.currentLocation.lon === favourite.lon
                 && !weatherStore.locatingFailed) {
-                if(this.favourites.length > index) weatherStore.changeLocation(this.favourites[index]);
+                if (this.favourites.length > index) weatherStore.changeLocation(this.favourites[index]);
                 else weatherStore.changeLocation(this.favourites[index - 1]);
-            } else if(
+            } else if (
                 weatherStore.currentLocation.lat === favourite.lat
                 && weatherStore.currentLocation.lon === favourite.lon
                 && weatherStore.locatingFailed
                 && this.favourites.length > 0) {
-                if(this.favourites.length > index) weatherStore.changeLocation(this.favourites[index]);
+                if (this.favourites.length > index) weatherStore.changeLocation(this.favourites[index]);
                 else weatherStore.changeLocation(this.favourites[index - 1]);
             }
         },
@@ -78,7 +78,7 @@ export const useFavouritesStore = defineStore('favourites', {
             const weatherStore = useWeatherStore();
             this.favourites = [];
             localStorage.setItem('favourites', JSON.stringify(this.favourites));
-            if(!weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
+            if (!weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
         },
         getWeather(favourite: ForecastLocation) {
             return new Promise<void>((resolve) => {
@@ -106,7 +106,7 @@ export const useFavouritesStore = defineStore('favourites', {
     },
 
     getters: {
-        getFavouriteWeather: (state: State) => ( location: ForecastLocation ) => {
+        getFavouriteWeather: (state: State) => (location: ForecastLocation) => {
             return state.favouriteWeathers.find(
                 weather => weather.location.name === location.name && weather.location.region === location.region
             );

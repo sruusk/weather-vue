@@ -3,11 +3,11 @@
     <SettingsItem :title="$t('settings.animatedSymbols')">
       <div @click="settingsStore.setUseAnimations(true)">
         {{ $t('settings.on') }}
-        <CheckboxItem :checked="settingsStore.useAnimations" />
+        <CheckboxItem :checked="settingsStore.useAnimations"/>
       </div>
       <div @click="settingsStore.setUseAnimations(false)">
         {{ $t('settings.off') }}
-        <CheckboxItem :checked="!settingsStore.useAnimations" />
+        <CheckboxItem :checked="!settingsStore.useAnimations"/>
       </div>
     </SettingsItem>
   </div>
@@ -20,17 +20,17 @@ import CheckboxItem from "@/components/settings/CheckboxItem.vue";
 import {useSettingsStore} from "@/stores";
 
 export default defineComponent({
-    name: "AnimationSettings",
-    components: {
-        SettingsItem,
-        CheckboxItem
-    },
-    setup() {
-        const settingsStore = useSettingsStore();
-        return {
-            settingsStore,
-        };
-    },
+  name: "AnimationSettings",
+  components: {
+    SettingsItem,
+    CheckboxItem
+  },
+  setup() {
+    const settingsStore = useSettingsStore();
+    return {
+      settingsStore,
+    };
+  },
 })
 </script>
 

@@ -5,12 +5,12 @@
       <div class="update-time">{{ $t('home.forecast') }} {{ $t('home.updated') }} {{ updateTime }}</div>
     </div>
     <TenDaySlider
-        :selected-day="displayedDay"
-        :go-to-day="goToDay"
+      :go-to-day="goToDay"
+      :selected-day="displayedDay"
     />
     <TenDayDetailed
-        :selected-day="selectedDay"
-        :go-to-day="(date: Date) => { displayedDay = date; }"
+      :go-to-day="(date: Date) => { displayedDay = date; }"
+      :selected-day="selectedDay"
     />
   </div>
 </template>
@@ -52,13 +52,12 @@ export default defineComponent({
   },
   methods: {
     goToDay(day: Date) {
-      if(this.selectedDay === day){
+      if (this.selectedDay === day) {
         this.selectedDay = null;
         setTimeout(() => {
           this.selectedDay = day;
         }, 20);
-      }
-      else this.selectedDay = day;
+      } else this.selectedDay = day;
     },
   }
 })
@@ -70,6 +69,7 @@ export default defineComponent({
   background-color: var(--backgroundDarkest);
   contain: content;
 }
+
 .header {
   display: flex;
   flex-direction: row;
@@ -78,9 +78,11 @@ export default defineComponent({
   height: 45px;
   padding: 0 10px;
 }
+
 .title {
   font-size: 14px;
 }
+
 .update-time {
   font-size: 12px;
   color: #a0a0a0;

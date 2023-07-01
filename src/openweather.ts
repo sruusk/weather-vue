@@ -1,13 +1,25 @@
-import { OpenWeatherApiKey } from "@/contants";
+import {OpenWeatherApiKey} from "@/contants";
 import countries from "i18n-iso-countries";
-import type {TimeSeriesObservation, OpenWeather, Warnings, ForecastLocation} from "@/types";
+import type {ForecastLocation, OpenWeather, TimeSeriesObservation, Warnings} from "@/types";
 
-if(!OpenWeatherApiKey) window.alert("OpenWeather API key not set!");
+if (!OpenWeatherApiKey) window.alert("OpenWeather API key not set!");
 
-export function search(str: string): Promise<void | {name: string, lat: number, lon: number, country: string, state: string}[]> {
+export function search(str: string): Promise<void | {
+    name: string,
+    lat: number,
+    lon: number,
+    country: string,
+    state: string
+}[]> {
     str = str.replace(",", " ");
     const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURI(str)}&limit=5&appid=${OpenWeatherApiKey}`;
-    return fetch(url).then(response => response.json()).then(list => list.map((data: { name: string; lat: number; lon: number; country: string; state: string; }) => {
+    return fetch(url).then(response => response.json()).then(list => list.map((data: {
+        name: string;
+        lat: number;
+        lon: number;
+        country: string;
+        state: string;
+    }) => {
         return {
             name: data.name,
             lat: data.lat,
@@ -48,7 +60,7 @@ function fetchOpenWeather(url: string, retry: number = 3): Promise<OpenWeather> 
             resolve(weather);
         }).catch((error) => {
             console.error("OpenWeather fetchOpenWeather():", error);
-            if(retry > 0) resolve(fetchOpenWeather(url, retry - 1));
+            if (retry > 0) resolve(fetchOpenWeather(url, retry - 1));
         });
     }) as Promise<OpenWeather>;
 }
@@ -70,7 +82,7 @@ export function getHourlyForecastLatLon(lat: number, lon: number, retry: number 
             resolve(weather);
         }).catch((error) => {
             console.error("OpenWeather getHourlyForecastLatLon():", error);
-            if(retry > 0) resolve(getHourlyForecastLatLon(lat, lon, retry - 1));
+            if (retry > 0) resolve(getHourlyForecastLatLon(lat, lon, retry - 1));
         });
     })
 }
@@ -83,7 +95,7 @@ function parseAlerts(alerts: any): Warnings {
         today.setHours(0, 0, 0, 0);
         const start = (alert.start * 1000 - today.getTime()) / 1000 / 60 / 60 / 24;
         const end = (alert.end * 1000 - today.getTime()) / 1000 / 60 / 60 / 24;
-        for(let i = Math.max(Math.floor(start), 0); i <= Math.floor(end); i++ ){
+        for (let i = Math.max(Math.floor(start), 0); i <= Math.floor(end); i++) {
             // @ts-ignore
             warnings[i] = {
                 severity: "Moderate"
@@ -124,15 +136,18 @@ function oneCallToWeather(forecastList: any): OpenWeather {
     const weather: OpenWeather = getEmptyOpenWeather();
     forecastList.forEach((forecast: any) => {
         const time = new Date(forecast.dt * 1000);
-        weather.humidity.push({ time, value: forecast.humidity });
-        weather.temperature.push({ time, value: forecast.temp });
-        weather.probabilityOfPrecipitation.push({ time, value: Math.round(forecast.pop * 100) });
-        weather.windDirection.push({ time, value: forecast.wind_deg });
-        weather.windSpeed.push({ time, value: forecast.wind_speed });
-        weather.windGust.push({ time, value: forecast.wind_gust });
-        weather.precipitation.push({ time, value: Object.values(forecast.rain || forecast.snow || {"1h": 0})[0] as number });
-        weather.weatherSymbol.push({ time, value: getFMIWeatherSymbolCode(forecast.weather[0].icon) });
-        weather.feelsLike.push({ time, value: forecast.feels_like });
+        weather.humidity.push({time, value: forecast.humidity});
+        weather.temperature.push({time, value: forecast.temp});
+        weather.probabilityOfPrecipitation.push({time, value: Math.round(forecast.pop * 100)});
+        weather.windDirection.push({time, value: forecast.wind_deg});
+        weather.windSpeed.push({time, value: forecast.wind_speed});
+        weather.windGust.push({time, value: forecast.wind_gust});
+        weather.precipitation.push({
+            time,
+            value: Object.values(forecast.rain || forecast.snow || {"1h": 0})[0] as number
+        });
+        weather.weatherSymbol.push({time, value: getFMIWeatherSymbolCode(forecast.weather[0].icon)});
+        weather.feelsLike.push({time, value: forecast.feels_like});
     });
     // Remove current hour weather
     const currentTime = new Date();
@@ -153,17 +168,17 @@ function oneCallDailyToWeather(daily: any, start: Date): OpenWeather {
             day: new Date(time.setHours(12, 0, 0, 0)),
             eve: new Date(time.setHours(18, 0, 0, 0)),
         }
-        if(times.eve.getTime() < start.getTime()) return;
+        if (times.eve.getTime() < start.getTime()) return;
         Object.entries(times).forEach(([key, time]) => {
-            weather.humidity.push({ time, value: forecast.humidity });
-            weather.temperature.push({ time, value: forecast.temp[key] });
-            weather.probabilityOfPrecipitation.push({ time, value: Math.round(forecast.pop * 100) });
-            weather.windDirection.push({ time, value: forecast.wind_deg });
-            weather.windSpeed.push({ time, value: forecast.wind_speed });
-            weather.windGust.push({ time, value: forecast.wind_gust });
-            weather.precipitation.push({ time, value: forecast.rain || forecast.snow || 0 });
-            weather.weatherSymbol.push({ time, value: getFMIWeatherSymbolCode(forecast.weather[0].icon) });
-            weather.feelsLike.push({ time, value: forecast.feels_like[key] });
+            weather.humidity.push({time, value: forecast.humidity});
+            weather.temperature.push({time, value: forecast.temp[key]});
+            weather.probabilityOfPrecipitation.push({time, value: Math.round(forecast.pop * 100)});
+            weather.windDirection.push({time, value: forecast.wind_deg});
+            weather.windSpeed.push({time, value: forecast.wind_speed});
+            weather.windGust.push({time, value: forecast.wind_gust});
+            weather.precipitation.push({time, value: forecast.rain || forecast.snow || 0});
+            weather.weatherSymbol.push({time, value: getFMIWeatherSymbolCode(forecast.weather[0].icon)});
+            weather.feelsLike.push({time, value: forecast.feels_like[key]});
         });
     });
     return weather;
@@ -173,15 +188,18 @@ function toWeather(forecastList: any): OpenWeather {
     const weather: OpenWeather = getEmptyOpenWeather();
     forecastList.forEach((forecast: any) => {
         const time = new Date(forecast.dt * 1000);
-        weather.humidity.push({ time, value: forecast.main.humidity });
-        weather.temperature.push({ time, value: forecast.main.temp });
-        weather.probabilityOfPrecipitation.push({ time, value: Math.round(forecast.pop * 100) });
-        weather.windDirection.push({ time, value: forecast.wind.deg });
-        weather.windSpeed.push({ time, value: forecast.wind.speed });
-        weather.windGust.push({ time, value: forecast.wind.gust });
-        weather.precipitation.push({ time, value: Object.values(forecast.rain || forecast.snow || {"1h": 0})[0] as number });
-        weather.weatherSymbol.push({ time, value: getFMIWeatherSymbolCode(forecast.weather[0].icon) });
-        weather.feelsLike.push({ time, value: forecast.main.feels_like });
+        weather.humidity.push({time, value: forecast.main.humidity});
+        weather.temperature.push({time, value: forecast.main.temp});
+        weather.probabilityOfPrecipitation.push({time, value: Math.round(forecast.pop * 100)});
+        weather.windDirection.push({time, value: forecast.wind.deg});
+        weather.windSpeed.push({time, value: forecast.wind.speed});
+        weather.windGust.push({time, value: forecast.wind.gust});
+        weather.precipitation.push({
+            time,
+            value: Object.values(forecast.rain || forecast.snow || {"1h": 0})[0] as number
+        });
+        weather.weatherSymbol.push({time, value: getFMIWeatherSymbolCode(forecast.weather[0].icon)});
+        weather.feelsLike.push({time, value: forecast.main.feels_like});
     });
     return weather;
 }

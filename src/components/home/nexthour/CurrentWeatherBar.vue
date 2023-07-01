@@ -2,31 +2,31 @@
   <div id="main">
     <div class="side">
       <RainItem
-          :rain-amount="weather.precipitation"
-          :rain-probability="pop"
-          :negative="true" />
+        :negative="true"
+        :rain-amount="weather.precipitation"
+        :rain-probability="pop"/>
     </div>
     <div class="center">
-      <SunIcon class="sun-icon" :animate="settingsStore.useAnimations" />
+      <SunIcon :animate="settingsStore.useAnimations" class="sun-icon"/>
       <span>{{ dayLength }}</span>
     </div>
     <div class="side">
       <WindIndicator
-          :windDirection="weather.windDirection"
-          :windSpeed="weather.windSpeed"
-          :negative="true" />
+        :negative="true"
+        :windDirection="weather.windDirection"
+        :windSpeed="weather.windSpeed"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import type { HourWeather } from "@/types";
+import type {HourWeather} from "@/types";
 import {defineComponent} from 'vue';
-import { getDayLength } from "@/weather";
+import {getDayLength} from "@/weather";
 import WindIndicator from "@/components/home/WindIndicator.vue";
 import RainItem from "@/components/home/RainItem.vue";
 import SunIcon from "@/components/icons/SunIcon.vue";
-import { useWeatherStore, useSettingsStore } from "@/stores";
+import {useSettingsStore, useWeatherStore} from "@/stores";
 
 export default defineComponent({
   name: "CurrentWeatherBar.vue",
@@ -50,8 +50,7 @@ export default defineComponent({
     }
   },
   data() {
-    return {
-    }
+    return {}
   },
   computed: {
     pop() {
@@ -76,6 +75,7 @@ export default defineComponent({
   padding: 0;
   height: 58px;
 }
+
 .side {
   background-color: #00000025;
   width: 80px;
@@ -84,6 +84,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
 }
+
 .center {
   background-color: #00000025;
   flex-grow: 1;
@@ -95,11 +96,13 @@ export default defineComponent({
   color: white;
   font-size: 14px;
 }
+
 .sun-icon {
   width: 40px;
   height: 40px;
   margin: 0 5px;
 }
+
 #main div {
   margin: 0 1px 0 0;
   height: 100%;

@@ -1,11 +1,13 @@
+// noinspection NodeCoreCodingAssistance
+
 const nlf = require('nlf');
 const fs = require('fs');
 
 nlf.find({
     directory: './',
     production: true
-}, function (err, data) {
-    if (err) {
+}, function(err, data) {
+    if(err) {
         console.error(err);
         return;
     }
@@ -22,7 +24,7 @@ nlf.find({
     licenses = licenses.filter((l) => l.text);
 
     fs.writeFile('./src/assets/licenses.json', JSON.stringify(licenses, null, 2), (err) => {
-        if (err) {
+        if(err) {
             console.error(err);
             return;
         }

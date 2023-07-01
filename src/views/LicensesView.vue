@@ -1,17 +1,17 @@
 <template>
-<div class="licenses">
-  <BackNavigation>{{ $t('routes.licenses') }}</BackNavigation>
-  <div class="license" v-for="license in licenses" :key="license.name">
-    <h2>{{ license.name }} - {{ license.version }}</h2>
-    <!--suppress TypeScriptUnresolvedReference -->
-    <p class="type">{{ license.license }}</p>
-    <p>{{ license.text }}</p>
+  <div class="licenses">
+    <BackNavigation>{{ $t('routes.licenses') }}</BackNavigation>
+    <div v-for="license in licenses" :key="license.name" class="license">
+      <h2>{{ license.name }} - {{ license.version }}</h2>
+      <!--suppress TypeScriptUnresolvedReference -->
+      <p class="type">{{ license.license }}</p>
+      <p>{{ license.text }}</p>
+    </div>
   </div>
-</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import BackNavigation from "@/components/BackNavigation.vue";
 import licenses from "@/assets/licenses.json";
 

@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import {DefaultLanguage} from "@/contants";
 import {useThemeStore} from "@/stores/theme.store";
 

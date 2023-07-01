@@ -7,7 +7,7 @@
       {{ content }}
     </div>
     <div class="image">
-      <slot />
+      <slot/>
     </div>
   </div>
 </template>
@@ -16,17 +16,17 @@
 import {defineComponent} from 'vue';
 
 export default defineComponent({
-    name: "CreditsItem",
-    props: {
-        title: {
-            type: String,
-            required: true,
-        },
-        content: {
-            type: String,
-            required: true,
-        },
+  name: "CreditsItem",
+  props: {
+    title: {
+      type: String,
+      required: true,
     },
+    content: {
+      type: String,
+      required: true,
+    },
+  },
 })
 </script>
 
@@ -46,6 +46,7 @@ export default defineComponent({
   text-align: center;
   contain: content;
 }
+
 .title {
   font-size: 22px;
   font-weight: 700;
@@ -53,6 +54,7 @@ export default defineComponent({
   padding: 0;
   color: white;
 }
+
 .content {
   font-size: 16px;
   font-weight: 500;
@@ -60,16 +62,19 @@ export default defineComponent({
   padding: 0;
   color: white;
 }
+
 .image {
   margin: 1rem 0 0 0;
   height: 70px;
   display: flex;
   flex-direction: column;
 }
+
 :deep(.image svg) {
   width: 200px;
 }
+
 :deep(.image img) {
-    width: 200px;
+  width: 200px;
 }
 </style>

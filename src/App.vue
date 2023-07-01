@@ -1,16 +1,16 @@
 <template>
   <NavDrawer
-      :is-installed="installed"
-      :open="drawerOpen"
-      @close="closeDrawer"
-      @install="installPWA"
+    :is-installed="installed"
+    :open="drawerOpen"
+    @close="closeDrawer"
+    @install="installPWA"
   />
   <RouterView
-      id="router-view"
-      v-slot="{ Component }"
-      :class="{'open' : drawerOpen}"
-      @click="closeDrawer"
-      @open="openDrawer"
+    id="router-view"
+    v-slot="{ Component }"
+    :class="{'open' : drawerOpen}"
+    @click="closeDrawer"
+    @open="openDrawer"
   >
     <keep-alive :include="['HomeView', 'WarningsView']">
       <component :is="Component"/>

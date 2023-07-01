@@ -1,12 +1,12 @@
 <template>
-  <router-link :to="{ name: to }" :exact="false" active-class="activeClass" class="link">
-    <slot />
-    <MenuArrowIcon class="icon" />
+  <router-link :exact="false" :to="{ name: to }" active-class="activeClass" class="link">
+    <slot/>
+    <MenuArrowIcon class="icon"/>
   </router-link>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import MenuArrowIcon from "@/components/icons/MenuArrowIcon.vue";
 
 export default defineComponent({
@@ -38,9 +38,11 @@ export default defineComponent({
   border-top: var(--backgroundLight) solid 1px;
   white-space: nowrap;
 }
+
 .link:last-of-type {
   border-bottom: var(--backgroundLight) solid 1px;
 }
+
 .icon {
   width: 20px;
   height: 20px;

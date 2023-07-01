@@ -1,10 +1,10 @@
 * {
     -webkit-user-select: none;
     /* prevent copy paste for all elements */
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.ol-control,.ol-scale-line {
+.ol-control, .ol-scale-line {
     position: absolute;
     padding: 2px;
 }
@@ -23,7 +23,7 @@
 
 .ol-scale-line {
     background: #95b9e6;
-    background: rgba(88,88,88,.3);
+    background: rgba(88, 88, 88, .3);
     border-radius: 4px;
     bottom: 8px;
     left: 8px;
@@ -36,7 +36,7 @@
     font-size: 10px;
     text-align: center;
     margin: 1px;
-    will-change: contents,width;
+    will-change: contents, width;
 }
 
 .ol-unsupported {
@@ -55,12 +55,12 @@
 
 .ol-control {
     background-color: #eee;
-    background-color: rgba(255,255,255,.4);
+    background-color: rgba(255, 255, 255, .4);
     border-radius: 4px;
 }
 
 .ol-control:hover {
-    background-color: rgba(255,255,255,.6);
+    background-color: rgba(255, 255, 255, .6);
 }
 
 .ol-zoom {
@@ -71,13 +71,13 @@
 .ol-rotate {
     top: .5em;
     right: .5em;
-    transition: opacity .25s linear,visibility 0s linear;
+    transition: opacity .25s linear, visibility 0s linear;
 }
 
 .ol-rotate.ol-hidden {
     opacity: 0;
     visibility: hidden;
-    transition: opacity .25s linear,visibility 0s linear .25s;
+    transition: opacity .25s linear, visibility 0s linear .25s;
 }
 
 .ol-zoom-extent {
@@ -132,10 +132,10 @@
     top: 5.5em;
 }
 
-.ol-control button:focus,.ol-control button:hover {
+.ol-control button:focus, .ol-control button:hover {
     text-decoration: none;
     background-color: #4c6079;
-    background-color: rgba(0,60,136,.7);
+    background-color: rgba(0, 60, 136, .7);
 }
 
 .ol-zoom .ol-zoom-in {
@@ -146,7 +146,7 @@
     border-radius: 0 0 2px 2px;
 }
 
-.fmi-title,.fmi-title-action {
+.fmi-title, .fmi-title-action {
     line-height: 30px;
     vertical-align: middle;
     padding-left: 10px;
@@ -219,7 +219,7 @@
     text-align: center;
 }
 
-.fmi-day-symbol,.fmi-hourly-symbol {
+.fmi-day-symbol, .fmi-hourly-symbol {
     margin: auto;
     position: relative;
 }
@@ -299,7 +299,7 @@
     border-top: 0;
 }
 
-.fmi-info,.fmi-info-no-margin {
+.fmi-info, .fmi-info-no-margin {
     font-style: italic;
     padding: 15px;
     font-size: 12px;
@@ -327,7 +327,7 @@
     margin: 0;
 }
 
-#fmi-animator-loading,#fmi-animator-error {
+#fmi-animator-loading, #fmi-animator-error {
     position: absolute;
     top: 0;
     left: 0;
@@ -373,7 +373,7 @@
 }
 
 /*noinspection ALL*/
-.fmi-input,.fmi-small-input {
+.fmi-input, .fmi-small-input {
     margin-top: 20px;
     display: block;
     background: white;
@@ -433,7 +433,7 @@ input[type="text"] {
     margin-left: 12px;
 }
 
-#fmi-fullscreen-error,#fmi-loading {
+#fmi-fullscreen-error, #fmi-loading {
     width: 100%;
     height: 100vh;
     background-image: linear-gradient(13deg, #242282 1%, #5D91D8 100%);
@@ -479,7 +479,7 @@ input[type="text"] {
     text-transform: uppercase;
 }
 
-#fmi-animation-fullscreen-icon,#fmi-fullscreen-animation-close {
+#fmi-animation-fullscreen-icon, #fmi-fullscreen-animation-close {
     z-index: 1000;
     position: relative;
     top: -10px;
@@ -537,9 +537,9 @@ input[type="text"] {
 
 .fmi-button-group button {
     background-color: #585858;
-    border: 1px solid rgb(53,89,185);
+    border: 1px solid rgb(53, 89, 185);
     font-size: 13px;
-    color: rgb(53,89,185);
+    color: rgb(53, 89, 185);
     height: 40px;
     line-height: 40px;
     box-sizing: border-box;
@@ -584,7 +584,7 @@ input[type="text"] {
 }
 
 .fmi-new {
-    background-color: rgb(72,104,184);
+    background-color: rgb(72, 104, 184);
     color: white;
     border-radius: 3px;
     font-size: 13px;
@@ -601,7 +601,7 @@ input[type="text"] {
 
 /* Hide Metoclient controls that are not used */
 
-#fmi-metoclient-layer-switcher-container,#fmi-metoclient-legend-chooser-container,.ol-zoom {
+#fmi-metoclient-layer-switcher-container, #fmi-metoclient-legend-chooser-container, .ol-zoom {
     display: none !important;
 }
 
@@ -838,7 +838,7 @@ div.fmi-metoclient-timeslider-pointer-wrapper {
     position: relative;
 }
 
-div.fmi-metoclient-timeslider-pointer-wrapper:after,div.fmi-metoclient-timeslider-pointer-wrapper:before {
+div.fmi-metoclient-timeslider-pointer-wrapper:after, div.fmi-metoclient-timeslider-pointer-wrapper:before {
     bottom: 100%;
     left: 50%;
     border: solid transparent;

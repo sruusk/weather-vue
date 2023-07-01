@@ -7,12 +7,13 @@ This uses FMI OpenData as the primary source of weather data,
 but OpenWeatherMap is used to complement the data when FMI OpenData does not have enough data available.
 
 ### Weather Icons used in this project
+
 This project uses the [Weather Icons by Bas Milius](https://github.com/basmilius/weather-icons).
-The icons are renamed according to the 
+The icons are renamed according to the
 [OpenData weather icon explanations](https://www.ilmatieteenlaitos.fi/latauspalvelun-pikaohje).
 
-
 ### Environment variables
+
 This project uses environment variables to store the API keys and other configuration.  
 The environment variables are stored in a `.env` file in the root of the project.
 

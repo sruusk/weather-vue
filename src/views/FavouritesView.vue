@@ -2,14 +2,14 @@
   <div class="main">
     <BackNavigation>
       <input
-          type="text"
-          :placeholder="`${$t('settings.inputLocation')}, ${$t('settings.forExample')}: Kaivopuisto Helsinki`"
-          class="input"
-          ref="searchInput"
-          @keydown.enter="search"
-          v-model="searchString" />
+        ref="searchInput"
+        v-model="searchString"
+        :placeholder="`${$t('settings.inputLocation')}, ${$t('settings.forExample')}: Kaivopuisto Helsinki`"
+        class="input"
+        type="text"
+        @keydown.enter="search"/>
     </BackNavigation>
-    <ListSelection v-if="selection.length" :items="selection" @select="handleSelect" />
+    <ListSelection v-if="selection.length" :items="selection" @select="handleSelect"/>
     <div class="favourites-list">
       <div class="favourites-header">
         <div class="favourites-header-text">{{ $t("settings.favourites") }}</div>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <draggable v-model="favouritesStore.favourites">
-        <div class="favourite" v-for="fav in favouritesStore.favourites" :key="fav.name">
+        <div v-for="fav in favouritesStore.favourites" :key="fav.name" class="favourite">
           <div class="drag-indicator">
             <div class="arrows">
               <span>▲</span>
@@ -42,7 +42,7 @@ import {defineComponent, ref} from 'vue';
 import Weather from "@/weather";
 import countries from "i18n-iso-countries";
 import {useFavouritesStore, useSettingsStore} from "@/stores";
-import { VueDraggableNext } from 'vue-draggable-next'
+import {VueDraggableNext} from 'vue-draggable-next'
 import BackNavigation from "@/components/BackNavigation.vue";
 import type {ForecastLocation} from "@/types";
 import ListSelection from "@/components/ListSelection.vue";
@@ -77,20 +77,20 @@ export default defineComponent({
       this.searchString = this.searchString.trim();
       let searchString = this.searchString;
 
-      if(searchString.includes(" ")) {
+      if (searchString.includes(" ")) {
         const parts = this.searchString.split(" ");
-        if(parts.length > 1) searchString = `${parts.slice(0, parts.length - 1).join(" ").trim()},${parts[parts.length - 1].trim()}`;
+        if (parts.length > 1) searchString = `${parts.slice(0, parts.length - 1).join(" ").trim()},${parts[parts.length - 1].trim()}`;
         console.log(searchString);
       }
 
       let weather = await Weather.getWeather(searchString);
-      if(!weather.location.region && searchString.includes(','))
+      if (!weather.location.region && searchString.includes(','))
         weather = await Weather.getWeather(searchString.replace(',', ' '));
-      if(weather.location.region) {
+      if (weather.location.region) {
         this.favouritesStore.addFavourite(weather.location);
       } else {
         const list = await findLocation(this.searchString);
-        if(list?.length) this.selection = list;
+        if (list?.length) this.selection = list;
         else alert(this.$t('settings.noneFound'));
       }
       this.searchString = "";
@@ -99,17 +99,17 @@ export default defineComponent({
       const country = countries.getName(selected.country, 'en');
       this.favouritesStore.addFavourite({
         name: selected.name,
-            country: country,
-            region: selected.state || country,
-            lat: selected.lat,
-            lon: selected.lon,
-            identifier: ''
+        country: country,
+        region: selected.state || country,
+        lat: selected.lat,
+        lon: selected.lon,
+        identifier: ''
       });
       this.selection = [];
     },
     findLocation,
     translateRegion(location: ForecastLocation) {
-      if(location.region === location.country) {
+      if (location.region === location.country) {
         const countryCode = location.country.length === 2 ? location.country : countries.getAlpha2Code(location.country, 'en');
         return countries.getName(countryCode, this.settingsStore.language);
       }
@@ -123,6 +123,7 @@ export default defineComponent({
 .main {
   width: 100%;
 }
+
 .input {
   width: 100%;
   height: 40px;
@@ -132,14 +133,17 @@ export default defineComponent({
   font-size: 14px;
   margin-left: 10px;
 }
+
 .favourites-list {
   width: 100%;
   color: white;
   font-size: 12px;
 }
+
 .favourites-list > div:first-of-type, .favourite {
   border-bottom: var(--backgroundLight) 1px solid;
 }
+
 .favourites-header {
   display: flex;
   justify-content: space-between;
@@ -149,12 +153,15 @@ export default defineComponent({
   margin: 10px 20px 0 20px;
   padding: 0 0 10px 0;
 }
+
 .favourites-header-text {
   font-weight: 600;
 }
+
 .favourites-header-button {
   cursor: pointer;
 }
+
 .favourite {
   display: flex;
   justify-content: space-between;
@@ -163,14 +170,17 @@ export default defineComponent({
   height: 50px;
   cursor: grab;
 }
+
 .favourite-name {
   font-weight: 400;
   width: 100%;
   margin-left: 10px;
 }
+
 .favourite-button {
   cursor: pointer;
 }
+
 .remove-button {
   width: 25px;
   height: 25px;
@@ -181,10 +191,12 @@ export default defineComponent({
   border-radius: 50%;
   background-color: darkred;
 }
+
 .drag-indicator {
   display: flex;
   flex-direction: row;
 }
+
 .arrows {
   display: flex;
   flex-direction: column;

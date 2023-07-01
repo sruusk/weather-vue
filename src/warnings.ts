@@ -11,9 +11,10 @@ const parser = new XMLParser({
 });
 
 // This is not needed since FMI returns all languages in the same feed anyway
+// noinspection JSUnusedLocalSymbols
 const alertUrl = () => {
     const lang = useSettingsStore().language;
-    switch(lang) {
+    switch (lang) {
         case "fi":
             return "https://alerts.fmi.fi/cap/feed/atom_fi-FI.xml";
         case "sv":
@@ -30,37 +31,37 @@ const languageMap: any = {
 };
 
 export function getAlerts(): Promise<FmiAlerts> {
-    const url = `https://corsproxy.io/?${ encodeURIComponent("https://alerts.fmi.fi/cap/feed/atom_fi-FI.xml") }`
+    const url = `https://corsproxy.io/?${encodeURIComponent("https://alerts.fmi.fi/cap/feed/atom_fi-FI.xml")}`
     return new Promise((resolve, reject) => {
-       fetch(url).then(response => {
-           if(response.ok) return response.text();
-           else reject(response);
-       }).then(text => {
-           const xml = parser.parse(text);
-           const alerts = Object.fromEntries(
-               Object.keys(languageMap).map((key: string) => {
-                   return [languageMap[key], xml["feed"]["entry"].map((entry: any) => {
-                       if(entry["content"]["alert"]["msgType"] === "Cancel") return undefined;
-                       const alert = entry["content"]["alert"]["info"].find((alert: any) => alert["language"] === key);
-                       if(!alert) return undefined;
-                       if(!Array.isArray(alert["area"])) alert["area"] = [alert["area"]];
-                       return {
-                           severity: alert["severity"],
-                           polygons: alert["area"].map((area: any) => area["polygon"].toString().split(" ").map((point: string) => {
-                               const [lat, lon] = point.split(",");
-                               return [parseFloat(lat), parseFloat(lon)];
-                           }) as [number, number]),
-                           onset: new Date(alert["onset"]),
-                           expires: new Date(alert["expires"]),
-                           event: alert["event"],
-                           headline: alert["headline"],
-                           description: alert["description"],
-                       }
-                   }).filter((alert: any) => alert !== undefined) as any[]]
-               }));
+        fetch(url).then(response => {
+            if (response.ok) return response.text();
+            else reject(response);
+        }).then(text => {
+            const xml = parser.parse(text);
+            const alerts = Object.fromEntries(
+                Object.keys(languageMap).map((key: string) => {
+                    return [languageMap[key], xml["feed"]["entry"].map((entry: any) => {
+                        if (entry["content"]["alert"]["msgType"] === "Cancel") return undefined;
+                        const alert = entry["content"]["alert"]["info"].find((alert: any) => alert["language"] === key);
+                        if (!alert) return undefined;
+                        if (!Array.isArray(alert["area"])) alert["area"] = [alert["area"]];
+                        return {
+                            severity: alert["severity"],
+                            polygons: alert["area"].map((area: any) => area["polygon"].toString().split(" ").map((point: string) => {
+                                const [lat, lon] = point.split(",");
+                                return [parseFloat(lat), parseFloat(lon)];
+                            }) as [number, number]),
+                            onset: new Date(alert["onset"]),
+                            expires: new Date(alert["expires"]),
+                            event: alert["event"],
+                            headline: alert["headline"],
+                            description: alert["description"],
+                        }
+                    }).filter((alert: any) => alert !== undefined) as any[]]
+                }));
 
-           resolve(alerts);
-       });
+            resolve(alerts);
+        });
     });
 }
 
@@ -68,7 +69,7 @@ export function getFloodingAlerts(): Promise<FmiAlerts> {
     const url = 'https://wwwi2.ymparisto.fi/i2/vespa/alerts.json';
     return new Promise((resolve, reject) => {
         fetch(url).then(response => {
-            if(response.ok) return response.json();
+            if (response.ok) return response.json();
             else reject(response);
         }).then(json => {
             const alerts = Object.fromEntries(

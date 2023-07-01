@@ -1,34 +1,34 @@
 <template>
   <svg
-      width="9px"
-      height="16px"
-      viewBox="0 0 9 16"
-      id="svg7289"
-      xmlns="http://www.w3.org/2000/svg"
+    id="svg7289"
+    height="16px"
+    viewBox="0 0 9 16"
+    width="9px"
+    xmlns="http://www.w3.org/2000/svg"
   >
     <defs
-        id="defs7293" />
+      id="defs7293"/>
     <g
-        stroke="none"
-        stroke-width="1"
-        fill="none"
-        fill-rule="evenodd"
-        id="g7287">
+      id="g7287"
+      fill="none"
+      fill-rule="evenodd"
+      stroke="none"
+      stroke-width="1">
       <g
-          transform="translate(-20.825,-16.9295)"
-          fill="#ffffff"
-          id="g7285"
-          style="stroke-width:1;stroke-dasharray:none">
+        id="g7285"
+        fill="#ffffff"
+        style="stroke-width:1;stroke-dasharray:none"
+        transform="translate(-20.825,-16.9295)">
         <g
-            id="g7283"
-            style="stroke-width:1;stroke-dasharray:none">
+          id="g7283"
+          style="stroke-width:1;stroke-dasharray:none">
           <g
-              id="g7281"
-              style="stroke-width:1;stroke-dasharray:none">
+            id="g7281"
+            style="stroke-width:1;stroke-dasharray:none">
             <path
-                d="m 21,24.929381 c 0,-0.28412 0.103808,-0.568311 0.310952,-0.785009 l 6.524967,-6.819037 c 0.36716,-0.369908 0.880431,-0.51362 1.295324,-0.07984 0.414896,0.433604 0.351024,0.897243 -0.111776,1.378962 l -6.045018,6.288956 6.060584,6.321139 c 0.335021,0.369732 0.494701,0.961221 0.09581,1.362854 -0.414928,0.433955 -0.880095,0.370083 -1.295124,-0.06387 L 21.310718,25.7146 C 21.103606,25.497763 21,25.213607 21,24.929381"
-                id="path7279"
-                style="stroke-width:1;stroke-dasharray:none" />
+              id="path7279"
+              d="m 21,24.929381 c 0,-0.28412 0.103808,-0.568311 0.310952,-0.785009 l 6.524967,-6.819037 c 0.36716,-0.369908 0.880431,-0.51362 1.295324,-0.07984 0.414896,0.433604 0.351024,0.897243 -0.111776,1.378962 l -6.045018,6.288956 6.060584,6.321139 c 0.335021,0.369732 0.494701,0.961221 0.09581,1.362854 -0.414928,0.433955 -0.880095,0.370083 -1.295124,-0.06387 L 21.310718,25.7146 C 21.103606,25.497763 21,25.213607 21,24.929381"
+              style="stroke-width:1;stroke-dasharray:none"/>
           </g>
         </g>
       </g>

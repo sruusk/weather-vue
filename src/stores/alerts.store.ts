@@ -1,9 +1,9 @@
 // @ts-ignore
 import pointInPolygon from 'robust-point-in-polygon';
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import {useSettingsStore} from "@/stores/settings.store";
-import type {ForecastLocation, Warnings, FmiAlerts, FmiAlertData} from "@/types";
-import { getAlerts, getFloodingAlerts } from "@/warnings";
+import type {FmiAlertData, FmiAlerts, ForecastLocation, Warnings} from "@/types";
+import {getAlerts, getFloodingAlerts} from "@/warnings";
 
 const severityOrder = ["Minor", "Moderate", "Severe", "Extreme"];
 
@@ -44,7 +44,7 @@ export const useAlertsStore = defineStore('alerts', {
     getters: {
         getAlertsForLocation: (state: State) => (location: ForecastLocation): Warnings => {
             let language = useSettingsStore().language;
-            if(language !== "fi" && language !== "sv") language = "en";
+            if (language !== "fi" && language !== "sv") language = "en";
             const alerts: FmiAlertData[] = state.alerts[language as keyof FmiAlerts].map(alert => {
                 if (alert.expires < new Date()) return undefined; // Expired
                 if (alert.polygons.find((polygon: any) => pointInPolygon(polygon, [location.lat, location.lon]) <= 0)) {
@@ -54,7 +54,7 @@ export const useAlertsStore = defineStore('alerts', {
             }).filter(alert => alert !== undefined) as FmiAlertData[];
             //console.log(`Alerts for ${location.name}, ${location.region}`, alerts);
             const warnings: any = {};
-            for(let i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 const date = new Date();
                 date.setDate(date.getDate() + i);
                 const dayStart = new Date(date.setHours(0, 0, 0, 0));
@@ -63,12 +63,12 @@ export const useAlertsStore = defineStore('alerts', {
                 const dayAlerts = alerts.filter(alert => alert.onset <= dayEnd && alert.expires >= dayStart);
                 // Find the most severe alert
                 let mostSevere: FmiAlertData | undefined = undefined;
-                for(const alert of dayAlerts) {
-                    if(!mostSevere || severityOrder.indexOf(alert.severity) > severityOrder.indexOf(mostSevere.severity)) {
+                for (const alert of dayAlerts) {
+                    if (!mostSevere || severityOrder.indexOf(alert.severity) > severityOrder.indexOf(mostSevere.severity)) {
                         mostSevere = alert;
                     }
                 }
-                if(mostSevere) {
+                if (mostSevere) {
                     warnings[i] = {
                         severity: mostSevere.severity,
                     }

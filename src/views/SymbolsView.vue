@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%">
-    <BackNavigation> {{ $t('routes.symbols') }} </BackNavigation>
-    <WeatherSymbols />
+    <BackNavigation> {{ $t('routes.symbols') }}</BackNavigation>
+    <WeatherSymbols/>
   </div>
 </template>
 
@@ -11,8 +11,8 @@ import BackNavigation from "@/components/BackNavigation.vue";
 import WeatherSymbols from "@/components/WeatherSymbols.vue";
 
 export default defineComponent({
-    name: "SymbolsView",
-    components: {WeatherSymbols, BackNavigation}
+  name: "SymbolsView",
+  components: {WeatherSymbols, BackNavigation}
 })
 </script>
 

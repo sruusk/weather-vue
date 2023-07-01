@@ -6,11 +6,11 @@
     </div>
     <div @click="settingsStore.setLanguage('sv')">
       På svenska
-      <CheckboxItem :checked="settingsStore.language === 'sv'" />
+      <CheckboxItem :checked="settingsStore.language === 'sv'"/>
     </div>
     <div @click="settingsStore.setLanguage('en')">
       In English
-      <CheckboxItem :checked="settingsStore.language === 'en'" />
+      <CheckboxItem :checked="settingsStore.language === 'en'"/>
     </div>
   </SettingsItem>
 </template>

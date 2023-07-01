@@ -1,18 +1,18 @@
 <template>
-  <div class="slider"
-       ref="slider"
-       @scroll="onScroll"
-       :class="isMobile ? 'mobile' : 'desktop'">
+  <div ref="slider"
+       :class="isMobile ? 'mobile' : 'desktop'"
+       class="slider"
+       @scroll="onScroll">
     <DayItem
-        v-for="day in days"
-        :key="day.getTime()"
-        :weather="weatherStore.getWeather(day)"
-        :day="day" />
+      v-for="day in days"
+      :key="day.getTime()"
+      :day="day"
+      :weather="weatherStore.getWeather(day)"/>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import {defineComponent, ref} from 'vue';
 import {useWeatherStore} from "@/stores";
 import DayItem from "@/components/home/tenday/DayItem.vue";
 
@@ -55,7 +55,7 @@ export default defineComponent({
     this.$nextTick(() => {
       this.getDayPositions();
       this.$nextTick(() => {
-        if(!this.displayedDay) return;
+        if (!this.displayedDay) return;
         this.scrollToDay(this.displayedDay, true);
       });
     });
@@ -63,7 +63,7 @@ export default defineComponent({
   watch: {
     selectedDay: {
       handler: function () {
-        if(!this.selectedDay) return;
+        if (!this.selectedDay) return;
         this.scrollToDay(this.selectedDay);
       },
       deep: true
@@ -72,7 +72,7 @@ export default defineComponent({
       this.$nextTick(() => {
         this.getDayPositions();
         this.goToDay(this.days?.[0]);
-        if(this.days) this.scrollToDay(this.days?.[0], true);
+        if (this.days) this.scrollToDay(this.days?.[0], true);
       });
     },
   },
@@ -88,41 +88,41 @@ export default defineComponent({
   methods: {
     onScroll() {
       // @ts-ignore
-      if(this.scrollTimer) clearTimeout(this.scrollTimer);
+      if (this.scrollTimer) clearTimeout(this.scrollTimer);
       this.scrollTimer = setTimeout(() => {
-          if(!this.displayedDay) return;
-          // @ts-ignore
-          const scrollLeft = this.slider?.scrollLeft;
-          const entries = Object.entries(this.dayPositions).reverse();
-          for (const [position, date] of entries) {
-              if (scrollLeft >= parseInt(position) - 20) {
-                  if(this.displayedDay.getDate() !== date.getDate()) {
-                      this.goToDay(date);
-                      this.displayedDay = date;
-                  }
-                  break;
-              }
+        if (!this.displayedDay) return;
+        // @ts-ignore
+        const scrollLeft = this.slider?.scrollLeft;
+        const entries = Object.entries(this.dayPositions).reverse();
+        for (const [position, date] of entries) {
+          if (scrollLeft >= parseInt(position) - 20) {
+            if (this.displayedDay.getDate() !== date.getDate()) {
+              this.goToDay(date);
+              this.displayedDay = date;
+            }
+            break;
           }
+        }
       }, 20);
     },
     getDayPositions() {
       // @ts-ignore
       const children = this.slider?.children;
       this.dayPositions = {};
-      for(let i = 0; i < children.length; i++) {
-          const child = children[i];
-          // @ts-ignore
-          const position = child.offsetLeft;
-          const date = this.days?.[i];
-          if(!date) continue;
-          this.dayPositions[position] = date;
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        // @ts-ignore
+        const position = child.offsetLeft;
+        const date = this.days?.[i];
+        if (!date) continue;
+        this.dayPositions[position] = date;
       }
     },
     scrollToDay(date: Date, instant = false) {
       const left = Object.entries(this.dayPositions).find(([, day]) => day.getDate() === date.getDate());
-      if(!left) return;
+      if (!left) return;
       // @ts-ignore
-      this.slider?.scrollTo({ left: parseInt(left[0]), behavior: instant ? 'instant' : 'smooth' });
+      this.slider?.scrollTo({left: parseInt(left[0]), behavior: instant ? 'instant' : 'smooth'});
       /*
       // @ts-ignore
       this.slider?.querySelector(`#ten-day-detailed-${date.getDate()}`)
@@ -140,10 +140,12 @@ export default defineComponent({
   flex-direction: row;
   overflow-x: scroll;
 }
+
 .mobile {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
+
 .mobile::-webkit-scrollbar {
   display: none;
 }

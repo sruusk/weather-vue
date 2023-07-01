@@ -12,13 +12,13 @@
         {{ station.location.name }}, {{ station.location.region }}
       </div>
     </div>
-    <ObservationDetails :station="station" />
-    <ObservationChart :precipitation="station.precipitationHistory" :temperature="station.temperatureHistory" />
+    <ObservationDetails :station="station"/>
+    <ObservationChart :precipitation="station.precipitationHistory" :temperature="station.temperatureHistory"/>
   </div>
 </template>
 
 <script lang="ts">
-import type { ObservationStation } from "@/types";
+import type {ObservationStation} from "@/types";
 import {defineComponent} from 'vue';
 import ObservationDetails from "@/components/home/observations/ObservationDetails.vue";
 import ObservationChart from "@/components/home/observations/ObservationChart.vue";
@@ -55,6 +55,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
 }
+
 .location-details {
   font-size: 10px;
   font-weight: 300;
@@ -64,9 +65,11 @@ export default defineComponent({
   align-items: center;
   width: max-content;
 }
+
 .location-details .dot {
   font-size: 6px;
 }
+
 .station-name {
   margin: 10px 0;
   font-size: 16px;

@@ -57,7 +57,7 @@ export default defineComponent({
     },
     hours() {
       return this.weather.temperature.map((hour: TimeSeriesObservation) => {
-        if(hour.time.getHours() % this.settingsStore.forecastInterval === 0) return hour.time;
+        if (hour.time.getHours() % this.settingsStore.forecastInterval === 0) return hour.time;
         else return undefined;
       }).filter(a => a !== undefined) as Date[];
     }

@@ -2,8 +2,8 @@
   <div>
     <div class="rain">
       <div class="rain-probability">
-        <RainIconNegative v-if="negative" />
-        <RainIcon v-else />
+        <RainIconNegative v-if="negative"/>
+        <RainIcon v-else/>
         <div class="rain-probability-value">{{ rainProbability === -1 ? '' : roundedRainProbability }} %</div>
       </div>
       <div class="rain-amount">{{ roundedRainAmount }} mm</div>
@@ -42,7 +42,7 @@ export default defineComponent({
       return Math.round(this.rainProbability);
     },
     roundedRainAmount() {
-      return Math.round(this.rainAmount*10)/10;
+      return Math.round(this.rainAmount * 10) / 10;
     }
   }
 })
@@ -60,12 +60,14 @@ export default defineComponent({
   font-weight: 300;
   line-height: 18px;
 }
+
 .rain-probability {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
+
 .rain-probability-value {
   margin-left: 5px;
 }

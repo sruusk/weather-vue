@@ -5,14 +5,14 @@
         <span>{{ $t('symbols.animated') }}</span>
         <span>{{ $t('symbols.static') }}</span>
       </div>
-      <div class="symbol" v-for="symbol in symbols" :key="symbol">
+      <div v-for="symbol in symbols" :key="symbol" class="symbol">
         <img
-          :src="`/symbols/animated/${symbol}.svg`"
           :alt="`Weather symbol ${symbol}`"
+          :src="`/symbols/animated/${symbol}.svg`"
         />
         <img
-          :src="`/symbols/static/${symbol}.svg`"
           :alt="`Weather symbol ${symbol}`"
+          :src="`/symbols/static/${symbol}.svg`"
         />
         <span>{{ $t(`symbols.symbols.${symbol}`) }}</span>
       </div>
@@ -27,7 +27,7 @@ export default defineComponent({
   name: "WeatherSymbols",
   data() {
     return {
-      symbols: [ 1, 2, 21, 22, 23, 3, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 71, 72, 73, 81, 82, 83, 91, 92 ]
+      symbols: [1, 2, 21, 22, 23, 3, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 71, 72, 73, 81, 82, 83, 91, 92]
     }
   }
 })
@@ -41,6 +41,7 @@ export default defineComponent({
   justify-content: center;
   align-items: flex-start;
 }
+
 .symbol {
   display: flex;
   flex-direction: row;
@@ -48,10 +49,12 @@ export default defineComponent({
   justify-content: center;
   margin: 10px 20px;
 }
+
 .symbol img {
   width: 100px;
   height: 100px;
 }
+
 .symbol span {
   font-size: 16px;
   font-weight: 400;
@@ -60,6 +63,7 @@ export default defineComponent({
   margin: 0;
   padding: 0;
 }
+
 .header {
   display: flex;
   flex-direction: row;
@@ -68,6 +72,7 @@ export default defineComponent({
   width: 200px;
   margin: 0 20px;
 }
+
 .header span {
   font-size: 16px;
   font-weight: 400;

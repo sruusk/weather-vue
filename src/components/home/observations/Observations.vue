@@ -1,9 +1,9 @@
 <template>
-  <div class="header" v-if="observationsStore.stations.length">{{ $t('home.weatherObservations') }}</div>
-  <div class="observations-carousel" v-if="observationsStore.stations.length">
+  <div v-if="observationsStore.stations.length" class="header">{{ $t('home.weatherObservations') }}</div>
+  <div v-if="observationsStore.stations.length" class="observations-carousel">
     <Splide ref="splide" :options="options">
       <SplideSlide v-for="station in observationsStore.stations" :key="station.location.name">
-        <ObservationItem :station="station" class="item" />
+        <ObservationItem :station="station" class="item"/>
       </SplideSlide>
     </Splide>
   </div>
@@ -63,6 +63,7 @@ export default defineComponent({
   margin-bottom: -2px;
   transform: translateY(-1px); /* Inset to hide gap between previous element */
 }
+
 .observations-carousel {
   min-height: 550px;
   width: 100%;
@@ -70,6 +71,7 @@ export default defineComponent({
   padding-top: 35px; /* Make gap for the page indicators */
   contain: content;
 }
+
 .item {
   width: 100%;
   align-self: flex-start;

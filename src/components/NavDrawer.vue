@@ -1,7 +1,7 @@
 <template>
-  <div class="nav-drawer" :class="open ? 'open' : 'closed'">
+  <div :class="open ? 'open' : 'closed'" class="nav-drawer">
     <div class="header">
-      <FMIOpenDataIcon class="logo" />
+      <FMIOpenDataIcon class="logo"/>
     </div>
     <NavItem
       v-for="route in routes"
@@ -11,8 +11,8 @@
       {{ $t(`routes.${route.name}`) }}
     </NavItem>
     <NavItem
-      to="home"
       v-if="!isInstalled"
+      to="home"
       @click="$emit('install')"
     >
       {{ $t("routes.install") }}
@@ -24,9 +24,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import NavItem from "@/components/NavItem.vue";
-import { routes } from '@/router';
+import {routes} from '@/router';
 import FMIOpenDataIcon from "@/components/icons/FMIOpenDataIcon.vue";
 
 export default defineComponent({
@@ -83,12 +83,15 @@ export default defineComponent({
   z-index: 1100;
   contain: content;
 }
+
 .nav-drawer.open {
-  min-width: calc(min(80vw, max(3/4 * 100vh, 600px) * 0.8));
+  min-width: calc(min(80vw, max(3 / 4 * 100vh, 600px) * 0.8));
 }
+
 .nav-drawer.closed {
   min-width: 0;
 }
+
 .header {
   display: flex;
   justify-content: flex-start;
@@ -99,15 +102,17 @@ export default defineComponent({
   margin-bottom: 40px;
   height: 80px;
 }
+
 .logo {
   min-width: 200px;
   width: 200px;
   height: 30px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
-  min-width: calc(min(80vw, max(3/4 * 100vh, 600px) * 0.8));
+  min-width: calc(min(80vw, max(3 / 4 * 100vh, 600px) * 0.8));
   left: 0;
   right: 0;
   padding: 10px;
@@ -117,6 +122,7 @@ export default defineComponent({
   height: 40px;
   text-transform: capitalize;
 }
+
 .version {
   color: lightgray;
   font-size: 0.8em;

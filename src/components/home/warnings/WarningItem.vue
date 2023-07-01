@@ -1,8 +1,8 @@
 <template>
   <div
-      class="warning-item"
-      :class="severity">
-    <slot />
+    :class="severity"
+    class="warning-item">
+    <slot/>
   </div>
 </template>
 
@@ -37,14 +37,17 @@ export default defineComponent({
   border-bottom: #7dd121 3px solid;
   background-image: linear-gradient(0deg, #449937 0%, rgba(35, 34, 130, 0) 100%);
 }
+
 .Moderate {
   border-bottom: #f6e71d 3px solid;
   background-image: linear-gradient(0deg, #999237 0%, rgba(35, 34, 130, 0) 100%);
 }
+
 .Severe {
   border-bottom: #fda500 3px solid;
   background-image: linear-gradient(0deg, #a37025 0%, rgba(35, 34, 130, 0) 100%);
 }
+
 .Extreme {
   border-bottom: #f63d1d 3px solid;
   background-image: linear-gradient(0deg, #b32929 0%, rgba(35, 34, 130, 0) 100%);

@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
-import type { ForecastLocation, ObservationStation } from '@/types';
-import { getObservationsForClosestStations } from "@/weather";
+import {defineStore} from 'pinia';
+import type {ForecastLocation, ObservationStation} from '@/types';
+import {getObservationsForClosestStations} from "@/weather";
 import ObservationsWorker from "@/workers/observations?worker";
 
 interface State {
@@ -20,13 +20,13 @@ export const useObservationsStore = defineStore('observations', {
         changeLocation(location: ForecastLocation) {
             this.loading = true;
             (new Promise<void>((resolve) => {
-                if(window.Worker) {
+                if (window.Worker) {
                     const worker = new ObservationsWorker();
                     worker.onmessage = (event) => {
                         this.weatherStations = event.data as ObservationStation[];
                         resolve();
                     }
-                    worker.postMessage({ lat: location.lat, lon: location.lon });
+                    worker.postMessage({lat: location.lat, lon: location.lon});
                 } else {
                     getObservationsForClosestStations(location.lat, location.lon, 4)
                         .then((stations) => {

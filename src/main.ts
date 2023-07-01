@@ -1,13 +1,13 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
-import { createPinia } from "pinia";
+import {createPinia} from "pinia";
 import router from './router'
 // @ts-ignore // No type definitions available
 import VueMobileDetection from "vue-mobile-detection";
 import countries from 'i18n-iso-countries';
 import VueSplide from '@splidejs/vue-splide';
 import './registerServiceWorker';
-import { createI18n } from 'vue-i18n';
+import {createI18n} from 'vue-i18n';
 import {DefaultLanguage} from "@/contants";
 
 // Import styles
@@ -33,11 +33,11 @@ Promise.all([
     import('i18n-iso-countries/langs/fi.json'),
     import('i18n-iso-countries/langs/sv.json')
 ]).then((c) => {
-    for(const country of c) countries.registerLocale(country);
+    for (const country of c) countries.registerLocale(country);
 });
 
 const pinia = createPinia();
-pinia.use(({ store }) => {
+pinia.use(({store}) => {
     store.$router = router;
     store.$i18n = i18n;
 });

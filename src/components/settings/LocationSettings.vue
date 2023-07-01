@@ -3,11 +3,11 @@
     <SettingsItem :title="$t('settings.location')">
       <div @click="settingsStore.setUseLocation(true)">
         {{ $t('settings.on') }}
-        <CheckboxItem :checked="settingsStore.useLocation" />
+        <CheckboxItem :checked="settingsStore.useLocation"/>
       </div>
       <div @click="settingsStore.setUseLocation(false)">
         {{ $t('settings.off') }}
-        <CheckboxItem :checked="!settingsStore.useLocation" />
+        <CheckboxItem :checked="!settingsStore.useLocation"/>
       </div>
     </SettingsItem>
   </div>
