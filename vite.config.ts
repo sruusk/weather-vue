@@ -211,7 +211,7 @@ export default defineConfig({
                             statuses: [0, 200]
                         },
                         expiration: {
-                            maxAgeSeconds: 60 * 10 // 10 minutes
+                            maxAgeSeconds: 60 * 5 // 30 minutes
                         }
                     }
                 }, {

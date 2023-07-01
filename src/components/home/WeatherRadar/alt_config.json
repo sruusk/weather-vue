@@ -188,7 +188,7 @@
         "height": "512"
       },
       "time": {
-        "range": "every 15 minute for 4 times history AND every 15 minute for 4 times future"
+        "range": "every 15 minute for 4 times future"
       }
     },
     {

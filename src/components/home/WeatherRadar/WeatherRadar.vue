@@ -84,6 +84,7 @@ export default defineComponent({
   },
   mounted() {
     config.center = this.center;
+    config.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // https://github.com/fmidev/metoclient#constructor
     this.metoclient = new MetOClient(config);
     this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
@@ -155,7 +156,7 @@ export default defineComponent({
       newConfig.layers.find((layer: any) => layer.id === "radar").time.range =
         `every ${time} minute for 4 times history`;
       newConfig.layers.find((layer: any) => layer.id === "forecast").time.range =
-        `every ${time} minute for 4 times history AND every ${time} minute for 4 times future`;
+        `every ${time} minute for 4 times future`;
       newConfig.layers.find((layer: any) => layer.id === "flash").time.range =
         `every ${time} minute for 4 times history`;
       this.metoclient.set('options', newConfig);
