@@ -68,35 +68,35 @@ export default defineConfig({
                     {
                         src: 'screenshots/screenshot-1.webp',
                         type: 'image/webp',
-                        sizes: '1084x2069',
+                        sizes: '1080x2291',
                         platform: 'narrow',
                         label: 'Home screen of the app'
                     },
                     {
                         src: 'screenshots/screenshot-1.webp',
                         type: 'image/webp',
-                        sizes: '1084x2069',
+                        sizes: '1080x2291',
                         platform: 'android',
                         label: 'Home screen of the app'
                     },
                     {
                         src: 'screenshots/screenshot-2.webp',
                         type: 'image/webp',
-                        sizes: '1440x2960',
+                        sizes: '1080x2276',
                         platform: 'narrow',
                         label: 'Home screen of the app'
                     },
                     {
                         src: 'screenshots/screenshot-3.webp',
                         type: 'image/webp',
-                        sizes: '1170x2532',
+                        sizes: '1080x2280',
                         platform: 'narrow',
                         label: 'Home screen of the app'
                     },
                     {
                         src: 'screenshots/screenshot-3.webp',
                         type: 'image/webp',
-                        sizes: '1170x2532',
+                        sizes: '1080x2280',
                         platform: 'ios',
                         label: 'Home screen of the app'
                     }
