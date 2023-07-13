@@ -28,8 +28,10 @@
             </div>
           </div>
           <div class="favourite-name">{{ fav.name }}, {{ translateRegion(fav) }}</div>
-          <div class="favourite-button" @click="favouritesStore.removeFavourite(fav)">
-            <div class="remove-button">-</div>
+          <div class="favourite-button" @click.stop="favouritesStore.removeFavourite(fav)">
+            <div class="remove-button" @click.stop="favouritesStore.removeFavourite(fav)">
+              -
+            </div>
           </div>
         </div>
       </draggable>
