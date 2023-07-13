@@ -15,14 +15,10 @@
       />
       <div class="loader-text">
         {{ !online
-          ? $t('home.offline')
-          : weatherStore.status
-              ? $t(weatherStore.status)
-              : favouritesStore.loading
-                  ? $t('home.loadingFavourites')
-                  : alertsStore.loading
-                      ? $t('home.loadingWarnings')
-                      : ''
+        ? $t('home.offline')
+        : weatherStore.status
+          ? $t(weatherStore.status)
+          : ''
         }}
       </div>
     </div>
@@ -95,7 +91,7 @@ export default defineComponent({
   emits: ["open"],
   computed: {
     isLoading() {
-      return !this.weatherStore.locatingComplete || !this.weatherStore.hasWeather || this.favouritesStore.loading || this.alertsStore.loading;
+      return !this.weatherStore.locatingComplete || !this.weatherStore.hasWeather;
     },
   },
   methods: {

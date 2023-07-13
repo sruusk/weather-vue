@@ -3,6 +3,7 @@
     <div>{{ $t('home.warnings') }} - 5 {{ $t('home.days') }}</div>
     <div class="warning-list">
       <WarningItem
+        v-if="!alertsStore.loading"
         v-for="day in nextDays"
         :key="day"
         :severity="warnings[nextDays.indexOf(day)]?.severity"
@@ -13,6 +14,12 @@
          }">
         {{ getShortDayName(day) }}
       </WarningItem>
+      <LoopingRhombusesSpinner
+        v-else
+        :animation-duration="2000"
+        :rhombus-size="15"
+        color="#62b8e7"
+      />
     </div>
   </div>
 </template>
@@ -22,10 +29,12 @@ import {defineComponent} from 'vue';
 import {useAlertsStore, useWeatherStore} from "@/stores";
 import type {Warnings} from "@/types";
 import WarningItem from "@/components/home/warnings/WarningItem.vue";
+import {LoopingRhombusesSpinner} from "epic-spinners";
 
 export default defineComponent({
   name: "WarningsBar.vue",
   components: {
+    LoopingRhombusesSpinner,
     WarningItem
   },
   setup() {
@@ -78,6 +87,7 @@ export default defineComponent({
 .warning-list {
   margin: 0 10px;
   width: 100%;
+  height: 43px;
   display: flex;
   flex-direction: row;
   justify-content: center;
