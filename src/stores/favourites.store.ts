@@ -100,8 +100,8 @@ export const useFavouritesStore = defineStore('favourites', {
                 });
             });
         },
-        setFavourites(favourites: ForecastLocation[]) {
-            this.favourites = favourites;
+        saveFavourites() {
+            localStorage.setItem('favourites', JSON.stringify(this.favourites));
         }
     },
 

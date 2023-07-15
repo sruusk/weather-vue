@@ -19,7 +19,7 @@
           {{ $t("settings.deleteAll") }}
         </div>
       </div>
-      <draggable v-model="favouritesStore.favourites">
+      <draggable v-model="favouritesStore.favourites" @change="favouritesStore.saveFavourites()">
         <div v-for="fav in favouritesStore.favourites" :key="fav.name" class="favourite">
           <div class="drag-indicator">
             <div class="arrows">
