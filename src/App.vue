@@ -62,6 +62,7 @@ export default defineComponent({
       localStorage.setItem('installed', 'true');
     });
     this.installed = localStorage.getItem('installed') === 'true';
+    this.$router.push({name: 'loading'});
   },
   created() {
     this.themeStore.setTheme(this.settingsStore.theme);
@@ -75,7 +76,6 @@ export default defineComponent({
       this.weatherStore.init();
       this.alertsStore.init();
     }, {once: true});
-
   },
   mounted() {
     if (!this.installed) this.installed = this.isInstalled();

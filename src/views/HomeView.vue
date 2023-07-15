@@ -1,38 +1,19 @@
 <template>
   <main>
-    <div v-if="!isLoading"
-         class="navigation"
-    >
+    <div class="navigation">
       <HamburgerIcon class="navigation-button" style="height: 18px;" @click.stop="open"/>
       <div class="drag-handle"/>
       <SearchIcon class="search navigation-button" style="height: 24px;" @click.stop="openSearch"/>
     </div>
-    <div v-else class="loader">
-      <RadarSpinner
-        :animation-duration="2000"
-        :size="120"
-        color="#62b8e7"
-      />
-      <div class="loader-text">
-        {{ !online
-        ? $t('home.offline')
-        : weatherStore.status
-          ? $t(weatherStore.status)
-          : ''
-        }}
-      </div>
-    </div>
-    <CurrentWeather v-if="!isLoading"/>
-    <Transition v-if="!isLoading" name="drop">
+    <CurrentWeather/>
+    <Transition name="drop">
       <WarningsBar v-if="weatherStore.currentLocation.country === 'Finland'"/>
     </Transition>
-    <TenDayForecast v-if="!isLoading"/>
+    <TenDayForecast/>
     <WeatherRadar
-        v-if="!isLoading
-      && settingsStore.weatherRadar
-      && weatherStore.currentLocation.country === 'Finland'"
+      v-if="settingsStore.weatherRadar && weatherStore.currentLocation.country === 'Finland'"
     />
-    <Observations v-if="!isLoading && weatherStore.currentLocation.country === 'Finland'"/>
+    <Observations v-if="weatherStore.currentLocation.country === 'Finland'"/>
     <Footer/>
   </main>
 </template>
@@ -41,7 +22,6 @@
 import {defineComponent} from "vue";
 import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
-import {OrbitSpinner, RadarSpinner} from 'epic-spinners'
 import CurrentWeather from "@/components/home/nexthour/CurrentWeather.vue";
 import WarningsBar from "@/components/home/warnings/WarningsBar.vue";
 import TenDayForecast from "@/components/home/tenday/TenDayForecast.vue";
@@ -53,8 +33,6 @@ import {useAlertsStore, useFavouritesStore, useSettingsStore, useWeatherStore} f
 export default defineComponent({
   name: "HomeView",
   components: {
-    RadarSpinner,
-    OrbitSpinner,
     HamburgerIcon,
     CurrentWeather,
     WarningsBar,
@@ -76,24 +54,7 @@ export default defineComponent({
       alertsStore,
     };
   },
-  data() {
-    return {
-      online: navigator.onLine,
-    };
-  },
-  created() {
-    if (!this.online) {
-      window.addEventListener("online", () => {
-        this.online = true;
-      }, {once: true});
-    }
-  },
   emits: ["open"],
-  computed: {
-    isLoading() {
-      return !this.weatherStore.locatingComplete || !this.weatherStore.hasWeather;
-    },
-  },
   methods: {
     open() {
       this.$emit("open");
@@ -141,23 +102,6 @@ main::-webkit-scrollbar {
   padding: env(titlebar-area-height, 0) 0 0 0;
   -webkit-app-region: drag;
   app-region: drag;
-}
-
-.loader {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 100px;
-  height: calc(100vh - 200px - 120px);
-  background-color: var(--backgroundMediumLight);
-}
-
-.loader-text {
-  margin-top: 50px;
-  font-size: 18px;
-  font-weight: 400;
-  width: max-content;
 }
 
 .drop-enter-active, .drop-leave-active {

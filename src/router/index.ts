@@ -1,11 +1,16 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
+import LoadingView from "@/views/LoadingView.vue";
 
 export const routes = [
     {
+        path: '/loading',
+        name: 'loading',
+        component: LoadingView,
+    },
+    {
         path: '/',
         name: 'home',
-        component: HomeView,
+        component: () => import('@/views/HomeView.vue'),
         showInMenu: false
     },
     {
