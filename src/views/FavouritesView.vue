@@ -28,10 +28,8 @@
             </div>
           </div>
           <div class="favourite-name">{{ fav.name }}, {{ translateRegion(fav) }}</div>
-          <div class="favourite-button" @click.stop="favouritesStore.removeFavourite(fav)">
-            <div class="remove-button" @click.stop="favouritesStore.removeFavourite(fav)">
-              -
-            </div>
+          <div class="favourite-button remove-button" @click.stop="favouritesStore.removeFavourite(fav)">
+            <div class="remove-dash"/>
           </div>
         </div>
       </draggable>
@@ -184,6 +182,8 @@ export default defineComponent({
 }
 
 .remove-button {
+  min-width: 25px;
+  min-height: 25px;
   width: 25px;
   height: 25px;
   font-size: 25px;
@@ -192,6 +192,15 @@ export default defineComponent({
   text-align: center;
   border-radius: 50%;
   background-color: darkred;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.remove-dash {
+  width: 14px;
+  height: 3px;
+  background-color: white;
 }
 
 .drag-indicator {
