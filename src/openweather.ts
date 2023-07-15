@@ -172,11 +172,14 @@ function oneCallDailyToWeather(daily: any, start: Date): OpenWeather {
         Object.entries(times).forEach(([key, time]) => {
             weather.humidity.push({time, value: forecast.humidity});
             weather.temperature.push({time, value: forecast.temp[key]});
-            weather.probabilityOfPrecipitation.push({time, value: Math.round(forecast.pop * 100)});
+            weather.probabilityOfPrecipitation.push({time, value: Math.round(forecast.pop * 100 / 4)});
             weather.windDirection.push({time, value: forecast.wind_deg});
             weather.windSpeed.push({time, value: forecast.wind_speed});
             weather.windGust.push({time, value: forecast.wind_gust});
-            weather.precipitation.push({time, value: forecast.rain || forecast.snow || 0});
+            weather.precipitation.push({
+                time,
+                value: parseFloat(((forecast.rain || forecast.snow || 0) / 4).toFixed(1))
+            });
             weather.weatherSymbol.push({time, value: getFMIWeatherSymbolCode(forecast.weather[0].icon)});
             weather.feelsLike.push({time, value: forecast.feels_like[key]});
         });
