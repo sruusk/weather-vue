@@ -240,5 +240,6 @@ export default defineConfig({
             esmExternals: true
         },
         target: 'esnext',
+        sourcemap: true,
     }
 })
