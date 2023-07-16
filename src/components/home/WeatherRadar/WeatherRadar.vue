@@ -80,17 +80,29 @@ export default defineComponent({
       map: null,
       timeStepButton: null,
       timeSlider: null,
+      runOnActive: null
     }
   },
   mounted() {
     config.center = this.center;
     config.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // https://github.com/fmidev/metoclient#constructor
-    this.metoclient = new MetOClient(config);
-    this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
-      // statements to handle any exceptions
-      console.error(error);
-    });
+    if (this.$route.name === 'home') {
+      this.metoclient = new MetOClient(config);
+      this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
+        // statements to handle any exceptions
+        console.error(error);
+      });
+    }
+  },
+  activated() {
+    if (!this.metoclient) {
+      this.metoclient = new MetOClient(config);
+      this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
+        // statements to handle any exceptions
+        console.error(error);
+      });
+    }
   },
   beforeUnmount() {
     if (this.metoclient) {
