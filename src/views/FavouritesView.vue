@@ -22,16 +22,16 @@
       <draggable
         v-model="favouritesStore.favourites"
         @change="favouritesStore.saveFavourites()"
-        handle=".drag-handle"
+        handle=".drag-indicator"
       >
         <div v-for="fav in favouritesStore.favourites" :key="fav.name" class="favourite">
-          <div class="drag-indicator drag-handle">
+          <div class="drag-indicator">
             <div class="arrows">
               <span>▲</span>
               <span>▼</span>
             </div>
           </div>
-          <div class="favourite-name drag-handle">{{ fav.name }}, {{ translateRegion(fav) }}</div>
+          <div class="favourite-name">{{ fav.name }}, {{ translateRegion(fav) }}</div>
           <div class="favourite-button remove-button" @click.stop="favouritesStore.removeFavourite(fav)">
             <div class="remove-dash"/>
           </div>
@@ -172,15 +172,12 @@ export default defineComponent({
   align-items: center;
   margin: 0 20px;
   height: 50px;
-  cursor: grab;
 }
 
 .favourite-name {
   font-weight: 400;
   width: 100%;
   margin-left: 10px;
-  height: 50px;
-  line-height: 50px;
 }
 
 .favourite-button {
@@ -212,6 +209,9 @@ export default defineComponent({
 .drag-indicator {
   display: flex;
   flex-direction: row;
+  padding: 0 10px;
+  margin: 0 -10px;
+  cursor: grab;
 }
 
 .arrows {
