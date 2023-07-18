@@ -11,7 +11,7 @@
   "showTimeSlider": true,
   "showLegend": false,
   "projection": "EPSG:3067",
-  "refreshInterval": "PT15M",
+  "refreshInterval": "PT5M",
   "timeZone": "Europe/Helsinki",
   "metadata": {
     "tags": [
@@ -170,7 +170,7 @@
         "height": "512"
       },
       "time": {
-        "range": "every 15 minute for 4 times future"
+        "range": "every 15 minute for 1 times history and every 15 minute for 4 times future"
       }
     },
     {

@@ -168,7 +168,7 @@ export default defineComponent({
       newConfig.layers.find((layer: any) => layer.id === "radar").time.range =
         `every ${time} minute for 4 times history`;
       newConfig.layers.find((layer: any) => layer.id === "forecast").time.range =
-        `every ${time} minute for 4 times future`;
+        `every ${time} minute for 1 times history and every ${time} minute for 4 times future`;
       newConfig.layers.find((layer: any) => layer.id === "flash").time.range =
         `every ${time} minute for 4 times history`;
       this.metoclient.set('options', newConfig);
