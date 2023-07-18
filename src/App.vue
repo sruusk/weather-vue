@@ -62,7 +62,6 @@ export default defineComponent({
       localStorage.setItem('installed', 'true');
     });
     this.installed = localStorage.getItem('installed') === 'true';
-    this.$router.push({name: 'loading'});
   },
   created() {
     this.themeStore.setTheme(this.settingsStore.theme);

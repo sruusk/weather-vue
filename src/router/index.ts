@@ -1,17 +1,35 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import LoadingView from "@/views/LoadingView.vue";
+import {useWeatherStore} from "@/stores";
 
 export const routes = [
     {
         path: '/loading',
         name: 'loading',
         component: LoadingView,
+        showInMenu: false,
+        beforeEnter: () => {
+            const weatherStore = useWeatherStore();
+            if (weatherStore.hasWeather) {
+                return {name: 'home'};
+            } else {
+                return true;
+            }
+        }
     },
     {
         path: '/',
         name: 'home',
         component: () => import('@/views/HomeView.vue'),
-        showInMenu: false
+        showInMenu: false,
+        beforeEnter: () => {
+            const weatherStore = useWeatherStore();
+            if (weatherStore.hasWeather) {
+                return true;
+            } else {
+                return {name: 'loading'};
+            }
+        }
     },
     {
         path: '/favourites',
