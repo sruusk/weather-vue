@@ -14,17 +14,11 @@ import {DefaultLanguage} from "@/contants";
 import '@splidejs/vue-splide/css';
 
 // Import locales
-import en from '@/assets/locales/en.json'
-import fi from '@/assets/locales/fi.json'
-import sv from '@/assets/locales/sv.json'
+import messages from '@intlify/unplugin-vue-i18n/messages'
 
 const i18n = createI18n({
     locale: DefaultLanguage,
-    messages: {
-        en,
-        fi,
-        sv
-    }
+    messages
 });
 
 // Import country names
