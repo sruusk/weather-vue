@@ -16,9 +16,11 @@
     <div class="details">
       <div class="feelslike-row">
         <div class="time">
-          <ShareButton v-if="canShare" class="share-button" @click="share">
-            {{ loading ? `${$t('home.loading')}...` : $t('home.share') }}
-          </ShareButton>
+          <!--
+            <ShareButton v-if="canShare" class="share-button" @click="share">
+             {{ loading ? `${$t('home.loading')}...` : $t('home.share') }}
+            </ShareButton>
+          -->
           <ClockIcon class="timeIcon"/>
           <span class="time-value">{{ weather.time }}</span>
         </div>
@@ -78,7 +80,9 @@ export default defineComponent({
     },
     region() {
       if (this.weather.location.region === this.weather.location.country) {
-        const countryCode = this.weather.location.country.length === 2 ? this.weather.location.country : countries.getAlpha2Code(this.weather.location.country, 'en');
+        const countryCode = this.weather.location.country.length === 2
+          ? this.weather.location.country
+          : countries.getAlpha2Code(this.weather.location.country, 'en');
         return countries.getName(countryCode, this.settingsStore.language);
       }
       return this.weather.location.region;
@@ -224,3 +228,6 @@ h2 {
   padding: 0;
 }
 </style>
+
+<script setup lang="ts">
+</script>

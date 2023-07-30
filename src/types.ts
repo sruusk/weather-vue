@@ -107,7 +107,7 @@ export type FmiAlerts = {
 }
 
 export type Warning = {
-    severity: "Moderate" | "Severe"
+    severity: "Minor" | "Moderate" | "Severe" | "Extreme"
 }
 
 export type Theme = {
