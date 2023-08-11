@@ -38,6 +38,7 @@ export function getAlerts(): Promise<FmiAlerts> {
             else reject(response);
         }).then(text => {
             const xml = parser.parse(text);
+          	if(!Array.isArray(xml["feed"]["entry"])) xml["feed"]["entry"] = [ xml["feed"]["entry"] ];
             const alerts = Object.fromEntries(
                 Object.keys(languageMap).map((key: string) => {
                     return [languageMap[key], xml["feed"]["entry"].map((entry: any) => {
