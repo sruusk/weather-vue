@@ -181,6 +181,8 @@ export default defineComponent({
 #router-view {
   contain: content;
   min-width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 body {
