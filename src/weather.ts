@@ -409,16 +409,21 @@ function getObservationStations(lat: number, lon: number) {
                     description = description.map((desc: any) => desc["@_xlink:title"]).join(" ");
                 } else description = description["@_xlink:title"];
                 if (description.toLowerCase().includes("sääasema"))
-                    return {
-                        identifier: station['ef:EnvironmentalMonitoringFacility']['gml:identifier']["#text"],
-                        name: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("name"))["#text"],
-                        region: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("region"))["#text"],
-                        country: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("country"))["#text"],
-                        lat: parseFloat(pos[0]),
-                        lon: parseFloat(pos[1]),
-                        distance: distanceBetweenCoordinates([lat, lon], [parseFloat(pos[0]), parseFloat(pos[1])])
-                    } as ObservationStationLocation;
-            });
+                    try {
+                        return {
+                            identifier: station['ef:EnvironmentalMonitoringFacility']['gml:identifier']["#text"],
+                            name: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("name"))["#text"],
+                            region: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("region"))["#text"],
+                            country: station['ef:EnvironmentalMonitoringFacility']['gml:name'].find((name: any) => name["@_codeSpace"].endsWith("country"))["#text"],
+                            lat: parseFloat(pos[0]),
+                            lon: parseFloat(pos[1]),
+                            distance: distanceBetweenCoordinates([lat, lon], [parseFloat(pos[0]), parseFloat(pos[1])])
+                        } as ObservationStationLocation;
+                    } catch (e) {
+                        console.error(e);
+                        return null;
+                    }
+            }).filter((station) => station !== null) as ObservationStationLocation[];
             resolve(allStations as ObservationStationLocation[]);
         }).catch((error) => {
             reject(error);
