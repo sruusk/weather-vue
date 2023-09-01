@@ -45,11 +45,9 @@ job("Deploy") {
                 npm run build-only
                 echo Deploying...
                 apt update
-                apt install -y sshpass
-                Echo Removing previous deployment
-                sshpass -p ${'$'}passwd ssh ${'$'}address "rm -R dist && mkdir dist"
+                apt install -y lftp
                 Echo Transferring files to server
-                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* ${'$'}address:/opt/www/weather/dist/
+                lftp -u ${'$'}passwd ${'$'}address -e "mirror -R ./dist /weather; quit"
                 echo Deployment complete!
             """
         }
