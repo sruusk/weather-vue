@@ -14,18 +14,6 @@ job("Deploy") {
             }
         }
     }
-
-    container("openjdk:11") {
-      kotlinScript { api ->
-          api.space().projects.automation.deployments.start(
-                project = api.projectIdentifier(),
-                targetIdentifier = TargetIdentifier.Key("hetzner-vps"),
-                version = api.executionId(),
-              	// automatically update deployment status based on a status of a job
-				syncWithAutomationJob = true
-			)
-		}
-    }
     
     container("Run deploy script", image = "node:16") {
         env["passwd"] = "{{ project:weather-pass }}"
@@ -45,11 +33,9 @@ job("Deploy") {
                 npm run build-only
                 echo Deploying...
                 apt update
-                apt install -y sshpass
-                Echo Removing previous deployment
-                sshpass -p ${'$'}passwd ssh ${'$'}address "rm -R dist && mkdir dist"
-                Echo Transferring files to server
-                sshpass -p ${'$'}passwd scp -v -o StrictHostKeyChecking=no -r ./dist/* ${'$'}address:/opt/www/weather/dist/
+                apt install -y lftp
+                echo Transferring files to server
+                lftp -u ${'$'}passwd ${'$'}address -e "set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate no; mirror -R --delete --exclude web.config ./dist weather; quit"
                 echo Deployment complete!
             """
         }
