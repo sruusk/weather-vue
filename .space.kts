@@ -39,5 +39,11 @@ job("Deploy") {
                 echo Deployment complete!
             """
         }
+
+        fileArtifacts {
+            localPath = "dist"
+            remotePath = "dist.zip"
+            archive = true
+        }
     }
 }
