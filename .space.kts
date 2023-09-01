@@ -47,7 +47,7 @@ job("Deploy") {
                 apt update
                 apt install -y lftp
                 Echo Transferring files to server
-                lftp -u ${'$'}passwd ${'$'}address -e "mirror -R ./dist /weather; quit"
+                lftp -u ${'$'}passwd ${'$'}address -e "set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate no; mirror -R --delete --exclude web.config ./dist weather; quit"
                 echo Deployment complete!
             """
         }
