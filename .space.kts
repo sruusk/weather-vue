@@ -4,6 +4,9 @@
 * For more info, see https://www.jetbrains.com/help/space/automation.html
 */
 
+import com.squareup.okhttp.*
+import org.json.JSONObject
+
 
 job("Deploy") {
     // run on commit to a branch containing "master"
