@@ -46,11 +46,6 @@ job("Deploy") {
                 npm run type-check
                 echo Run build ...
                 npm run build-only
-                echo Deploying...
-                apt update
-                apt install -y lftp
-                echo Transferring files to server
-                echo Deployment complete!
             """
         }
 
@@ -61,7 +56,7 @@ job("Deploy") {
         }
     }
 
-    container("Call webhook", image = "buster:slim") {
+    container("Call webhook", image = "buster-slim") {
         env["address"] = "{{ project:address }}"
         env["artifacts"] = "{{ run:job.repository }}/jobs/{{ dashify('{{ run:job.name }}') }}-{{ run:job.id }}/{{ run:number }}-{{ run:id }}"
 
