@@ -56,7 +56,7 @@ job("Deploy") {
         }
     }
 
-    container("Call webhook", image = "debian:buster-slim") {
+    container("Call webhook", image = "debian:11") {
         env["address"] = "{{ project:address }}"
         env["artifacts"] = "{{ run:job.repository }}/jobs/{{ dashify('{{ run:job.name }}') }}-{{ run:job.id }}/{{ run:number }}-{{ run:id }}"
 
