@@ -61,7 +61,7 @@ job("Deploy") {
         }
     }
 
-    container("Call webhook", image = "node:16") {
+    container("Call webhook", image = "buster:slim") {
         env["address"] = "{{ project:address }}"
         env["artifacts"] = "{{ run:job.repository }}/jobs/{{ dashify('{{ run:job.name }}') }}-{{ run:job.id }}/{{ run:number }}-{{ run:id }}"
 
