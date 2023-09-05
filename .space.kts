@@ -14,12 +14,28 @@ job("Deploy") {
             }
         }
     }
-    
+
     container("Run deploy script", image = "node:16") {
-        env["passwd"] = "{{ project:weather-pass }}"
-      	env["address"] = "{{ project:address }}"
+        cache {
+            // To upload to another repo (e.g., 'my-file-repo'), uncomment the next line
+            // location = CacheLocation.FileRepository(name = "my-file-repo", remoteBasePath = "caches/{{ run:job.repository }}")
+
+            // Generate cache file name
+            // Using a hash of the build file ensures all job runs with the
+            // same package.json will share the cached dependencies
+            storeKey = "npm-{{ hashFiles('package.json') }}"
+
+            // Fallback option
+            // If the right cache file is not found, get cache from 'npm-master.tar.gz'
+            restoreKeys {
+                +"npm-master"
+            }
+
+            // Local path to the cache file directory
+            localPath = "node_modules"
+        }
+
         env["VITE_OPEN_WEATHER"] = "{{ project:openweather }}"
-        env["SENTRY_AUTH_TOKEN"] = "{{ project:sentry }}"
         env["VITE_EXECUTION_NUMBER"] = "{{ run:number }}"
 
         shellScript {
@@ -44,6 +60,24 @@ job("Deploy") {
             localPath = "dist"
             remotePath = "dist.zip"
             archive = true
+        }
+    }
+
+    container(image = "amazoncorretto:17-alpine", displayName = "Call webhook") {
+        env["address"] = "{{ project:address }}"
+        env["artifacts"] = "{{ run:job.repository }}/jobs/{{ dashify('{{ run:job.name }}') }}-{{ run:job.id }}/{{ run:number }}-{{ run:id }}"
+
+        kotlinScript {
+            val address = System.getenv("address")
+            val artifacts = System.getenv("artifacts")
+
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url("https://$address?q=$artifacts")
+                .build()
+            val response = client.newCall(request).execute()
+            val jData = response.body()
+            println(jData)
         }
     }
 }
