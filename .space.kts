@@ -63,6 +63,8 @@ job("Deploy") {
         shellScript {
             interpreter = "/bin/sh"
             content = """
+                apt update
+                apt install curl -y
                 curl -f -L "https://${'$'}address/webhook?q=${'$'}artifacts"
             """
         }
