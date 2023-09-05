@@ -4,10 +4,6 @@
 * For more info, see https://www.jetbrains.com/help/space/automation.html
 */
 
-import com.squareup.okhttp.*
-import org.json.JSONObject
-
-
 job("Deploy") {
     // run on commit to a branch containing "master"
     startOn {
@@ -54,7 +50,6 @@ job("Deploy") {
                 apt update
                 apt install -y lftp
                 echo Transferring files to server
-                #lftp -u ${'$'}passwd ${'$'}address -e "set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate no; mirror -R --delete --exclude web.config ./dist weather; quit"
                 echo Deployment complete!
             """
         }
@@ -66,21 +61,15 @@ job("Deploy") {
         }
     }
 
-    container(image = "amazoncorretto:17-alpine", displayName = "Call webhook") {
+    container("Call webhook", image = "node:16") {
         env["address"] = "{{ project:address }}"
         env["artifacts"] = "{{ run:job.repository }}/jobs/{{ dashify('{{ run:job.name }}') }}-{{ run:job.id }}/{{ run:number }}-{{ run:id }}"
 
-        kotlinScript {
-            val address = System.getenv("address")
-            val artifacts = System.getenv("artifacts")
-
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                .url("https://$address?q=$artifacts")
-                .build()
-            val response = client.newCall(request).execute()
-            val jData = response.body()
-            println(jData)
+        shellScript {
+            interpreter = "/bin/sh"
+            content = """
+                curl -f -L "https://${'$'}address/webhook?q=${'$'}artifacts"
+            """
         }
     }
 }
