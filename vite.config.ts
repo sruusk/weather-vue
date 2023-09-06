@@ -29,6 +29,7 @@ export default defineConfig({
                 name: 'Weather',
                 short_name: 'Weather',
                 start_url: '/',
+              	id: '/',
                 description: 'Weather',
                 theme_color: '#000000',
                 background_color: '#191c1f',
