@@ -36,6 +36,7 @@ export default defineConfig({
                 display_override: ['window-controls-overlay', 'standalone'],
                 display: 'standalone',
               	handle_links: 'preferred',
+                edge_side_panel: {},
                 orientation: 'portrait',
                 categories: ['weather'],
                 dir: 'ltr',
