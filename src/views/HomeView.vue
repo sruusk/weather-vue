@@ -24,7 +24,7 @@ import HamburgerIcon from "@/components/icons/HamburgerIcon.vue";
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 import CurrentWeather from "@/components/home/nexthour/CurrentWeather.vue";
 import WarningsBar from "@/components/home/warnings/WarningsBar.vue";
-import TenDayForecast from "@/components/home/tenday/TenDayForecast.vue";
+import TenDayForecast from "@/components/home/hourly/TenDayForecast.vue";
 import WeatherRadar from "@/components/home/WeatherRadar/WeatherRadar.vue";
 import Observations from "@/components/home/observations/Observations.vue";
 import Footer from "@/components/home/Footer.vue";

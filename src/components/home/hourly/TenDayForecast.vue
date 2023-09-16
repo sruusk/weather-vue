@@ -17,8 +17,8 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import TenDaySlider from "@/components/home/tenday/TenDaySlider.vue";
-import TenDayDetailed from "@/components/home/tenday/TenDayDetailed.vue";
+import TenDaySlider from "@/components/home/hourly/TenDaySlider.vue";
+import TenDayDetailed from "@/components/home/hourly/TenDayDetailed.vue";
 import {useWeatherStore} from "@/stores";
 
 export default defineComponent({

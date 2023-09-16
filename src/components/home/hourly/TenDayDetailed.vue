@@ -14,7 +14,7 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import {useWeatherStore} from "@/stores";
-import DayItem from "@/components/home/tenday/DayItem.vue";
+import DayItem from "@/components/home/hourly/DayItem.vue";
 
 export default defineComponent({
   name: "TenDayDetailed.vue",
@@ -43,7 +43,8 @@ export default defineComponent({
     return {
       dayPositions: {} as { [key: number]: Date },
       displayedDay: this.selectedDay,
-      scrollTimer: null as null | ReturnType<typeof setTimeout>
+      scrollTimer: null as null | ReturnType<typeof setTimeout>,
+      scrollToHour: false
     }
   },
   created() {
@@ -63,8 +64,11 @@ export default defineComponent({
   watch: {
     selectedDay: {
       handler: function () {
-        if (!this.selectedDay) return;
-        this.scrollToDay(this.selectedDay);
+        if (!this.selectedDay) {
+          this.scrollToHour = true;
+          return;
+        }
+        this.scrollToDay(this.selectedDay, false, this.scrollToHour ? 12 : 0);
       },
       deep: true
     },
@@ -118,16 +122,21 @@ export default defineComponent({
         this.dayPositions[position] = date;
       }
     },
-    scrollToDay(date: Date, instant = false) {
+    scrollToDay(date: Date, instant: boolean = false, hour: number = 0) {
+      this.scrollToHour = false;
       const left = Object.entries(this.dayPositions).find(([, day]) => day.getDate() === date.getDate());
       if (!left) return;
+
+      let leftOffset: number = parseInt(left[0]);
+
+      // If hour is specified, scroll find left position of that hour
+      if (hour) {
+        const hourElement = document.querySelector(`#ten-day-detailed-${date.getDate()} .hour-${hour}`) as HTMLElement;
+        if (hourElement) leftOffset += hourElement.offsetLeft;
+      }
+
       // @ts-ignore
-      this.slider?.scrollTo({left: parseInt(left[0]), behavior: instant ? 'instant' : 'smooth'});
-      /*
-      // @ts-ignore
-      this.slider?.querySelector(`#ten-day-detailed-${date.getDate()}`)
-          .scrollIntoView({ behavior: instant ? 'instant' : 'smooth', block: "nearest", inline: 'start' });
-       */
+      this.slider?.scrollTo({left: leftOffset, behavior: instant ? 'instant' : 'smooth'});
     }
   },
 })

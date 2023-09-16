@@ -4,7 +4,7 @@
        class="main">
     <div class="header">{{ formattedDate }}</div>
     <div class="weather">
-      <div v-for="hour in hours" :key="hour.getTime()">
+      <div v-for="hour in hours" :key="hour.getTime()" :class="`hour-${hour.getHours()}`">
         <div class="hour">
           {{ hour.toLocaleTimeString($t('meta.localeString'), {hour: 'numeric', minute: 'numeric', hour12: false}) }}
         </div>
@@ -18,7 +18,7 @@
 import {defineComponent, ref} from 'vue';
 import {useSettingsStore, useWeatherStore} from "@/stores";
 import type {TimeSeriesObservation, Weather} from '@/types';
-import WeatherColumn from "@/components/home/tenday/WeatherColumn.vue";
+import WeatherColumn from "@/components/home/hourly/WeatherColumn.vue";
 
 export default defineComponent({
   name: "DayItem.vue",
