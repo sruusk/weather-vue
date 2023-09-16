@@ -8,7 +8,6 @@ import vue from '@vitejs/plugin-vue'
 import {VitePWA} from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
-
 export default defineConfig({
     plugins: [
         vue(),
@@ -35,6 +34,7 @@ export default defineConfig({
                 background_color: '#191c1f',
                 display_override: ['window-controls-overlay', 'standalone'],
                 display: 'standalone',
+                // @ts-ignore
               	handle_links: 'preferred',
                 edge_side_panel: {},
                 orientation: 'portrait',

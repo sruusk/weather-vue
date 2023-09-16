@@ -119,31 +119,31 @@ export default defineComponent({
 @font-face {
   font-family: "Roboto";
   font-weight: 100;
-  src: local("Roboto Thin"), url("@/assets/fonts/Roboto-Thin.ttf") format("truetype");
+  src: local("Roboto Thin"), url("/fonts/Roboto-Thin.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Roboto";
   font-weight: 300;
-  src: local("Roboto Light"), url("@/assets/fonts/Roboto-Light.ttf") format("truetype");
+  src: local("Roboto Light"), url("/fonts/Roboto-Light.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Roboto";
   font-weight: 500;
-  src: local("Roboto Medium"), url("@/assets/fonts/Roboto-Medium.ttf") format("truetype");
+  src: local("Roboto Medium"), url("/fonts/Roboto-Medium.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Roboto";
   font-weight: normal;
-  src: local("Roboto"), url("@/assets/fonts/Roboto-Regular.ttf") format("truetype");
+  src: local("Roboto"), url("/fonts/Roboto-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Roboto";
   font-weight: bold;
-  src: local("Roboto Bold"), url("@/assets/fonts/Roboto-Bold.ttf") format("truetype");
+  src: local("Roboto Bold"), url("/fonts/Roboto-Bold.ttf") format("truetype");
 }
 
 /*noinspection CssUnusedSymbol*/
