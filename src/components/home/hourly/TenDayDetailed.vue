@@ -68,8 +68,8 @@ export default defineComponent({
           this.scrollToHour = !this.scrollToHour;
           return;
         }
+        if (this.displayedDay?.getDate() !== this.selectedDay.getDate()) this.scrollToHour = false;
         this.scrollToDay(this.selectedDay, false, this.scrollToHour ? 12 : 0);
-        this.scrollToHour = false;
       },
       deep: true
     },
