@@ -65,10 +65,11 @@ export default defineComponent({
     selectedDay: {
       handler: function () {
         if (!this.selectedDay) {
-          this.scrollToHour = true;
+          this.scrollToHour = !this.scrollToHour;
           return;
         }
         this.scrollToDay(this.selectedDay, false, this.scrollToHour ? 12 : 0);
+        this.scrollToHour = false;
       },
       deep: true
     },
@@ -123,7 +124,6 @@ export default defineComponent({
       }
     },
     scrollToDay(date: Date, instant: boolean = false, hour: number = 0) {
-      this.scrollToHour = false;
       const left = Object.entries(this.dayPositions).find(([, day]) => day.getDate() === date.getDate());
       if (!left) return;
 
