@@ -66,6 +66,10 @@ export const routes = [
         name: 'licenses',
         component: () => import('@/views/LicensesView.vue'),
         showInMenu: false
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: {name: 'home'}
     }
 ]
 
