@@ -35,6 +35,7 @@ export const routes = [
         path: '/favourites',
         name: 'favourites',
         component: () => import('@/views/FavouritesView.vue'),
+        alias: '/search',
         showInMenu: true
     },
     {
@@ -69,7 +70,9 @@ export const routes = [
     },
     {
         path: '/:pathMatch(.*)*',
-        redirect: {name: 'home'}
+        name: 'not-found',
+        redirect: {name: 'home'},
+        showInMenu: false
     }
 ]
 

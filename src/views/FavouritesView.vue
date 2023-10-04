@@ -38,6 +38,31 @@
         </div>
       </draggable>
     </div>
+    <div v-if="favouritesStore.history.length" class="favourites-list">
+      <div class="favourites-header">
+        <div class="favourites-header-text">{{ $t("settings.recent") }}</div>
+        <div class="favourites-header-button"
+             @click="favouritesStore.clearHistory()"
+        >
+          {{ $t("settings.deleteAll") }}
+        </div>
+      </div>
+      <div
+        v-for="location in favouritesStore.history"
+        :key="location.name"
+        class="favourite history"
+        @click.stop="favouritesStore.addHistory(location).then(() => $router.push('/'))"
+      >
+        <div class="favourite-name">{{ location.name }}, {{ translateRegion(location) }}</div>
+        <div
+          class="favourite-button"
+          :class="isInFavourites(location) ? 'remove-button' : 'add-button'"
+          @click.stop="favouritesStore.addFavourite(location)">
+          <div class="remove-dash"/>
+          <div v-if="!isInFavourites(location)" class="add-dash"/>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -91,7 +116,10 @@ export default defineComponent({
       if (!weather.location.region && searchString.includes(','))
         weather = await Weather.getWeather(searchString.replace(',', ' '));
       if (weather.location.region) {
-        this.favouritesStore.addFavourite(weather.location);
+        if (this.$route.path === '/search') {
+          await this.favouritesStore.addHistory(weather.location);
+          this.$router.push('/');
+        } else await this.favouritesStore.addFavourite(weather.location);
       } else {
         const list = await findLocation(this.searchString);
         if (list?.length) this.selection = list;
@@ -101,14 +129,18 @@ export default defineComponent({
     },
     handleSelect(selected: any) {
       const country = countries.getName(selected.country, 'en');
-      this.favouritesStore.addFavourite({
+      const newEntry = {
         name: selected.name,
         country: country,
         region: selected.state || country,
         lat: selected.lat,
         lon: selected.lon,
         identifier: ''
-      });
+      };
+      if (this.$route.path === '/search') {
+        this.favouritesStore.addHistory(newEntry);
+        this.$router.push('/');
+      } else this.favouritesStore.addFavourite(newEntry);
       this.selection = [];
     },
     findLocation,
@@ -118,6 +150,9 @@ export default defineComponent({
         return countries.getName(countryCode, this.settingsStore.language);
       }
       return location.region;
+    },
+    isInFavourites(location: ForecastLocation) {
+      return this.favouritesStore.favourites.some((fav) => fav.name === location.name && fav.region === location.region);
     }
   }
 })
@@ -174,6 +209,10 @@ export default defineComponent({
   height: 50px;
 }
 
+.favourite.history {
+  cursor: pointer;
+}
+
 .favourite-name {
   font-weight: 400;
   width: 100%;
@@ -200,10 +239,34 @@ export default defineComponent({
   align-items: center;
 }
 
+.add-button {
+  min-width: 25px;
+  min-height: 25px;
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 21px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: darkgreen;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .remove-dash {
   width: 14px;
   height: 3px;
   background-color: white;
+}
+
+.add-dash {
+  width: 14px;
+  height: 3px;
+  background-color: white;
+  transform: rotate(90deg);
+  position: absolute;
 }
 
 .drag-indicator {

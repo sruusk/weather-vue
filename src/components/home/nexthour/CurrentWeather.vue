@@ -117,12 +117,12 @@ export default defineComponent({
             ...this.weatherStore.gpsLocation,
             gps: true
           },
-          ...this.favouritesStore.favourites
+          ...this.favouritesStore.locations
         ];
-      } else if (this.favouritesStore.favourites.length === 0) {
+      } else if (this.favouritesStore.locations.length === 0) {
         return this.weatherStore.hasWeather ? [this.weatherStore.currentLocation] : [];
       } else {
-        return this.favouritesStore.favourites;
+        return this.favouritesStore.locations;
       }
     },
     nextHourWeather() {

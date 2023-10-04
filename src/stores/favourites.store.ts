@@ -6,6 +6,7 @@ import {useWeatherStore} from "@/stores/weather.store";
 interface State {
     favourites: ForecastLocation[];
     favouriteWeathers: HourWeather[];
+    history: ForecastLocation[];
     loading: boolean;
 }
 
@@ -14,6 +15,7 @@ export const useFavouritesStore = defineStore('favourites', {
         return {
             favourites: [],
             favouriteWeathers: [],
+            history: [],
             loading: false,
         }
     },
@@ -21,37 +23,65 @@ export const useFavouritesStore = defineStore('favourites', {
     actions: {
         async init() {
             const favourites = localStorage.getItem('favourites');
-            if (favourites) {
-                this.favourites = JSON.parse(favourites) as ForecastLocation[];
-                this.loading = true;
-                this.favouriteWeathers = [];
-                for (const favourite of this.favourites) {
-                    await this.getWeather(favourite);
-                }
-                this.loading = false;
+            const history = localStorage.getItem('history');
+            if (history) this.history = JSON.parse(history) as ForecastLocation[];
+            if (favourites) this.favourites = JSON.parse(favourites) as ForecastLocation[];
 
-                const loop = () => {
-                    const currentTime = new Date();
-                    const nextHour = new Date((new Date()).setHours(currentTime.getHours() + 1, 0, 0, 0));
-                    const timeout = nextHour.getTime() - currentTime.getTime();
-                    setTimeout(async () => {
-                        this.favouriteWeathers = [];
-                        for (const favourite of this.favourites) {
-                            await this.getWeather(favourite);
-                        }
-                        loop();
-                    }, timeout);
-                }
-                loop();
+            this.loading = true;
+            this.favouriteWeathers = [];
+            for (const favourite of this.locations) {
+                await this.getWeather(favourite);
             }
+            this.loading = false;
+
+            // Update weather every hour
+            const loop = () => {
+                const currentTime = new Date();
+                const nextHour = new Date((new Date()).setHours(currentTime.getHours() + 1, 0, 0, 0));
+                const timeout = nextHour.getTime() - currentTime.getTime();
+                setTimeout(async () => {
+                    this.favouriteWeathers = [];
+                    for (const favourite of this.locations) {
+                        await this.getWeather(favourite);
+                    }
+                    loop();
+                }, timeout);
+            }
+            loop();
         },
-        addFavourite(favourite: ForecastLocation) {
+        async addFavourite(favourite: ForecastLocation) {
             const weatherStore = useWeatherStore();
+            await this.getWeather(favourite);
             this.favourites.push(favourite);
-            this.getWeather(favourite).then(() => {
-                weatherStore.changeLocation(favourite);
-            })
+            await weatherStore.changeLocation(favourite);
             localStorage.setItem('favourites', JSON.stringify(this.favourites));
+        },
+        async addHistory(location: ForecastLocation) {
+            const weatherStore = useWeatherStore();
+
+            // If location is already a favourite, set location to favourite and return
+            if(this.favourites.find(fav => fav.name === location.name && fav.region === location.region)) {
+                await weatherStore.changeLocation(location);
+                return;
+            }
+
+            // If location is already the first history entry, change location and return
+            if(this.history.length && this.history[0].name === location.name && this.history[0].region === location.region) {
+                await weatherStore.changeLocation(location);
+                return;
+            }
+
+            await this.getWeather(location);
+
+            // Remove existing history entry to avoid duplicates and move it to the top
+            if(this.history.find(loc => loc.name === location.name && loc.region === location.region)) {
+                this.history = this.history.filter(loc => !(loc.name === location.name && loc.region === location.region));
+            }
+
+            this.history.unshift(location);
+            if(this.history.length > 5) this.history.length = 5;
+            await weatherStore.changeLocation(location);
+            localStorage.setItem('history', JSON.stringify(this.history));
         },
         removeFavourite(favourite: ForecastLocation) {
             const weatherStore = useWeatherStore();
@@ -80,6 +110,13 @@ export const useFavouritesStore = defineStore('favourites', {
             localStorage.setItem('favourites', JSON.stringify(this.favourites));
             if (!weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
         },
+        clearHistory() {
+            this.history = [];
+            localStorage.setItem('history', JSON.stringify(this.history));
+            const weatherStore = useWeatherStore();
+            if(!weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
+            else if(this.favourites.length) weatherStore.changeLocation(this.favourites[0]);
+        },
         getWeather(favourite: ForecastLocation) {
             return new Promise<void>((resolve) => {
                 Weather.getWeatherNextHour(favourite.lat, favourite.lon).then((weather) => {
@@ -106,6 +143,12 @@ export const useFavouritesStore = defineStore('favourites', {
     },
 
     getters: {
+        locations: (state: State) => {
+            const history = Array.from(state.history);
+            const locations = Array.from(state.favourites);
+            if(history.length) locations.push(history.shift() as ForecastLocation);
+            return locations;
+        },
         getFavouriteWeather: (state: State) => (location: ForecastLocation) => {
             return state.favouriteWeathers.find(
                 weather => weather.location.name === location.name && weather.location.region === location.region
