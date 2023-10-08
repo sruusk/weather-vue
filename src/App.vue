@@ -50,7 +50,6 @@ export default defineComponent({
       drawerOpen: false,
       deferredPrompt: null as any,
       installed: false,
-      colour: 'red',
     }
   },
   beforeCreate() {

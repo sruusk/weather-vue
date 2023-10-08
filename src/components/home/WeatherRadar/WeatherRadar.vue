@@ -178,7 +178,11 @@ export default defineComponent({
     },
     updateLocation() {
       console.log("Setting new location to MetOClient", this.center);
-      this.metoclient.get('map').getView().setCenter(this.center);
+      try {
+        this.metoclient.get('map').getView().setCenter(this.center);
+      } catch (e) {
+        console.error("MetOClient error", e);
+      }
       /*
       config.center = this.center;
 
@@ -211,6 +215,7 @@ export default defineComponent({
 })
 </script>
 
+<!--suppress CssInvalidPseudoSelector -->
 <style scoped>
 
 .weather-radar-container {

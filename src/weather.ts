@@ -176,7 +176,7 @@ function getXml(url: string, retries: number = 3) {
                 resolve(json);
             })
             .catch((error) => {
-                console.error('Error fetching weather data', error);
+                console.error('Error fetching weather data', error, url, retries);
                 if (retries > 0) resolve(getXml(url, retries - 1));
                 else reject(error);
             });

@@ -69,7 +69,9 @@ export const routes = [
     },
     {
         path: '/:pathMatch(.*)*',
-        redirect: {name: 'home'}
+        name: 'not-found',
+        redirect: {name: 'home'},
+        showInMenu: false
     }
 ]
 

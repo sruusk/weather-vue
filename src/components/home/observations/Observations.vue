@@ -1,7 +1,15 @@
 <template>
-  <div v-if="observationsStore.stations.length" class="header">{{ $t('home.weatherObservations') }}</div>
-  <div v-if="observationsStore.stations.length" class="observations-carousel">
-    <Splide ref="splide" :options="options">
+  <div class="header">{{ $t('home.weatherObservations') }}</div>
+  <div class="observations-carousel">
+    <div v-if="observationsStore.loading" class="spinner">
+      <FulfillingBouncingCircleSpinner
+        :animation-duration="2000"
+        :size="150"
+        color="#62b8e7"
+      />
+      <span>{{ $t('home.loading') }}</span>
+    </div>
+    <Splide v-else ref="splide" :options="options">
       <SplideSlide v-for="station in observationsStore.stations" :key="station.location.name">
         <ObservationItem :station="station" class="item"/>
       </SplideSlide>
@@ -13,6 +21,7 @@
 import {defineComponent, ref} from 'vue';
 import ObservationItem from "@/components/home/observations/ObservationItem.vue";
 import {useObservationsStore} from "@/stores";
+import {FulfillingBouncingCircleSpinner} from "epic-spinners";
 
 export default defineComponent({
   name: "ObservationsElement",
@@ -25,6 +34,7 @@ export default defineComponent({
     };
   },
   components: {
+    FulfillingBouncingCircleSpinner,
     ObservationItem
   },
   data() {
@@ -76,5 +86,23 @@ export default defineComponent({
   width: 100%;
   align-self: flex-start;
   contain: content;
+}
+
+.spinner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  contain: content;
+}
+
+.spinner span {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding-top: 40px;
 }
 </style>
