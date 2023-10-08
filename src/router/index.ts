@@ -35,6 +35,7 @@ export const routes = [
         path: '/favourites',
         name: 'favourites',
         component: () => import('@/views/FavouritesView.vue'),
+        alias: '/search',
         showInMenu: true
     },
     {

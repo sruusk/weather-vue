@@ -61,7 +61,7 @@ export default defineComponent({
     },
     openSearch() {
       // @ts-ignore
-      this.$router.push("/favourites");
+      this.$router.push("/search");
     },
   },
 });
