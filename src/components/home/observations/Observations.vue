@@ -52,11 +52,15 @@ export default defineComponent({
   },
   watch: {
     "observationsStore.stations": function () {
-      // @ts-ignore
-      this.$nextTick(() => {
+      try {
         // @ts-ignore
-        this.splide.go(0);
-      });
+        this.$nextTick(() => {
+          // @ts-ignore
+          this.splide.go(0);
+        });
+      } catch (e) {
+        console.error("Failed to reset observations carousel: " + e);
+      }
     }
   },
 })

@@ -182,6 +182,8 @@ export default defineComponent({
         this.metoclient.get('map').getView().setCenter(this.center);
       } catch (e) {
         console.error("MetOClient error", e);
+        console.error("Reloading radar");
+        this.reloadRadar();
       }
       /*
       config.center = this.center;
@@ -199,11 +201,6 @@ export default defineComponent({
       } catch (e) {
         console.error("MetOClient error", e);
       }*/
-    },
-    updateZoom(zoom: number) {
-      const newConfig = this.metoclient.get('options');
-      newConfig.zoom = zoom;
-      this.metoclient.set('options', newConfig);
     },
     reloadRadar() {
       useSettingsStore().setWeatherRadar(false);

@@ -335,7 +335,7 @@ function getObservationsForStation(station: ObservationStationLocation) {
         + '&storedquery_id=fmi::observations::weather::timevaluepair'
         + '&parameters=' + observationStationParameters.join(',');
     return new Promise((resolve, reject) => {
-        getXml(url).then((json) => {
+        getXml(url, 1).then((json) => {
             const data = json['wfs:FeatureCollection']['wfs:member'];
             if (!data) {
                 reject('No data for station ' + station.identifier);
