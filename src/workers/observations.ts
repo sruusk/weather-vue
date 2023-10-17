@@ -5,5 +5,8 @@ self.onmessage = (event) => {
     console.log("Observations worker received message", lat, lon);
     getObservationsForClosestStations(lat, lon, 4).then((stations) => {
         self.postMessage(stations);
+    }).catch((error) => {
+        console.error("Error in observations worker", error);
+        self.postMessage([]);
     });
 }
