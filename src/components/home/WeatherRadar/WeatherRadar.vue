@@ -183,7 +183,9 @@ export default defineComponent({
       } catch (e) {
         console.error("MetOClient error", e);
         console.error("Reloading radar");
-        this.reloadRadar();
+        this.nextTick(() => {
+          this.reloadRadar();
+        });
       }
       /*
       config.center = this.center;
