@@ -79,6 +79,7 @@ export default defineConfig({
                         type: 'image/webp',
                         sizes: '1080x2291',
                         platform: 'android',
+                        // @ts-ignore
                         form_factor: 'wide',
                         label: 'Home screen of the app'
                     },
