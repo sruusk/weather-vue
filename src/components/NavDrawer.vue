@@ -11,7 +11,7 @@
       {{ $t(`routes.${route.name}`) }}
     </NavItem>
     <NavItem
-      v-if="!isInstalled"
+      v-if="showInstall"
       to="home"
       @click="$emit('install')"
     >
@@ -49,11 +49,16 @@ export default defineComponent({
   data() {
     return {
       EXECUTION_NUMBER: import.meta.env.VITE_EXECUTION_NUMBER,
+      isAppleDevice: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
     };
   },
   computed: {
     routes() {
       return routes.filter(route => route.showInMenu)
+    },
+    showInstall() {
+      // Show install button if not installed and not on Apple devices
+      return !this.isInstalled && !this.isAppleDevice;
     },
   },
   methods: {
