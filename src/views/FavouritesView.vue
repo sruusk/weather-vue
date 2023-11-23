@@ -10,7 +10,7 @@
         @keydown.enter="search"/>
     </BackNavigation>
     <ListSelection v-if="selection.length" :items="selection" @select="handleSelect"/>
-    <div class="favourites-list">
+    <div v-if="favouritesStore.favourites.length" class="favourites-list">
       <div class="favourites-header">
         <div class="favourites-header-text">{{ $t("settings.favourites") }}</div>
         <div class="favourites-header-button"
