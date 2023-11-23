@@ -65,7 +65,6 @@ export default defineComponent({
 
 <style scoped>
 .main {
-  overflow: hidden;
   background-color: var(--backgroundDarkest);
   contain: content;
 }
