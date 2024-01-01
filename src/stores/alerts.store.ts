@@ -1,7 +1,6 @@
 // @ts-ignore
 import pointInPolygon from 'robust-point-in-polygon';
 import {defineStore} from 'pinia';
-import {useSettingsStore} from "@/stores/settings.store";
 import type {FmiAlertData, FmiAlerts, ForecastLocation, Warnings} from "@/types";
 import {getAlerts, getFloodingAlerts} from "@/warnings";
 
@@ -43,16 +42,14 @@ export const useAlertsStore = defineStore('alerts', {
 
     getters: {
         getAlertsForLocation: (state: State) => (location: ForecastLocation): Warnings => {
-            let language = useSettingsStore().language;
-            if (language !== "fi" && language !== "sv") language = "en";
-            const alerts: FmiAlertData[] = state.alerts[language as keyof FmiAlerts].map(alert => {
+            const alerts: FmiAlertData[] = state.alerts.en.map(alert => {
                 if (alert.expires < new Date()) return undefined; // Expired
                 if (alert.polygons.find((polygon: any) => pointInPolygon(polygon, [location.lat, location.lon]) <= 0)) {
                     return alert;
                 }
                 return undefined;
             }).filter(alert => alert !== undefined) as FmiAlertData[];
-            //console.log(`Alerts for ${location.name}, ${location.region}`, alerts);
+
             const warnings: any = {};
             for (let i = 0; i < 5; i++) {
                 const date = new Date();
@@ -77,5 +74,17 @@ export const useAlertsStore = defineStore('alerts', {
             console.log(`Alerts for ${location.name}, ${location.region}`, warnings);
             return warnings as Warnings;
         },
+        getActiveAlertsForLocation: (state: State) => (location: ForecastLocation): FmiAlerts => {
+            const out = {} as FmiAlerts;
+            Object.keys(state.alerts).forEach((key) => {
+                out[key as keyof FmiAlerts] = state.alerts[key as keyof FmiAlerts].filter((alert) => {
+                    return alert.expires >= new Date()
+                        && alert.onset <= new Date()
+                        && alert.polygons.find((polygon: any) => pointInPolygon(polygon, [location.lat, location.lon]) <= 0);
+                });
+            });
+            console.log(`Active alerts for ${location.name}, ${location.region}`, out);
+            return out;
+        }
     }
 });
