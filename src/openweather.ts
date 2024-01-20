@@ -72,6 +72,12 @@ export function getHourlyForecastLatLon(lat: number, lon: number, retry: number 
             return response.json();
         }).then(data => {
             const weather: OpenWeather = oneCallToWeather(data.hourly);
+
+            // Add debug check
+            if (!weather?.temperature[weather.temperature.length - 1]?.time) {
+                console.log("OpenWeather getHourlyForecastLatLon():", lat, lon, weather, data);
+            }
+
             const dailyWeather: OpenWeather = oneCallDailyToWeather(data.daily, weather.temperature[weather.temperature.length - 1].time);
 
             Object.keys(weather).forEach((key) => {
@@ -81,8 +87,11 @@ export function getHourlyForecastLatLon(lat: number, lon: number, retry: number 
 
             resolve(weather);
         }).catch((error) => {
-            console.error("OpenWeather getHourlyForecastLatLon():", error);
-            if (retry > 0) resolve(getHourlyForecastLatLon(lat, lon, retry - 1));
+            console.error("OpenWeather getHourlyForecastLatLon():", lat, lon, error);
+            if (retry > 0) {
+                console.log("OpenWeather getHourlyForecastLatLon(): retrying", retry);
+                resolve(getHourlyForecastLatLon(lat, lon, retry - 1));
+            }
         });
     })
 }
