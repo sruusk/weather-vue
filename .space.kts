@@ -65,7 +65,8 @@ job("Deploy") {
             content = """
                 apt update
                 apt install curl -y
-                curl -f -L "https://${'$'}address/webhook?q=${'$'}artifacts"
+                echo "Sending request to: https://${'$'}address/webhook/weather?q=${'$'}artifacts"
+                curl -f -L "https://${'$'}address/webhook/weather?q=${'$'}artifacts"
             """
         }
     }

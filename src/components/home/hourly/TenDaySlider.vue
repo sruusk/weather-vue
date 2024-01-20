@@ -9,7 +9,7 @@
     >
       <div class="day-header">{{ getShortDayName(day) }}</div>
       <img :src="getWeatherIcon(day)" alt="Weather icon"/>
-      <div class="day-temp">{{ tempPrefix(getDayTemp(day)) + getDayTemp(day) }} °C</div>
+      <div class="day-temp">{{ tempPrefix(getDayTemp(day)) + Math.abs(getDayTemp(day)) }} °C</div>
       <div class="glance-bar-day">
         <div v-for="hour in getWeatherForDay(day)?.precipitation ?? []"
              :key="hour.time.getHours()"
