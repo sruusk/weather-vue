@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import Weather from "@/weather";
 import WeatherWorker from "@/workers/weather?worker";
-import {useFavouritesStore, useObservationsStore, useSettingsStore} from "@/stores";
+import {useFavouritesStore, useObservationsStore, useSettingsStore, useAlertsStore} from "@/stores";
 import type {ForecastLocation, Weather as WeatherType} from '@/types';
 
 const defaultLocation: ForecastLocation = {
@@ -107,6 +107,7 @@ export const useWeatherStore = defineStore('weather', {
                     this.currentWeather = weather;
                     this.locationWeather = weather;
                     useObservationsStore().changeLocation(weather.location);
+                    useAlertsStore().parseAlertsForLocation(weather.location);
                     resolve();
                 }
                 if (window.Worker) {
@@ -123,7 +124,10 @@ export const useWeatherStore = defineStore('weather', {
                 if (!location
                     || (location.lat === this.currentLocation?.lat && location.lon === this.currentLocation?.lon)
                 ) return resolve();
-                if (location.country === 'Finland') useObservationsStore().changeLocation(location);
+                if (location.country === 'Finland') {
+                    useObservationsStore().changeLocation(location);
+                    useAlertsStore().parseAlertsForLocation(location);
+                }
                 if (window.Worker) {
                     const worker = new WeatherWorker();
                     worker.onmessage = (event) => {

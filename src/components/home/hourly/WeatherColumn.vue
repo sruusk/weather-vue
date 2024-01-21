@@ -1,14 +1,14 @@
 <template>
   <div class="weather-column">
-    <div class="weather-column__icon">
+    <div class="weather-column-icon">
       <img :src="getIconUrl(weather.weatherSymbol)" alt=""/>
     </div>
-    <div class="weather-column__temp">
+    <div class="weather-column-temp">
       {{ tempPrefix(weather.temperature) }}{{ Math.round(Math.abs(weather.temperature)) }} °C
     </div>
-    <div class="weather-column__feelslike">
+    <div class="weather-column-feelslike">
       <FeelslikeIcon/>
-      <div class="weather-column__feelslike-value">
+      <div class="weather-column-feelslike-value">
         {{ tempPrefix(weather.feelsLike) }}{{ Math.round(Math.abs(weather.feelsLike)) }}°
       </div>
     </div>
@@ -20,7 +20,7 @@
       :negative="false"
       :rain-amount="weather.precipitation"
       :rain-probability="weather.probabilityOfPrecipitation !== undefined ? weather.probabilityOfPrecipitation : -1"
-      class="weather-column__rain"/>
+      class="weather-column-rain"/>
   </div>
 </template>
 
@@ -66,10 +66,10 @@ export default defineComponent({
   border-right: var(--backgroundDark) 1px solid;
   border-bottom: var(--backgroundDark) 2px solid;
   font-size: 12px;
-  contain: paint;
+  contain: content;
 }
 
-.weather-column__icon {
+.weather-column-icon {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -77,29 +77,29 @@ export default defineComponent({
   margin-bottom: -5px;
 }
 
-.weather-column__icon img {
+.weather-column-icon img {
   width: 50px;
   height: 50px;
 }
 
-.weather-column__feelslike {
+.weather-column-feelslike {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.weather-column__feelslike svg {
+.weather-column-feelslike svg {
   width: 35px;
   height: 35px;
 }
 
-.weather-column__feelslike-value {
+.weather-column-feelslike-value {
   margin-top: -16px;
   color: black;
 }
 
-.weather-column__rain {
+.weather-column-rain {
   width: 100%;
   display: flex;
   justify-content: center;

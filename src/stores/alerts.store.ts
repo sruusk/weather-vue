@@ -1,6 +1,7 @@
 // @ts-ignore
 import pointInPolygon from 'robust-point-in-polygon';
 import {defineStore} from 'pinia';
+import AlertsForLocationWorker from "@/workers/alertsForLocation?worker";
 import type {FmiAlertData, FmiAlerts, ForecastLocation, Warnings} from "@/types";
 import {getAlerts, getFloodingAlerts} from "@/warnings";
 
@@ -9,6 +10,10 @@ const severityOrder = ["Minor", "Moderate", "Severe", "Extreme"];
 interface State {
     alerts: FmiAlerts;
     loading: boolean;
+    alertLocationQueue: ForecastLocation[];
+    alertsForLocation: {
+        [key: string]: Warnings;
+    }
 }
 
 export const useAlertsStore = defineStore('alerts', {
@@ -19,7 +24,9 @@ export const useAlertsStore = defineStore('alerts', {
                 sv: [],
                 en: []
             },
-            loading: true
+            loading: true,
+            alertLocationQueue: [],
+            alertsForLocation: {}
         }
     },
 
@@ -36,19 +43,53 @@ export const useAlertsStore = defineStore('alerts', {
                 // @ts-ignore
                 Object.keys(floodingAlerts).forEach((key) => this.alerts[key].push(...floodingAlerts[key]));
                 this.loading = false;
+                // Parse queued locations
+                this.alertLocationQueue.forEach((location) => {
+                    this.parseAlertsForLocation(location);
+                });
             });
-        }
-    },
+        },
+        async parseAlertsForLocation(location: ForecastLocation) {
+            // Don't parse if already parsed
+            if (this.alertsForLocation[`${location.lat},${location.lon}`]) return;
 
-    getters: {
-        getAlertsForLocation: (state: State) => (location: ForecastLocation): Warnings => {
-            const alerts: FmiAlertData[] = state.alerts.en.map(alert => {
-                if (alert.expires < new Date()) return undefined; // Expired
-                if (alert.polygons.find((polygon: any) => pointInPolygon(polygon, [location.lat, location.lon]) <= 0)) {
-                    return alert;
-                }
-                return undefined;
-            }).filter(alert => alert !== undefined) as FmiAlertData[];
+            if (this.loading) {
+                // Queue the location to be parsed when loading is complete
+                this.alertLocationQueue.push(location);
+                return;
+            }
+
+            let alerts: FmiAlertData[] = [];
+
+            // Use web worker if available
+            if (window.Worker) {
+                await new Promise<void>((resolve) => {
+                    const worker = new AlertsForLocationWorker();
+                    worker.onmessage = (event) => {
+                        // Need to convert dates from string to Date
+                        alerts = event.data.map((alert: FmiAlertData) => {
+                            alert.onset = new Date(alert.onset);
+                            alert.expires = new Date(alert.expires);
+                            return alert;
+                        });
+                        resolve();
+                    };
+                    worker.postMessage({
+                        // Prevent Vue from converting to reactive object by cloning the data
+                        // Web workers can't handle reactive objects
+                        alerts: JSON.parse(JSON.stringify(this.alerts.en)),
+                        location: JSON.parse(JSON.stringify(location))
+                    });
+                });
+            } else {
+                alerts = this.alerts.en.map(alert => {
+                    if (alert.expires < new Date()) return undefined; // Expired
+                    if (alert.polygons.find((polygon: any) => pointInPolygon(polygon, [location.lat, location.lon]) <= 0)) {
+                        return alert;
+                    }
+                    return undefined;
+                }).filter(alert => alert !== undefined) as FmiAlertData[];
+            }
 
             const warnings: any = {};
             for (let i = 0; i < 5; i++) {
@@ -72,7 +113,16 @@ export const useAlertsStore = defineStore('alerts', {
                 }
             }
             console.log(`Alerts for ${location.name}, ${location.region}`, warnings);
-            return warnings as Warnings;
+            this.alertsForLocation[`${location.lat},${location.lon}`] = warnings;
+        },
+    },
+
+    getters: {
+        getAlertsForLocation: (state: State) => (location: ForecastLocation): Warnings => {
+            if (!state.alertsForLocation[`${location.lat},${location.lon}`]) {
+                return {} as Warnings;
+            }
+            return state.alertsForLocation[`${location.lat},${location.lon}`];
         },
         getActiveAlertsForLocation: (state: State) => (location: ForecastLocation): FmiAlerts => {
             const out = {} as FmiAlerts;

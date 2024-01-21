@@ -49,7 +49,7 @@ export default defineComponent({
   data() {
     return {
       EXECUTION_NUMBER: import.meta.env.VITE_EXECUTION_NUMBER,
-      isAppleDevice: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
+      isAppleDevice: /iPad|iPhone|iPod/.test(navigator.userAgent),
     };
   },
   computed: {

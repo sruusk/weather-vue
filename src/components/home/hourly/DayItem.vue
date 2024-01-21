@@ -86,6 +86,7 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   background-color: var(--backgroundDarker);
+  contain: content;
 }
 
 .hour {
