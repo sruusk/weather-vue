@@ -33,7 +33,7 @@ export function search(str: string): Promise<void | {
 export function reverseGeocoding(lat: number, lon: number): Promise<ForecastLocation> {
     const url = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${OpenWeatherApiKey}`;
     return fetch(url).then(response => response.json()).then(data => {
-        const country = countries.getName(data[0].country, 'en');
+        const country = countries.getName(data[0].country, 'en') as string;
         return {
             name: data[0].name,
             identifier: '',

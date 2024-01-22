@@ -7,6 +7,7 @@ import VueMobileDetection from "vue-mobile-detection";
 import countries from 'i18n-iso-countries';
 import VueSplide from '@splidejs/vue-splide';
 import './registerServiceWorker';
+// @ts-ignore
 import {createI18n} from 'vue-i18n';
 import {DefaultLanguage} from "@/contants";
 

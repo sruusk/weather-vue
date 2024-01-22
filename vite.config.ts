@@ -154,10 +154,11 @@ export default defineConfig({
                 globPatterns: [
                     '**/*.{js,css,html,webp,jpg,svg,png,ico,webmanifest,txt,ttf,woff,woff2,otf,eot}'
                 ],
-                runtimeCaching: [{
+                runtimeCaching: [{ // Cache the basemap and wms capabilities indefinitely
                     urlPattern: ({url}) => {
                         if (url.hostname === 'geo.stat.fi') return true
                         if (url.hostname === 'd17g5uoxmlqldj.cloudfront.net') return true
+                        if (url.href.includes('openwms.fmi.fi/geoserver/wms?service=wms&request=GetCapabilities')) return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',
@@ -167,7 +168,7 @@ export default defineConfig({
                             statuses: [0, 200]
                         }
                     }
-                }, {
+                }, { // Cache the weather data for 10 minutes
                     urlPattern: ({url}) => {
                         if (url.hostname === 'opendata.fmi.fi') return true
                         if (url.href.includes('api.openweathermap.org/data/2.5/forecast')
@@ -185,7 +186,7 @@ export default defineConfig({
                             maxAgeSeconds: 60 * 10 // 10 minutes
                         }
                     }
-                }, {
+                }, { // Cache the alerts for 3 hours
                     urlPattern: ({url}) => {
                         if (url.hostname === 'alerts.fmi.fi') return true
                         if (url.hostname === 'corsproxy.io') return true
@@ -202,9 +203,10 @@ export default defineConfig({
                             maxAgeSeconds: 60 * 60 * 3 // 3 hours
                         }
                     }
-                }, {
+                }, {  // Cache the radar images for 30 minutes
                     urlPattern: ({url}) => {
                         if (url.hostname === 'data.fmi.fi') return true
+                        if (url.href.includes('openwms.fmi.fi/geoserver/wms?service=wms&request=GetCapabilities')) return false
                         if (url.hostname === 'openwms.fmi.fi') return true
                     },
                     method: 'GET',

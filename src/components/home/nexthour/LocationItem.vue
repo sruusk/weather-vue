@@ -83,6 +83,7 @@ export default defineComponent({
         const countryCode = this.weather.location.country.length === 2
           ? this.weather.location.country
           : countries.getAlpha2Code(this.weather.location.country, 'en');
+        if (!countryCode) return this.weather.location.region;
         return countries.getName(countryCode, this.settingsStore.language);
       }
       return this.weather.location.region;

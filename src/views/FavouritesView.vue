@@ -128,7 +128,7 @@ export default defineComponent({
       this.searchString = "";
     },
     handleSelect(selected: any) {
-      const country = countries.getName(selected.country, 'en');
+      const country = countries.getName(selected.country, 'en') as string;
       const newEntry = {
         name: selected.name,
         country: country,
@@ -146,7 +146,7 @@ export default defineComponent({
     findLocation,
     translateRegion(location: ForecastLocation) {
       if (location.region === location.country) {
-        const countryCode = location.country.length === 2 ? location.country : countries.getAlpha2Code(location.country, 'en');
+        const countryCode = location.country.length === 2 ? location.country : countries.getAlpha2Code(location.country, 'en') as string;
         return countries.getName(countryCode, this.settingsStore.language);
       }
       return location.region;
