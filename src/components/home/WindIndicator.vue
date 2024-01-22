@@ -42,37 +42,6 @@ export default defineComponent({
     roundedWindSpeed() {
       return Math.round(this.windSpeed);
     }
-  },
-  methods: {
-    getIndicator() {
-      if (this.windSpeed === 0)
-        return `/windarrows/${this.negative ? 'negative' : 'positive'}/0.svg`;
-      else
-        return `/windarrows/${this.negative ? 'negative' : 'positive'}/${this.getWindDirection().toLowerCase()}.svg`;
-    },
-    getWindDirection() {
-      if (this.windDirection >= 0 && this.windDirection <= 22.5) {
-        return "N";
-      } else if (this.windDirection > 22.5 && this.windDirection <= 67.5) {
-        return "NE";
-      } else if (this.windDirection > 67.5 && this.windDirection <= 112.5) {
-        return "E";
-      } else if (this.windDirection > 112.5 && this.windDirection <= 157.5) {
-        return "SE";
-      } else if (this.windDirection > 157.5 && this.windDirection <= 202.5) {
-        return "S";
-      } else if (this.windDirection > 202.5 && this.windDirection <= 247.5) {
-        return "SW";
-      } else if (this.windDirection > 247.5 && this.windDirection <= 292.5) {
-        return "W";
-      } else if (this.windDirection > 292.5 && this.windDirection <= 337.5) {
-        return "NW";
-      } else if (this.windDirection > 337.5 && this.windDirection <= 360) {
-        return "N";
-      } else {
-        return "0"
-      }
-    },
   }
 })
 </script>
