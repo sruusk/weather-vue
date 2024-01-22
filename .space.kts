@@ -15,6 +15,10 @@ job("Deploy") {
     }
 
     container("Run deploy script", image = "node:16") {
+      	resources {
+            cpu = 4.cpu
+            memory = 12.gb
+        }
         cache {
             // To upload to another repo (e.g., 'my-file-repo'), uncomment the next line
             // location = CacheLocation.FileRepository(name = "my-file-repo", remoteBasePath = "caches/{{ run:job.repository }}")
