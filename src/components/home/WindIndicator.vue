@@ -2,11 +2,11 @@
   <div class="wind-indicator">
     <WindArrow
       v-if="!negative"
-      :style="`transform: rotate(${windDirection}deg);`"
+      :style="`transform: rotate(${180 + windDirection}deg);`"
       class="wind-arrow"/>
     <WindArrowNegative
       v-if="negative"
-      :style="`transform: rotate(${windDirection}deg);`"
+      :style="`transform: rotate(${180 + windDirection}deg);`"
       class="wind-arrow"/>
     <span class="wind-speed">{{ roundedWindSpeed }}</span>
   </div>
