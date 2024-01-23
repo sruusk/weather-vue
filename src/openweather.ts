@@ -2,7 +2,7 @@ import {OpenWeatherApiKey} from "@/contants";
 import countries from "i18n-iso-countries";
 import type {ForecastLocation, OpenWeather, TimeSeriesObservation, Warnings} from "@/types";
 
-if (!OpenWeatherApiKey) window.alert("OpenWeather API key not set!");
+if (!OpenWeatherApiKey) alert("OpenWeather API key not set!");
 
 export function search(str: string): Promise<void | {
     name: string,
@@ -66,18 +66,21 @@ function fetchOpenWeather(url: string, retry: number = 3): Promise<OpenWeather> 
 }
 
 export function getHourlyForecastLatLon(lat: number, lon: number, retry: number = 3): Promise<OpenWeather> {
-    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely&units=metric&appid=${OpenWeatherApiKey}`;
+    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely&units=metric&appid=${OpenWeatherApiKey}&retry=${retry}`;
     return new Promise(resolve => {
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
-            const weather: OpenWeather = oneCallToWeather(data.hourly);
-
-            // Add debug check
-            if (!weather?.temperature[weather.temperature.length - 1]?.time) {
-                console.log("OpenWeather getHourlyForecastLatLon():", lat, lon, weather, data);
+            // Check timestamp
+            const timestamp = data.current.dt * 1000;
+            const now = new Date();
+            if (timestamp < now.getTime() - 60 * 60 * 1000) { // 1 hour
+                console.log("OpenWeather getHourlyForecastLatLon(): timestamp is too old, retrying");
+                resolve(getHourlyForecastLatLon(lat, lon, retry - 1));
+                return;
             }
 
+            const weather: OpenWeather = oneCallToWeather(data.hourly);
             const dailyWeather: OpenWeather = oneCallDailyToWeather(data.daily, weather.temperature[weather.temperature.length - 1].time);
 
             Object.keys(weather).forEach((key) => {
