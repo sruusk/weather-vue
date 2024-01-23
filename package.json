@@ -15,6 +15,7 @@
     "@fmidev/metoclient": "^6.8.13",
     "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@splidejs/vue-splide": "github:rriixx/vue-splide#fix-type-errors",
+    "@typescript-eslint/parser": "^6.19.1",
     "chart.js": "^4.4.1",
     "epic-spinners": "^2.0.0",
     "fast-xml-parser": "^4.3.3",
