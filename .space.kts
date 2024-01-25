@@ -14,7 +14,7 @@ job("Deploy") {
         }
     }
 
-    container("Run deploy script", image = "node:16") {
+    container("Run deploy script", image = "node:18") {
       	resources {
             cpu = 4.cpu
             memory = 12.gb
@@ -69,7 +69,6 @@ job("Deploy") {
             content = """
                 apt update
                 apt install curl -y
-                echo "Sending request to: https://${'$'}address/webhook/weather?q=${'$'}artifacts"
                 curl -f -L "https://${'$'}address/webhook/weather?q=${'$'}artifacts"
             """
         }
