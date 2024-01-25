@@ -16,7 +16,9 @@
         >
           <LocationItem
             v-if="!fav.gps"
-            :weather="favouritesStore.getFavouriteWeather(fav) || getHourWeather(weatherStore.currentWeather)"
+            :weather="favouritesStore.locations.length
+              ? favouritesStore.getFavouriteWeather(fav)
+              : getHourWeather(weatherStore.currentWeather)"
           />
           <LocationItem
             v-else

@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main v-if="weatherStore.hasWeather">
     <div class="navigation">
       <HamburgerIcon class="navigation-button" style="height: 18px;" @click.stop="open"/>
       <div class="drag-handle"/>

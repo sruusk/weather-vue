@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import {DefaultLanguage} from "@/contants";
-import {useThemeStore} from "@/stores/theme.store";
+import {useThemeStore, useWeatherStore} from "@/stores";
 
 interface State {
     settings: {
@@ -43,6 +43,11 @@ export const useSettingsStore = defineStore('settings', {
         setUseLocation(useLocation: boolean) {
             this.settings.useLocation = useLocation;
             localStorage.setItem('settings', JSON.stringify(this.settings));
+            const weatherStore = useWeatherStore();
+            if(useLocation && !weatherStore.gpsLocation) {
+                weatherStore.$reset();
+                weatherStore.init();
+            }
         },
 
         setWeatherRadar(weatherRadar: boolean) {
