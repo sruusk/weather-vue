@@ -44,12 +44,13 @@ export default defineComponent({
       dayPositions: {} as { [key: number]: Date },
       displayedDay: this.selectedDay,
       scrollTimer: null as null | ReturnType<typeof setTimeout>,
-      scrollToHour: false,
-      days: [] as Date[] | undefined
+      scrollToHour: false
     }
   },
   created() {
-    this.getDays();
+    this.$nextTick(() => {
+      this.getDayPositions();
+    });
   },
   activated() {
     this.$nextTick(() => {
@@ -79,15 +80,15 @@ export default defineComponent({
         if (this.days) this.scrollToDay(this.days?.[0], true);
       });
     },
-    "weatherStore.getDays": function () {
-      this.getDays();
-    }
   },
   computed: {
     isMobile() {
       // @ts-ignore
       return this.$isMobile();
     },
+    days() {
+      return this.weatherStore.getDays();
+    }
   },
   methods: {
     onScroll() {
@@ -136,17 +137,6 @@ export default defineComponent({
 
       // @ts-ignore
       this.slider?.scrollTo({left: leftOffset, behavior: instant ? 'instant' : 'smooth'});
-    },
-    getDays() {
-      const days = this.weatherStore.getDays();
-      if (!days) return;
-      this.days = days.slice(0, 2); // Only show first two days
-      this.$nextTick(() => {
-        this.days = days; // Show all days after first render
-        this.$nextTick(() => {
-          this.getDayPositions();
-        });
-      });
     }
   },
 })

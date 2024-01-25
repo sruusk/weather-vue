@@ -1,13 +1,13 @@
 import {defineStore} from 'pinia';
 import type {ForecastLocation, HourWeather} from '@/types';
 import Weather from "@/weather";
+import WeatherWorker from "@/workers/weather?worker";
 import {useWeatherStore} from "@/stores/weather.store";
 
 interface State {
     favourites: ForecastLocation[];
     favouriteWeathers: HourWeather[];
     history: ForecastLocation[];
-    loading: boolean;
 }
 
 export const useFavouritesStore = defineStore('favourites', {
@@ -16,8 +16,7 @@ export const useFavouritesStore = defineStore('favourites', {
             favourites: [],
             favouriteWeathers: [],
             history: [],
-            loading: false,
-        }
+        };
     },
 
     actions: {
@@ -27,12 +26,8 @@ export const useFavouritesStore = defineStore('favourites', {
             if (history) this.history = JSON.parse(history) as ForecastLocation[];
             if (favourites) this.favourites = JSON.parse(favourites) as ForecastLocation[];
 
-            this.loading = true;
             this.favouriteWeathers = [];
-            for (const favourite of this.locations) {
-                await this.getWeather(favourite);
-            }
-            this.loading = false;
+            this.locations.forEach((favourite: ForecastLocation) => { this.getWeather(favourite);})
 
             // Update weather every hour
             const loop = () => {
@@ -41,12 +36,10 @@ export const useFavouritesStore = defineStore('favourites', {
                 const timeout = nextHour.getTime() - currentTime.getTime();
                 setTimeout(async () => {
                     this.favouriteWeathers = [];
-                    for (const favourite of this.locations) {
-                        await this.getWeather(favourite);
-                    }
+                    this.locations.forEach((favourite: ForecastLocation) => { this.getWeather(favourite);})
                     loop();
                 }, timeout);
-            }
+            };
             loop();
         },
         async addFavourite(favourite: ForecastLocation) {
@@ -56,22 +49,22 @@ export const useFavouritesStore = defineStore('favourites', {
             await weatherStore.changeLocation(favourite);
             localStorage.setItem('favourites', JSON.stringify(this.favourites));
         },
-        async addHistory(location: ForecastLocation) {
+        addHistory(location: ForecastLocation) {
             const weatherStore = useWeatherStore();
 
             // If location is already a favourite, set location to favourite and return
             if(this.favourites.find(fav => fav.name === location.name && fav.region === location.region)) {
-                await weatherStore.changeLocation(location);
+                weatherStore.changeLocation(location);
                 return;
             }
 
             // If location is already the first history entry, change location and return
             if(this.history.length && this.history[0].name === location.name && this.history[0].region === location.region) {
-                await weatherStore.changeLocation(location);
+                weatherStore.changeLocation(location);
                 return;
             }
 
-            await this.getWeather(location);
+            this.getWeather(location);
 
             // Remove existing history entry to avoid duplicates and move it to the top
             if(this.history.find(loc => loc.name === location.name && loc.region === location.region)) {
@@ -80,7 +73,7 @@ export const useFavouritesStore = defineStore('favourites', {
 
             this.history.unshift(location);
             if(this.history.length > 5) this.history.length = 5;
-            await weatherStore.changeLocation(location);
+            weatherStore.changeLocation(location);
             localStorage.setItem('history', JSON.stringify(this.history));
         },
         removeFavourite(favourite: ForecastLocation) {
@@ -110,31 +103,47 @@ export const useFavouritesStore = defineStore('favourites', {
             localStorage.setItem('favourites', JSON.stringify(this.favourites));
             if (!weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
         },
-        clearHistory() {
+        async clearHistory() {
             this.history = [];
             localStorage.setItem('history', JSON.stringify(this.history));
             const weatherStore = useWeatherStore();
-            if(!weatherStore.locatingFailed) weatherStore.changeLocation(weatherStore.gpsLocation);
-            else if(this.favourites.length) weatherStore.changeLocation(this.favourites[0]);
+            if(!weatherStore.locatingFailed) await weatherStore.changeLocation(weatherStore.gpsLocation);
+            else if(this.favourites.length) await weatherStore.changeLocation(this.favourites[0]);
         },
         getWeather(favourite: ForecastLocation) {
             return new Promise<void>((resolve) => {
-                Weather.getWeatherNextHour(favourite.lat, favourite.lon).then((weather) => {
-                    this.favouriteWeathers.push({
-                        "time": `${weather.temperature[0].time.getHours()}:00`,
-                        "location": favourite,
-                        "temperature": weather.temperature[0].value,
-                        "windDirection": weather.windDirection[0].value,
-                        "windSpeed": weather.windSpeed[0].value,
-                        "windGust": weather.windGust[0].value,
-                        "weatherSymbol": weather.weatherSymbol[0].value,
-                        "precipitation": weather.precipitation[0].value,
-                        "probabilityOfPrecipitation": weather.probabilityOfPrecipitation ? weather.probabilityOfPrecipitation[0].value : undefined,
-                        "humidity": weather.humidity[0].value,
-                        "feelsLike": weather.feelsLike[0].value,
+                if(window.Worker) {
+                    const worker = new WeatherWorker();
+                    worker.onmessage = (event) => {
+                        this.favouriteWeathers.push({
+                            ...event.data,
+                            location: favourite,
+                        });
+                        resolve();
+                    };
+                    worker.postMessage({
+                        lat: favourite.lat,
+                        lon: favourite.lon,
+                        type: "nextHour",
                     });
-                    resolve();
-                });
+                } else {
+                    Weather.getWeatherNextHour(favourite.lat, favourite.lon).then((weather) => {
+                        this.favouriteWeathers.push({
+                            time: `${weather.temperature[0].time.getHours()}:00`,
+                            location: favourite,
+                            temperature: weather.temperature[0].value,
+                            windDirection: weather.windDirection[0].value,
+                            windSpeed: weather.windSpeed[0].value,
+                            windGust: weather.windGust[0].value,
+                            weatherSymbol: weather.weatherSymbol[0].value,
+                            precipitation: weather.precipitation[0].value,
+                            probabilityOfPrecipitation: weather.probabilityOfPrecipitation ? weather.probabilityOfPrecipitation[0].value : undefined,
+                            humidity: weather.humidity[0].value,
+                            feelsLike: weather.feelsLike[0].value,
+                        });
+                        resolve();
+                    });
+                }
             });
         },
         saveFavourites() {
@@ -150,9 +159,22 @@ export const useFavouritesStore = defineStore('favourites', {
             return locations;
         },
         getFavouriteWeather: (state: State) => (location: ForecastLocation) => {
+            // Return empty weather if location has not loaded yet
             return state.favouriteWeathers.find(
                 weather => weather.location.name === location.name && weather.location.region === location.region
-            );
+            ) || {
+                time: "",
+                location: location,
+                weatherSymbol: 0,
+                temperature: 0,
+                precipitation: 0,
+                probabilityOfPrecipitation: 0,
+                humidity: 0,
+                windDirection: 0,
+                windSpeed: 0,
+                windGust: 0,
+                feelsLike: 0,
+            }
         },
     }
 });

@@ -17,4 +17,4 @@ self.onmessage = (event) => {
     }).filter(alert => alert !== undefined) as FmiAlertData[];
 
     self.postMessage(out);
-}
+};

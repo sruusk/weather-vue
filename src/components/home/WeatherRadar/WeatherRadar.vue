@@ -183,7 +183,7 @@ export default defineComponent({
       } catch (e) {
         console.error("MetOClient error", e);
         console.error("Reloading radar");
-        this.nextTick(() => {
+        this.$nextTick(() => {
           this.reloadRadar();
         });
       }
@@ -220,6 +220,7 @@ export default defineComponent({
 .weather-radar-container {
   width: 100%;
   height: 100vw;
+  min-height: 100vw;
   max-height: calc(max(3 / 4 * 100vh, 600px));
   display: flex;
   flex-direction: column;

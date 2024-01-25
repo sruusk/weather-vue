@@ -84,17 +84,19 @@ export default defineComponent({
     "weatherStore.currentLocation": function () {
       const currentLocation = this.weatherStore.currentLocation;
       this.runAfterActive = () => {
-        const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
-        // @ts-ignore
-        if (this.splide) this.splide.go(index || 0);
-        this.runAfterActive = undefined;
+        this.$nextTick(() => {
+          const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
+          // @ts-ignore
+          if (this.splide) this.splide.go(index || 0);
+          this.runAfterActive = undefined;
+        });
       }
       if (this.active) this.runAfterActive();
     },
-    "favouritesStore.favourites": function () {
+    "favouritesStore.locations": function () {
       this.runAfterActive = () => {
         // @ts-ignore
-        if (this.favouritesStore.favourites.length === 0) this.splide.go(0);
+        if (this.favouritesStore.locations.length === 0) this.splide.go(0);
         this.$nextTick(() => {
           const currentLocation = this.weatherStore.currentLocation;
           const index = this.locations.findIndex((location) => location.lat === currentLocation.lat && location.lon === currentLocation.lon);
@@ -162,6 +164,7 @@ export default defineComponent({
 <style scoped>
 .main {
   height: 280px;
+  min-height: 280px;
   padding: calc(env(titlebar-area-height, 0px) / 2 + 60px) 0 0 0;
   background-image: var(--backgroundGradient);
   border-bottom: 1px solid rgba(145, 149, 194, 0.2);

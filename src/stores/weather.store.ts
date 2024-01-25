@@ -154,36 +154,24 @@ export const useWeatherStore = defineStore('weather', {
         getWeather: (state: State) => (day: Date, hour: number = -1) => {
             if (!state.currentWeather) return;
             const out: any = {};
+            const hourOut: any = {};
             const startTime = new Date(day.toDateString());
             const endTime = new Date(day.toDateString()).setHours(23, 59, 59, 999);
 
             Object.entries(state.currentWeather).forEach(([key, value]) => {
                 if (Array.isArray(value)) {
                     out[key] = value.filter((item: any) => item.time >= startTime && item.time <= endTime);
+                    if (hour !== -1) {
+                        let item = out[key].find((item: any) => item.time.getHours() === hour);
+                        hourOut[key] = item ? item.value : out[key][0]?.value;
+                    }
                 } else {
                     out[key] = value;
-                }
-            });
-
-            if (hour === -1) return out;
-
-            const hourOut: any = {};
-            Object.entries(out).forEach(([key, value]) => {
-                if (Array.isArray(value)) {
-                    let over = false;
-                    value.forEach((item: any) => {
-                        if (item.time.getHours() === hour) {
-                            if (isNaN(item.value)) over = true;
-                            else hourOut[key] = item.value;
-                        } else if (over && !isNaN(item.value)) hourOut[key] = item.value;
-                        if (hourOut[key]) return;
-                    });
-                    if (!hourOut[key]) hourOut[key] = value[0]?.value;
-                } else {
                     hourOut[key] = value;
                 }
             });
-            return hourOut;
+
+            return hour === -1 ? out : hourOut;
         },
         getDays: (state: State) => () => {
             if (!state.currentWeather) return;

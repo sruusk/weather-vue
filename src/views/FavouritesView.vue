@@ -51,7 +51,7 @@
         v-for="location in favouritesStore.history"
         :key="location.name"
         class="favourite history"
-        @click.stop="favouritesStore.addHistory(location).then(() => $router.push('/'))"
+        @click.stop="() => { favouritesStore.addHistory(location); $router.push('/') }"
       >
         <div class="favourite-name">{{ location.name }}, {{ translateRegion(location) }}</div>
         <div
@@ -239,6 +239,7 @@ export default defineComponent({
   align-items: center;
 }
 
+/*noinspection CssUnusedSymbol*/
 .add-button {
   min-width: 25px;
   min-height: 25px;
