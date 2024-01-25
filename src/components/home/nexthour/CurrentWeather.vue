@@ -35,6 +35,7 @@ import type {HourWeather, Weather as WeatherType} from "@/types";
 import {defineComponent, ref} from 'vue';
 import LocationItem from "@/components/home/nexthour/LocationItem.vue";
 import {useFavouritesStore, useWeatherStore} from "@/stores";
+// @ts-ignore
 import type {Splide} from "@splidejs/vue-splide";
 
 export default defineComponent({

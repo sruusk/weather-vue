@@ -34,8 +34,6 @@
 <script lang="ts">
 import type {HourWeather} from "@/types";
 import {defineComponent, ref} from 'vue';
-// @ts-ignore
-import {toBlob, toJpeg, toPixelData, toPng, toSvg} from 'html-to-image';
 import countries from "i18n-iso-countries";
 import ClockIcon from "@/components/icons/ClockIcon.vue";
 import ShareButton from "@/components/home/nexthour/ShareButton.vue";
@@ -93,42 +91,8 @@ export default defineComponent({
     tempPrefix(temp: number) {
       return temp > 0 ? "+" : "-";
     },
-    async share() {
-      if (this.loading) return;
-      this.loading = true;
-      try {
-        const image: any = await this.captureNodeScreenshot();
-        await navigator.share({
-          title: 'Weather',
-          text: `${this.$t('home.nextHourForecastFor')} ${this.weather.location.name}, ${this.weather.location.region}`,
-          url: window.location.origin,
-          files: [image]
-        });
-      } catch (error) {
-        console.log('Error sharing', error);
-        window.alert('Error sharing');
-      } finally {
-        this.loading = false;
-      }
-    },
-    captureNodeScreenshot() {
-      return new Promise(resolve => {
-        toBlob(this.item as any, {
-          backgroundColor: '#3a4da5',
-          filter: (node: any) => {
-            const exclusionClasses = ['share-button'];
-            return !exclusionClasses.some((classname) => node.classList?.contains(classname));
-          }
-        })
-            .then(function (blob) {
-              // @ts-ignore
-              const file = new File([blob], 'weather.png', {type: 'image/png'});
-              resolve(file);
-            }).catch(function (error) {
-          console.error('oops, something went wrong!', error);
-          window.alert('Error sharing');
-        });
-      });
+    share() {
+
     }
   }
 })

@@ -29,6 +29,7 @@ import {defineComponent} from 'vue';
 import {useAlertsStore, useWeatherStore} from "@/stores";
 import type {Warnings} from "@/types";
 import WarningItem from "@/components/home/warnings/WarningItem.vue";
+// @ts-ignore
 import {LoopingRhombusesSpinner} from "epic-spinners";
 
 export default defineComponent({

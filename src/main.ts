@@ -5,6 +5,7 @@ import router from './router'
 // @ts-ignore // No type definitions available
 import VueMobileDetection from "vue-mobile-detection";
 import countries from 'i18n-iso-countries';
+// @ts-ignore
 import VueSplide from '@splidejs/vue-splide';
 import './registerServiceWorker';
 // @ts-ignore

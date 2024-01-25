@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
+// @ts-ignore
 import {RadarSpinner} from "epic-spinners";
 import {useWeatherStore} from "@/stores";
 

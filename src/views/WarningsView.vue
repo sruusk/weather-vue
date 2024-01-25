@@ -19,6 +19,7 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import {useSettingsStore} from "@/stores";
+// @ts-ignore
 import {OrbitSpinner} from 'epic-spinners'
 import BackNavigation from "@/components/BackNavigation.vue";
 import "@/assets/alert-client/vue.js";

@@ -21,6 +21,7 @@
 import {defineComponent, ref} from 'vue';
 import ObservationItem from "@/components/home/observations/ObservationItem.vue";
 import {useObservationsStore} from "@/stores";
+// @ts-ignore
 import {FulfillingBouncingCircleSpinner} from "epic-spinners";
 
 export default defineComponent({

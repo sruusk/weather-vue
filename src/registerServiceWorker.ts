@@ -4,6 +4,7 @@
 import {registerSW} from 'virtual:pwa-register';
 
 const updateSW = registerSW({
+    immediate: true,
     onNeedRefresh(registration: any) {
         document.dispatchEvent(new CustomEvent('swUpdated', {detail: registration}));
     },
