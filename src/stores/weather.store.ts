@@ -64,13 +64,13 @@ export const useWeatherStore = defineStore('weather', {
                             loadWeather();
                         }, {
                             enableHighAccuracy: false,
-                            maximumAge: 300000, // 5 minutes
+                            maximumAge: 600000, // 10 minutes
                             timeout: 5000
                         });
                     } else loadWeather(); // Location denied
                 }, {
                     enableHighAccuracy: true,
-                    maximumAge: 0,
+                    maximumAge: 60000, // 1 minute
                     timeout: 10000
                 });
             } else {
