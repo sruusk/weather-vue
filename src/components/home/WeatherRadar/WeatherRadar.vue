@@ -219,8 +219,8 @@ export default defineComponent({
 
 .weather-radar-container {
   width: 100%;
-  height: calc(min(max(3 / 4 * 100vh, 600px), 100vw);
-  min-height: calc(min(max(3 / 4 * 100vh, 600px), 100vw);
+  height: calc(min(max(3 / 4 * 100vh, 600px), 100vw));
+  min-height: calc(min(max(3 / 4 * 100vh, 600px), 100vw));
   display: flex;
   flex-direction: column;
   align-items: flex-start;
