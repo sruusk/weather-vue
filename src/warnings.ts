@@ -4,11 +4,7 @@ import {XMLParser} from "fast-xml-parser";
 import type {FmiAlerts} from "@/types";
 import MetOClient from "@fmidev/metoclient";
 
-const parser = new XMLParser({
-    attributeNamePrefix: '@_',
-    ignoreAttributes: false,
-    parseAttributeValue: true
-});
+const parser = new XMLParser();
 
 // This is not needed since FMI returns all languages in the same feed anyway
 // noinspection JSUnusedLocalSymbols

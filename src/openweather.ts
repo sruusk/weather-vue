@@ -4,7 +4,7 @@ import type {ForecastLocation, OpenWeather, TimeSeriesObservation, Warnings} fro
 
 if (!OpenWeatherApiKey) alert("OpenWeather API key not set!");
 
-export function search(str: string): Promise<void | {
+export function search(str: string): Promise<{
     name: string,
     lat: number,
     lon: number,

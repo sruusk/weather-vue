@@ -112,18 +112,27 @@ export default defineComponent({
         console.log(searchString);
       }
 
-      let weather = await Weather.getWeather(searchString);
-      if (!weather.location.region && searchString.includes(','))
-        weather = await Weather.getWeather(searchString.replace(',', ' '));
-      if (weather.location.region) {
+      let weather;
+
+      try {
+        weather = await Weather.getWeather(searchString);
+      } catch (e) {
+        try {
+          if(searchString.includes(','))
+            weather = await Weather.getWeather(searchString.replace(',', ' '));
+          else throw new Error('No location found');
+        } catch (e) {
+          const list = await findLocation(this.searchString);
+          if (list?.length) this.selection = list;
+          else alert(this.$t('settings.noneFound'));
+          return;
+        }
+      }
+      if(weather?.location?.region) {
         if (this.$route.path === '/search') {
           await this.favouritesStore.addHistory(weather.location);
           this.$router.push('/');
         } else await this.favouritesStore.addFavourite(weather.location);
-      } else {
-        const list = await findLocation(this.searchString);
-        if (list?.length) this.selection = list;
-        else alert(this.$t('settings.noneFound'));
       }
       this.searchString = "";
     },
@@ -137,11 +146,13 @@ export default defineComponent({
         lon: selected.lon,
         identifier: ''
       };
+
       if (this.$route.path === '/search') {
         this.favouritesStore.addHistory(newEntry);
         this.$router.push('/');
       } else this.favouritesStore.addFavourite(newEntry);
       this.selection = [];
+      this.searchString = "";
     },
     findLocation,
     translateRegion(location: ForecastLocation) {

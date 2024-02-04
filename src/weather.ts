@@ -60,9 +60,8 @@ function getWeatherNextHour(lat: number, lon: number): Promise<Weather> {
 
     const xml = getXml(url);
     const weather = parseWeather(xml);
-    return weather.then((value) => {
-        if (value.temperature?.length) return value;
-        else return getHourlyForecastLatLon(lat, lon).then((value) => {
+    return weather.catch(() => {
+        return getHourlyForecastLatLon(lat, lon).then((value) => {
             return new Promise((resolve) => {
                 reverseGeocoding(lat, lon).then((location) => {
                     resolve({
@@ -73,7 +72,7 @@ function getWeatherNextHour(lat: number, lon: number): Promise<Weather> {
                 });
             });
         });
-    });
+    })
 }
 
 function getWeather(place: string) {
@@ -102,8 +101,20 @@ function getWeatherByLatLon(lat: number, lon: number) {
 
     const xml = getXml(url);
     return mergeWeather(parseWeather(xml).then(weather => {
-        if (weather.temperature?.length) return weather;
-        else return getHourlyForecastLatLon(lat, lon) as Promise<Weather>;
+        return weather;
+    }).catch(() => {
+        const forecast = getHourlyForecastLatLon(lat, lon);
+        const location = reverseGeocoding(lat, lon);
+
+        return new Promise((resolve) => {
+            Promise.all([forecast, location]).then((values) => {
+                resolve({
+                    ...values[0],
+                    location: values[1],
+                    updated: new Date()
+                });
+            });
+        }) as Promise<Weather>;
     }), get5DayForecastLatLon(lat, lon));
 }
 
@@ -192,12 +203,7 @@ function parseWeather(xml: Promise<any>) {
                     if (Array.isArray(text)) console.warn('FMI API returned exception report\n', text.join('\n'));
                     else console.warn('FMI API returned exception report\n', text);
                 } else console.warn('FMI API returned exception report\n', json['ExceptionReport']);
-                const cityName = json['ExceptionReport']['Exception']['ExceptionText'][0].split('\'')[1];
-                resolve({
-                    location: {
-                        name: cityName
-                    },
-                } as Weather);
+                reject('FMI API returned exception report');
             }
 
             const data = json['wfs:FeatureCollection']['wfs:member'];

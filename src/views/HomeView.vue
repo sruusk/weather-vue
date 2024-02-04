@@ -71,7 +71,7 @@ export default defineComponent({
 <style scoped>
 main {
   width: 100%;
-  min-height: calc(100vh);
+  min-height: calc(100vh + 1px); /* +1px to prevent a bug where the scrollbar pops in and out */
   color: white;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
