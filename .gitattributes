@@ -1,0 +1,2 @@
+/src/assets/alert-client/* linguist-vendored
+generate-licenses.cjs -linguist-vendored
