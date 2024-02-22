@@ -73,11 +73,11 @@ export const useSettingsStore = defineStore('settings', {
     },
 
     getters: {
-        language: state => state.settings.language,
-        useLocation: state => state.settings.useLocation,
-        weatherRadar: state => state.settings.weatherRadar,
-        theme: state => state.settings.theme,
-        useAnimations: state => state.settings.useAnimations,
-        forecastInterval: state => state.settings.forecastInterval
+        language: (state: State) => state.settings.language,
+        useLocation: (state: State) => state.settings.useLocation,
+        weatherRadar: (state: State) => state.settings.weatherRadar,
+        theme: (state: State) => state.settings.theme,
+        useAnimations: (state: State) => state.settings.useAnimations,
+        forecastInterval: (state: State) => state.settings.forecastInterval
     }
 });

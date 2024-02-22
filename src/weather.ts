@@ -115,7 +115,12 @@ function getWeatherByLatLon(lat: number, lon: number) {
                 });
             });
         }) as Promise<Weather>;
-    }), get5DayForecastLatLon(lat, lon));
+    }), get5DayForecastLatLon(lat, lon)).catch((error) => {
+        console.error(error);
+        return new Promise((resolve, reject) => {
+            reject(error);
+        });
+    });
 }
 
 function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenWeather>) {
@@ -145,7 +150,8 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
                 feelsLike: long.feelsLike.filter((value) => value.time > shortEndTime)
             } as OpenWeather;
 
-            const longEndTime = long.temperature[long.temperature.length - 1].time;
+            const longEndTime = long.temperature[long.temperature.length - 1]?.time;
+            if (!longEndTime) reject('No long forecast end time');
 
             const weather: Weather = {
                 humidity: short.humidity.filter((value) => value.time <= shortEndTime).concat(long.humidity).concat(short.humidity.filter((value) => value.time > longEndTime)),

@@ -23,6 +23,14 @@ self.onmessage = (event) => {
         default:
             Weather.getWeatherByLatLon(lat, lon).then((weather) => {
                 self.postMessage(weather);
+            }).catch((error) => {
+                console.error("Weather worker error", error);
+                Weather.getWeatherByLatLon(lat, lon).then((weather) => {
+                    self.postMessage(weather);
+                }).catch((error) => {
+                    console.error("Weather worker error", error);
+                    self.postMessage({});
+                });
             });
             break;
     }
