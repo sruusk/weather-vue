@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import Weather from "@/weather";
 import WeatherWorker from "@/workers/weather?worker";
-import {useFavouritesStore, useObservationsStore, useSettingsStore, useAlertsStore} from "@/stores";
+import {useAlertsStore, useFavouritesStore, useObservationsStore, useSettingsStore} from "@/stores";
 import type {ForecastLocation, Weather as WeatherType} from '@/types';
 
 const defaultLocation: ForecastLocation = {
@@ -116,7 +116,10 @@ export const useWeatherStore = defineStore('weather', {
                         setLocation(event.data as WeatherType);
                     }
                     worker.postMessage({lat, lon});
-                } else Weather.getWeatherByLatLon(lat, lon).then(setLocation);
+                } else Weather.getWeatherByLatLon(lat, lon).then((weather) => {
+                    setLocation(weather as WeatherType);
+                    resolve();
+                });
             });
         },
         changeLocation(location: ForecastLocation) {
@@ -137,7 +140,7 @@ export const useWeatherStore = defineStore('weather', {
                     }
                     worker.postMessage({lat: location.lat, lon: location.lon});
                 } else Weather.getWeatherByLatLon(location.lat, location.lon).then((weather) => {
-                    this.currentWeather = weather;
+                    this.currentWeather = weather as WeatherType;
                     this.currentWeather.location = location;
                     resolve();
                 });
