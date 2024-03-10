@@ -38,6 +38,7 @@ export function getAlerts(): Promise<FmiAlerts> {
             const alerts = Object.fromEntries(
                 Object.keys(languageMap).map((key: string) => {
                     return [languageMap[key], xml["feed"]["entry"].map((entry: any) => {
+                        if (!entry) return undefined;
                         if (entry["content"]["alert"]["msgType"] === "Cancel") return undefined;
                         const alert = entry["content"]["alert"]["info"].find((alert: any) => alert["language"] === key);
                         if (!alert) return undefined;
