@@ -158,7 +158,6 @@ export default defineConfig({
                     urlPattern: ({url}) => {
                         if (url.hostname === 'geo.stat.fi') return true
                         if (url.hostname === 'd17g5uoxmlqldj.cloudfront.net') return true
-                        if (url.href.includes('openwms.fmi.fi/geoserver/wms?service=wms&request=GetCapabilities')) return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',
