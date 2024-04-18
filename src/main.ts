@@ -12,6 +12,18 @@ import './registerServiceWorker';
 import {createI18n} from 'vue-i18n';
 import {DefaultLanguage} from "@/contants";
 
+// Hijack all console.error calls and catch specific errors
+const originalError = console.error;
+console.error = (...args) => {
+    if (args.some((arg) => arg.includes("'https://openwms.fmi.fi/geoserver/wms?SERVICE=WMS'"))) {
+        // Issue an event to the radar component to reload the radar image
+        console.log("Reloading radar image");
+        const event = new Event('reloadRadar');
+        document.dispatchEvent(event);
+    }
+    originalError.apply(console, args);
+};
+
 // Import styles
 import '@splidejs/vue-splide/css';
 

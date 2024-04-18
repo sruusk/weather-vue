@@ -45,7 +45,7 @@ import {useSettingsStore, useThemeStore, useWeatherStore} from "@/stores";
 import ReloadIcon from "@/components/icons/ReloadIcon.vue";
 
 export default defineComponent({
-  name: "WeatherRadar.vue",
+  name: "WeatherRadar",
   components: {
     ReloadIcon,
     MarkerIcon,
@@ -94,6 +94,7 @@ export default defineComponent({
         console.error(error);
       });
     }
+    window.addEventListener('reloadRadar', this.reloadRadar);
   },
   activated() {
     if (!this.metoclient) {
@@ -111,6 +112,7 @@ export default defineComponent({
       } catch (e) {
       }
     }
+    window.removeEventListener('reloadRadar', this.reloadRadar);
   },
   watch: {
     timeStep() {

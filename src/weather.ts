@@ -175,10 +175,18 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
     }) as Promise<Weather>;
 }
 
-function getXml(url: string, retries: number = 3) {
+function getXml(url: string, retries: number = 3, timeout: number = 5000) {
     return new Promise((resolve, reject) => {
-        fetch(url)
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        const timer = setTimeout(() => {
+            controller.abort();
+        }, timeout);
+
+        fetch(url, {signal})
             .then((response) => {
+                clearTimeout(timer);
                 if (response.ok) {
                     return response.text();
                 } else if (response.status === 400) { // FMI returns 400 if no data is available for the requested location
@@ -193,9 +201,11 @@ function getXml(url: string, retries: number = 3) {
                 resolve(json);
             })
             .catch((error) => {
-                console.error('Error fetching weather data', error, url, retries);
-                if (retries > 0) resolve(getXml(url, retries - 1));
-                else reject(error);
+                if (retries > 0) resolve(getXml(url, retries - 1, timeout));
+                else {
+                    console.error('Error fetching weather data', error, url);
+                    reject(error);
+                }
             });
     }) as Promise<any>;
 }
