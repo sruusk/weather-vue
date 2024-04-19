@@ -19,7 +19,7 @@ console.error = (...args) => {
         // Issue an event to the radar component to reload the radar image
         console.log("Reloading radar image");
         const event = new Event('reloadRadar');
-        document.dispatchEvent(event);
+        window.dispatchEvent(event);
     }
     originalError.apply(console, args);
 };
