@@ -175,7 +175,7 @@ function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenW
     }) as Promise<Weather>;
 }
 
-function getXml(url: string, retries: number = 3, timeout: number = 5000) {
+function getXml(url: string, retries: number = 3, timeout: number = 60000) {
     return new Promise((resolve, reject) => {
         const controller = new AbortController();
         const signal = controller.signal;
