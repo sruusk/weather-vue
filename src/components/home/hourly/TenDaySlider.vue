@@ -73,7 +73,8 @@ export default defineComponent({
       return `/symbols/${this.settingsStore.useAnimations ? 'animated' : 'static'}/${weatherForHour.weatherSymbol}.svg`;
     },
     getDayTemp(date: Date) {
-      const weatherForHour = this.weatherStore.getWeather(date, 15);
+      let weatherForHour = this.weatherStore.getWeather(date, 15);
+      if(weatherForHour === undefined) weatherForHour = this.weatherStore.getWeather(date, 18);
       return Math.round(weatherForHour.temperature);
     },
     tempPrefix(temp: number) {
