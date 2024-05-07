@@ -74,7 +74,7 @@ export default defineComponent({
     },
     getDayTemp(date: Date) {
       let weatherForHour = this.weatherStore.getWeather(date, 15);
-      if(weatherForHour === undefined) weatherForHour = this.weatherStore.getWeather(date, 18);
+      if(isNaN(weatherForHour)) weatherForHour = this.weatherStore.getWeather(date, 18);
       return Math.round(weatherForHour.temperature);
     },
     tempPrefix(temp: number) {
