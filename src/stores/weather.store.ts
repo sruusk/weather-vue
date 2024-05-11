@@ -168,7 +168,7 @@ export const useWeatherStore = defineStore('weather', {
                 if (Array.isArray(value)) {
                     out[key] = value.filter((item: any) => item.time >= startTime && item.time <= endTime);
                     if (hour !== -1) {
-                        let item = out[key].find((item: any) => item.time.getHours() === hour);
+                        let item = out[key].find((item: any) => item.time.getHours() >= hour);
                         hourOut[key] = item ? item.value : undefined;
                     }
                 } else {

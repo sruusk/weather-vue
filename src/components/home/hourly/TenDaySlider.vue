@@ -70,7 +70,6 @@ export default defineComponent({
     getDayWeather(date: Date) {
       let weatherForHour = this.weatherStore.getWeather(date, 15);
       if (isNaN(weatherForHour.temperature)) weatherForHour = this.weatherStore.getWeather(date, 18);
-      if (isNaN(weatherForHour.temperature)) weatherForHour = this.weatherStore.getWeather(date)[0];
       return weatherForHour;
     },
     getWeatherIcon(date: Date) {
