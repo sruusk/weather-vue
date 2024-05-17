@@ -1,4 +1,4 @@
-import {OpenWeatherApiKey} from "@/contants";
+import {OpenWeatherApiKey} from "@/constants";
 import countries from "i18n-iso-countries";
 import type {ForecastLocation, OpenWeather, TimeSeriesObservation, Warnings} from "@/types";
 

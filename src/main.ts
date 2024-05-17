@@ -10,12 +10,12 @@ import VueSplide from '@splidejs/vue-splide';
 import './registerServiceWorker';
 // @ts-ignore
 import {createI18n} from 'vue-i18n';
-import {DefaultLanguage} from "@/contants";
+import {DefaultLanguage} from "@/constants";
 
 // Hijack all console.error calls and catch specific errors
 const originalError = console.error;
 console.error = (...args) => {
-    if (args.some((arg) => arg.toString().includes("'https://openwms.fmi.fi/geoserver/wms?SERVICE=WMS'"))) {
+    if (args.some((arg) => arg.toString().includes("https://openwms.fmi.fi/geoserver/wms?SERVICE=WMS"))) {
         // Issue an event to the radar component to reload the radar image
         console.log("Reloading radar image");
         const event = new Event('reloadRadar');
