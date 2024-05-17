@@ -18,6 +18,7 @@ interface State {
     status: string;
     locatingComplete: boolean;
     locationWeather: WeatherType | undefined;
+    locationAccuracy: number;
 }
 
 export const useWeatherStore = defineStore('weather', {
@@ -27,6 +28,7 @@ export const useWeatherStore = defineStore('weather', {
             status: "",
             locatingComplete: false,
             locationWeather: undefined as WeatherType | undefined,
+            locationAccuracy: 0
         }
     },
 
@@ -51,7 +53,8 @@ export const useWeatherStore = defineStore('weather', {
                 this.status = "home.locating"
                 const positionCallback = (position: GeolocationPosition) => {
                     this.status = "home.loadingForecast";
-                    console.log("Got location with accuracy of", Math.round(position.coords.accuracy), "meters");
+                    this.locationAccuracy = Math.round(position.coords.accuracy);
+                    console.log("Got location with accuracy of", this.locationAccuracy, "meters");
                     this.setGpsLocation(position.coords.latitude, position.coords.longitude).then(() => {
                         this.locatingComplete = true;
                         this.status = "";
@@ -165,8 +168,8 @@ export const useWeatherStore = defineStore('weather', {
                 if (Array.isArray(value)) {
                     out[key] = value.filter((item: any) => item.time >= startTime && item.time <= endTime);
                     if (hour !== -1) {
-                        let item = out[key].find((item: any) => item.time.getHours() === hour);
-                        hourOut[key] = item ? item.value : out[key][0]?.value;
+                        let item = out[key].find((item: any) => item.time.getHours() >= hour);
+                        hourOut[key] = item ? item.value : undefined;
                     }
                 } else {
                     out[key] = value;

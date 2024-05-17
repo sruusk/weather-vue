@@ -67,13 +67,18 @@ export default defineComponent({
     getShortDayName(date: Date) {
       return date.toLocaleDateString(this.$t('meta.localeString'), {weekday: 'short'});
     },
+    getDayWeather(date: Date) {
+      let weatherForHour = this.weatherStore.getWeather(date, 15);
+      if (isNaN(weatherForHour.temperature)) weatherForHour = this.weatherStore.getWeather(date, 18);
+      return weatherForHour;
+    },
     getWeatherIcon(date: Date) {
-      const weatherForHour = this.weatherStore.getWeather(date, 15);
-      if (isNaN(weatherForHour.weatherSymbol)) return `/symbols/error.svg`;
+      let weatherForHour = this.getDayWeather(date);
+      if(isNaN(weatherForHour.weatherSymbol)) return `/symbols/error.svg`;
       return `/symbols/${this.settingsStore.useAnimations ? 'animated' : 'static'}/${weatherForHour.weatherSymbol}.svg`;
     },
     getDayTemp(date: Date) {
-      const weatherForHour = this.weatherStore.getWeather(date, 15);
+      const weatherForHour = this.getDayWeather(date);
       return Math.round(weatherForHour.temperature);
     },
     tempPrefix(temp: number) {
