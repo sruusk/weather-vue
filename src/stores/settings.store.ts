@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {DefaultLanguage} from "@/contants";
+import {DefaultLanguage} from "@/constants";
 import {useThemeStore, useWeatherStore} from "@/stores";
 
 interface State {
