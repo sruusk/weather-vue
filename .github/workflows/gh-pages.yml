@@ -1,6 +1,6 @@
 name: Build
 
-on: [ push ]
+on: [ push, workflow_run ]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
