@@ -10,7 +10,7 @@ import VueSplide from '@splidejs/vue-splide';
 import './registerServiceWorker';
 // @ts-ignore
 import {createI18n} from 'vue-i18n';
-import {DefaultLanguage} from "@/constants";
+import {DefaultLanguage} from "./constants";
 
 // Hijack all console.error calls and catch specific errors
 const originalError = console.error;
