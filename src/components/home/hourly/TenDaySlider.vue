@@ -29,6 +29,7 @@
 import {defineComponent} from 'vue';
 import {useSettingsStore, useWeatherStore} from "@/stores";
 import type {Weather} from "@/types";
+import {BasePath} from "@/constants";
 
 export default defineComponent({
   name: "TenDaySlider.vue",
@@ -47,7 +48,8 @@ export default defineComponent({
     const settingsStore = useSettingsStore();
     return {
       weatherStore,
-      settingsStore
+      settingsStore,
+      BasePath
     }
   },
   data() {
@@ -74,8 +76,8 @@ export default defineComponent({
     },
     getWeatherIcon(date: Date) {
       let weatherForHour = this.getDayWeather(date);
-      if(isNaN(weatherForHour.weatherSymbol)) return `/symbols/error.svg`;
-      return `/symbols/${this.settingsStore.useAnimations ? 'animated' : 'static'}/${weatherForHour.weatherSymbol}.svg`;
+      if (isNaN(weatherForHour.weatherSymbol)) return `${BasePath}symbols/error.svg`;
+      return `${BasePath}symbols/${this.settingsStore.useAnimations ? "animated" : "static"}/${weatherForHour.weatherSymbol}.svg`;
     },
     getDayTemp(date: Date) {
       const weatherForHour = this.getDayWeather(date);

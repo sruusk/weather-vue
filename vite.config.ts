@@ -7,6 +7,7 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import {VitePWA} from "vite-plugin-pwa";
 const basePath = process.env.BASE_PATH || '/';
+process.env.VITE_BASE_PATH = basePath;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -241,6 +242,7 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
+    base: basePath,
     build: {
         commonjsOptions: {
             esmExternals: true

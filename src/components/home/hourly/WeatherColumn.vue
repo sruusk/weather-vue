@@ -30,6 +30,7 @@ import type {HourWeather} from '@/types';
 import FeelslikeIcon from "@/components/icons/feelslike/FeelslikeIcon.vue";
 import WindIndicator from "@/components/home/WindIndicator.vue";
 import RainItem from "@/components/home/RainItem.vue";
+import {BasePath} from "@/constants";
 
 export default defineComponent({
   name: "WeatherColumn.vue",
@@ -44,10 +45,15 @@ export default defineComponent({
       required: true
     },
   },
+  setup() {
+    return {
+      BasePath
+    };
+  },
   methods: {
     getIconUrl(icon: number) {
-      if (!icon) return "/symbols/error.svg"
-      return `/symbols/static/${icon}.svg`;
+      if (!icon) return `${BasePath}symbols/error.svg`;
+      return `${BasePath}symbols/static/${icon}.svg`;
     },
     tempPrefix(temp: number) {
       return temp > 0 ? "+" : "-";

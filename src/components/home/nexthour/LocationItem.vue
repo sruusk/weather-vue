@@ -40,6 +40,7 @@ import ShareButton from "@/components/home/nexthour/ShareButton.vue";
 import FeelsLike from "@/components/home/nexthour/FeelsLike.vue";
 import CurrentWeatherBar from "@/components/home/nexthour/CurrentWeatherBar.vue";
 import {useSettingsStore} from "@/stores";
+import {BasePath} from "@/constants";
 
 export default defineComponent({
   name: "LocationItem.vue",
@@ -62,7 +63,8 @@ export default defineComponent({
     return {
       item,
       shareButton,
-      settingsStore
+      settingsStore,
+      BasePath,
     };
   },
   data() {
@@ -74,7 +76,7 @@ export default defineComponent({
   },
   computed: {
     weatherIcon() {
-      return `/symbols/${this.settingsStore.useAnimations ? 'animated' : 'static'}/${this.weather.weatherSymbol}.svg`;
+      return `${BasePath}symbols/${this.settingsStore.useAnimations ? "animated" : "static"}/${this.weather.weatherSymbol}.svg`;
     },
     region() {
       if (this.weather.location.region === this.weather.location.country) {

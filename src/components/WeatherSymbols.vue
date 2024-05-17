@@ -8,11 +8,11 @@
       <div v-for="symbol in symbols" :key="symbol" class="symbol">
         <img
           :alt="`Weather symbol ${symbol}`"
-          :src="`/symbols/animated/${symbol}.svg`"
+          :src="`${BasePath}symbols/animated/${symbol}.svg`"
         />
         <img
           :alt="`Weather symbol ${symbol}`"
-          :src="`/symbols/static/${symbol}.svg`"
+          :src="`${BasePath}symbols/static/${symbol}.svg`"
         />
         <span>{{ $t(`symbols.symbols.${symbol}`) }}</span>
       </div>
@@ -22,9 +22,15 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
+import {BasePath} from "@/constants";
 
 export default defineComponent({
   name: "WeatherSymbols",
+  setup() {
+    return {
+      BasePath
+    };
+  },
   data() {
     return {
       symbols: [1, 2, 21, 22, 23, 3, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 71, 72, 73, 81, 82, 83, 91, 92]
