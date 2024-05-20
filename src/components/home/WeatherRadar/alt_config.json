@@ -22,9 +22,6 @@
     ]
   },
   "sources": {
-    "osm": {
-      "type": "OSM"
-    },
     "openwms": {
       "type": "raster",
       "tiles": [
@@ -51,19 +48,6 @@
       ],
       "tileSize": 1024
     },
-    "fmi-geoserver-wmts": {
-      "type": "raster",
-      "tiles": [
-        "https://d17g5uoxmlqldj.cloudfront.net/fmi-apikey/3ffecd20-5246-480a-950f-4e7e736a4cac/geoserver/gwc/service/wmts"
-      ],
-      "bounds": [
-        -1214975,
-        6518785,
-        1179690,
-        7850125
-      ],
-      "tileSize": 512
-    },
     "smartmet-server-wms": {
       "server": "SmartMet Server",
       "type": "raster",
@@ -83,14 +67,6 @@
   "layers": [
     {
       "id": "basic-map",
-      "source": "osm",
-      "metadata": {
-        "type": "base",
-        "title": "Basic map"
-      }
-    },
-    {
-      "id": "basic-map",
       "type": "raster",
       "source": "openwms",
       "metadata": {
@@ -108,25 +84,7 @@
       }
     },
     {
-      "id": "basic-map-fmi",
-      "type": "raster",
-      "source": "fmi-geoserver-wmts",
-      "metadata": {
-        "title": "Map",
-        "type": "base"
-      },
-      "url": {
-        "service": "WMTS",
-        "layer": "KAP:BasicMap version 6",
-        "tilematrixset": "ETRS-TM35FIN-FINLAND",
-        "style": "",
-        "request": "GetTile",
-        "version": "1.0.0",
-        "format": "image/png"
-      }
-    },
-    {
-      "id": "overlay-2",
+      "id": "overlay",
       "type": "raster",
       "source": "mml-wms",
       "metadata": {
@@ -212,24 +170,6 @@
       },
       "time": {
         "range": "every 15 minute for 4 times history"
-      }
-    },
-    {
-      "id": "overlay",
-      "type": "raster",
-      "source": "fmi-geoserver-wmts",
-      "metadata": {
-        "title": "Location names",
-        "type": "overlay"
-      },
-      "url": {
-        "service": "WMTS",
-        "layer": "KAP:fmi_above_animation_sans_en",
-        "tilematrixset": "ETRS-TM35FIN-FINLAND",
-        "style": "",
-        "request": "GetTile",
-        "version": "1.0.0",
-        "format": "image/png"
       }
     }
   ]

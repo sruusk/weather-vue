@@ -40,7 +40,7 @@ import {defineComponent, ref} from 'vue';
 import MarkerIcon from "@/components/icons/MarkerIcon.vue";
 import MetOClient from "@fmidev/metoclient";
 import Zoom from 'ol/control/Zoom.js';
-import config from "@/components/home/WeatherRadar/config.json";
+import config from "@/components/home/WeatherRadar/alt_config.json";
 import {useSettingsStore, useThemeStore, useWeatherStore} from "@/stores";
 import ReloadIcon from "@/components/icons/ReloadIcon.vue";
 
