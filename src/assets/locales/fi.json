@@ -125,7 +125,7 @@
     "weatherData": "Säätutkakuvat, säähavainnot, varoitukset ja HARMONIE sääennuste.",
     "additionalData": "Pidemmät sääennusteet ja sateen todennäköisyys.",
     "mml": "Maanmittauslaitos",
-    "mmlContent": "Sisältää Maanmittauslaitoksen Maastotietokannan aineistoa.",
+    "mmlContent": "Sisältää Maanmittauslaitoksen Karttakuvapalvelun aineistoa.",
     "mmlLogo": "https://www.maanmittauslaitos.fi/themes/custom/mml/images/suomi_logo_rgb.svg",
     "icons": "Kuvakkeet",
     "weatherSymbols": "Säämerkit",

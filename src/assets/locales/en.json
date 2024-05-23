@@ -125,7 +125,7 @@
     "weatherData": "Weather radar images, weather station data, warnings and HARMONIE forecast data provided by FMI Open Data API",
     "additionalData": "Longer forecasts and probability of precipitation by OpenWeather",
     "mml": "National Land Survey of Finland (NLS)",
-    "mmlContent": "Contains data from the National Land Survey of Finland Topographic Database",
+    "mmlContent": "Contains data from the National Land Survey of Finland Map image service",
     "mmlLogo": "https://www.maanmittauslaitos.fi/themes/custom/mml/images/english_logo_rgb.svg",
     "icons": "UI icons",
     "weatherSymbols": "Weather symbols",
