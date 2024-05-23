@@ -20,5 +20,6 @@ The environment variables are stored in a `.env` file in the root of the project
 | Variable              | Description                                                                   | Default value |
 |-----------------------|-------------------------------------------------------------------------------|---------------|
 | VITE_OPEN_WEATHER     | OpenWeather API Key<br/>Needs to have OneCall API enabled.                    |               |
+| VITE_MML              | National Land Survey of Finland API key                                       |               |
 | VITE_DEFAULT_LANGUAGE | Default language for the app.                                                 | `fi`          |
 | VITE_EXECUTION_NUMBER | App version/run number.<br/>Displayed at the bottom of the navigation drawer. | `dev`         |
