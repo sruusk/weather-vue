@@ -14,6 +14,7 @@
   "language": "Kieli",
   "languageName": "Suomi",
   "version": "Versio",
+  "locationAccuracy": "Sijainnin tarkkuus",
   "home": {
     "offline": "Ei internet-yhteyttä",
     "share": "JAA",

@@ -19,6 +19,9 @@
     </NavItem>
     <div class="footer">
       <span class="version">{{ $t("version") }}: {{ EXECUTION_NUMBER || "dev" }}</span>
+      <span v-if="weatherStore.locationAccuracy" class="accuracy">
+        {{ $t("locationAccuracy") }}: {{ accuracy }}
+      </span>
     </div>
   </div>
 </template>
@@ -26,6 +29,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import NavItem from "@/components/NavItem.vue";
+import { useWeatherStore } from "@/stores";
 import {routes} from '@/router';
 import FMIOpenDataIcon from "@/components/icons/FMIOpenDataIcon.vue";
 
@@ -46,6 +50,12 @@ export default defineComponent({
     },
   },
   emits: ["close", "install"],
+  setup() {
+    const weatherStore = useWeatherStore();
+    return {
+      weatherStore,
+    };
+  },
   data() {
     return {
       EXECUTION_NUMBER: import.meta.env.VITE_EXECUTION_NUMBER,
@@ -59,6 +69,11 @@ export default defineComponent({
     showInstall() {
       // Show install button if not installed and not on Apple devices
       return !this.isInstalled && !this.isAppleDevice;
+    },
+    accuracy() {
+      let acc = this.weatherStore.locationAccuracy;
+      if(acc < 1000) return `${acc}m`;
+      return `${(acc / 1000).toFixed(1)}km`;
     },
   },
   methods: {
@@ -84,7 +99,7 @@ export default defineComponent({
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
   transition: min-width 0.3s ease-out;
   overflow: hidden;
-  text-wrap: none;
+  text-wrap: nowrap;
   z-index: 1100;
   contain: content;
 }
@@ -122,13 +137,18 @@ export default defineComponent({
   right: 0;
   padding: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 40px;
-  text-transform: capitalize;
 }
 
 .version {
+  color: lightgray;
+  font-size: 0.8em;
+}
+
+.accuracy {
   color: lightgray;
   font-size: 0.8em;
 }
