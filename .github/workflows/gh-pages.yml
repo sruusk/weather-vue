@@ -20,6 +20,7 @@ jobs:
     env:
       BASE_PATH: /weather-vue/
       VITE_OPEN_WEATHER: ${{ secrets.VITE_OPEN_WEATHER }}
+      VITE_MML: ${{ secrets.VITE_MML }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js environment

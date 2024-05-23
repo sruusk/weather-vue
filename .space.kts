@@ -35,6 +35,7 @@ job("Deploy") {
         }
 
         env["VITE_OPEN_WEATHER"] = "{{ project:openweather }}"
+        env["VITE_MML"] = "{{ project:mml }}"
         env["VITE_EXECUTION_NUMBER"] = "{{ run:number }}"
 
         shellScript {

@@ -1,6 +1,6 @@
 <template>
   <NavDrawer
-    :is-installed="installed"
+    :is-installed="installed || !deferredPrompt"
     :open="drawerOpen"
     @close="closeDrawer"
     @install="installPWA"

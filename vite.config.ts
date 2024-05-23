@@ -158,8 +158,7 @@ export default defineConfig({
                 ],
                 runtimeCaching: [{ // Cache the basemap and wms capabilities indefinitely
                     urlPattern: ({url}) => {
-                        if (url.hostname === 'geo.stat.fi') return true
-                        if (url.hostname === 'd17g5uoxmlqldj.cloudfront.net') return true
+                        if (url.hostname === 'avoin-karttakuva.maanmittauslaitos.fi') return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',

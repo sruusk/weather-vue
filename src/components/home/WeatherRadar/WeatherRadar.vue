@@ -37,10 +37,19 @@
 <script lang="ts">
 // @ts-nocheck
 import {defineComponent, ref} from 'vue';
+import {MMLApiKey} from "@/constants";
 import MarkerIcon from "@/components/icons/MarkerIcon.vue";
 import MetOClient from "@fmidev/metoclient";
 import Zoom from 'ol/control/Zoom.js';
-import config from "@/components/home/WeatherRadar/alt_config.json";
+import VectorTileLayer from 'ol/layer/VectorTile.js';
+import VectorTileSource from 'ol/source/VectorTile.js';
+import { stylefunction } from 'ol-mapbox-style';
+import proj4 from 'proj4';
+import { get as projection } from 'ol/proj.js';
+import { register } from 'ol/proj/proj4.js';
+import MVT from 'ol/format/MVT.js';
+import normalconfig from "@/components/home/WeatherRadar/config.json";
+import mmlconfig from "@/components/home/WeatherRadar/alt_config.json"
 import {useSettingsStore, useThemeStore, useWeatherStore} from "@/stores";
 import ReloadIcon from "@/components/icons/ReloadIcon.vue";
 
@@ -68,7 +77,7 @@ export default defineComponent({
       animator,
       zoom,
       themeStore,
-      weatherStore,
+      weatherStore
     }
   },
   data() {
@@ -80,25 +89,39 @@ export default defineComponent({
       map: null,
       timeStepButton: null,
       timeSlider: null,
-      runOnActive: null
+      runOnActive: null,
+      refresh: 0,
+      config: normalconfig,
     }
   },
   mounted() {
-    config.center = this.center;
-    config.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if(MMLApiKey) this.config = mmlconfig;
+    this.config.center = this.center;
+    this.config.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // https://github.com/fmidev/metoclient#constructor
     if (this.$route.name === 'home') {
-      this.metoclient = new MetOClient(config);
+      this.metoclient = new MetOClient(this.config);
       this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
         // statements to handle any exceptions
         console.error(error);
       });
     }
     window.addEventListener('reloadRadar', this.reloadRadar);
+
+    // Reload radar at even 15 minutes
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const timeToNext = 15 - (minutes % 15);
+    this.refresh = setTimeout(() => {
+      this.reloadRadar();
+      setInterval(() => {
+        this.reloadRadar();
+      }, 15 * 60 * 1000);
+    }, timeToNext * 60 * 1000);
   },
   activated() {
     if (!this.metoclient) {
-      this.metoclient = new MetOClient(config);
+      this.metoclient = new MetOClient(this.config);
       this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
         // statements to handle any exceptions
         console.error(error);
@@ -113,6 +136,7 @@ export default defineComponent({
       }
     }
     window.removeEventListener('reloadRadar', this.reloadRadar);
+    clearTimeout(this.refresh);
   },
   watch: {
     timeStep() {
@@ -155,6 +179,59 @@ export default defineComponent({
         this.map.addControl(this.zoomCtrl)
       }
 
+      if(MMLApiKey) {
+        // Add EPSG:3067 projection
+        proj4.defs('EPSG:3067', "+proj=utm +zone=35 +ellps=GRS80 +units=m +no_defs");
+        register(proj4);
+
+        fetch(`https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/tilejson/taustakartta/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/tilejson.json?api-key=${MMLApiKey}`)
+          .then((response) => response.json())
+          .then(async (TileJSON) => {
+            const newLayer = new VectorTileLayer({
+              source: new VectorTileSource({
+                format: new MVT(),
+                projection: projection('EPSG:3067'),
+                maxZoom: TileJSON.maxzoom,
+                minZoom: TileJSON.minzoom,
+                extent: [-549049, 6291300, 890177, 8389549],
+                tileSize: 512,
+                url: TileJSON.tiles[0],
+                tileLoadFunction: (tile, src) => {
+                  tile.setLoader(async (extent, resolution, projection) => {
+                    if(!src.includes('api-key')) src += `?api-key=${MMLApiKey}`;
+                    fetch(src).then((response) => {
+                      response.arrayBuffer().then((data) => {
+                        const format = tile.getFormat();
+                        let features = format.readFeatures(data, {
+                          extent: extent,
+                          featureProjection: projection,
+                        });
+                        features = features.filter((feature) => {
+                          return [
+                            'vesisto_alue',
+                            'liikenne',
+                            'maankaytto',
+                            'vesisto_viiva',
+                            'nimisto',
+                            'alueraja'
+                          ].includes(feature.get('layer'));
+                        })
+                        tile.setFeatures(features);
+                      });
+                    })
+                  });
+                }
+              }),
+            });
+            fetch('https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/stylejson/v20/taustakartta.json?TileMatrixSet=ETRS-TM35FIN&api-key=20f47beb-1ac0-41cb-a669-2e06990b59e6')
+              .then((response) => response.json())
+              .then((style) => {
+                newLayer.setStyle(stylefunction(newLayer, style, 'taustakartta'));
+              });
+            this.map.addLayer(newLayer, 0);
+          });
+      }
+
       this.timeStepButton = this.animator.querySelector('.fmi-metoclient-timeslider-step-button');
       this.timeStepButton.textContent = this.timeStep;
       this.timeStepButton.addEventListener('click', () => {
@@ -189,22 +266,6 @@ export default defineComponent({
           this.reloadRadar();
         });
       }
-      /*
-      config.center = this.center;
-
-      try {
-        try {
-          this.metoclient.destroy();
-        } catch (e) {
-        }
-        this.metoclient = new MetOClient(config);
-        this.metoclient.render().then(this.renderCallback).catch((error: Error) => {
-          // statements to handle any exceptions
-          console.error("MetOClient render error", error);
-        });
-      } catch (e) {
-        console.error("MetOClient error", e);
-      }*/
     },
     reloadRadar() {
       useSettingsStore().setWeatherRadar(false);

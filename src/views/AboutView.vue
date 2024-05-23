@@ -20,6 +20,15 @@
         />
       </a>
     </CreditsItem>
+    <CreditsItem :title="$t('about.mml')" :content="$t('about.mmlContent')">
+      <a href="https://www.maanmittauslaitos.fi/avoindata-lisenssi-cc40" target="_blank">
+        <img
+          alt="MML Logo"
+          :src="$t('about.mmlLogo')"
+          style="height: 70px;"
+        />
+      </a>
+    </CreditsItem>
     <CreditsItem :title="$t('about.icons')"
                  content=""
     >

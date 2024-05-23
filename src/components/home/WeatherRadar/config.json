@@ -11,7 +11,7 @@
   "showTimeSlider": true,
   "showLegend": false,
   "projection": "EPSG:3067",
-  "refreshInterval": "PT5M",
+  "refreshInterval": null,
   "timeZone": "Europe/Helsinki",
   "metadata": {
     "tags": [
