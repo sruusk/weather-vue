@@ -125,7 +125,7 @@
     "weatherData": "Väderkartor, väderstationers data, varningar och HARMONIE-prognosdata tillhandahållet av FMI Open Data API",
     "additionalData": "Ytterligare väderdata tillhandahållna av OpenWeather",
     "mml": "Lantmäteriverket (LMV)",
-    "mmlContent": "Innehåller data från Lantmäteriverket kartbildservice",
+    "mmlContent": "Innehåller data från Lantmäteriverket topografiska databas",
     "mmlLogo": "https://www.maanmittauslaitos.fi/themes/custom/mml/images/svenska_logo_rgb.svg",
     "icons": "Användargränssnittssymboler",
     "weatherSymbols": "Vädersymboler",
