@@ -95,7 +95,10 @@ export default defineComponent({
     }
   },
   mounted() {
-    if(MMLApiKey) this.config = mmlconfig;
+    if(MMLApiKey) {
+      this.config = mmlconfig
+      window.addEventListener('visibilitychange', this.visibilityListener);
+    }
     this.config.center = this.center;
     this.config.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // https://github.com/fmidev/metoclient#constructor
@@ -137,6 +140,7 @@ export default defineComponent({
     }
     window.removeEventListener('reloadRadar', this.reloadRadar);
     clearTimeout(this.refresh);
+    window.removeEventListener('visibilitychange', this.visibilityListener);
   },
   watch: {
     timeStep() {
@@ -183,53 +187,7 @@ export default defineComponent({
         // Add EPSG:3067 projection
         proj4.defs('EPSG:3067', "+proj=utm +zone=35 +ellps=GRS80 +units=m +no_defs");
         register(proj4);
-
-        fetch(`https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/tilejson/taustakartta/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/tilejson.json?api-key=${MMLApiKey}`)
-          .then((response) => response.json())
-          .then(async (TileJSON) => {
-            const newLayer = new VectorTileLayer({
-              source: new VectorTileSource({
-                format: new MVT(),
-                projection: projection('EPSG:3067'),
-                maxZoom: TileJSON.maxzoom,
-                minZoom: TileJSON.minzoom,
-                extent: [-549049, 6291300, 890177, 8389549],
-                tileSize: 512,
-                url: TileJSON.tiles[0],
-                tileLoadFunction: (tile, src) => {
-                  tile.setLoader(async (extent, resolution, projection) => {
-                    if(!src.includes('api-key')) src += `?api-key=${MMLApiKey}`;
-                    fetch(src).then((response) => {
-                      response.arrayBuffer().then((data) => {
-                        const format = tile.getFormat();
-                        let features = format.readFeatures(data, {
-                          extent: extent,
-                          featureProjection: projection,
-                        });
-                        features = features.filter((feature) => {
-                          return [
-                            'vesisto_alue',
-                            'liikenne',
-                            'maankaytto',
-                            'vesisto_viiva',
-                            'nimisto',
-                            'alueraja'
-                          ].includes(feature.get('layer'));
-                        })
-                        tile.setFeatures(features);
-                      });
-                    })
-                  });
-                }
-              }),
-            });
-            fetch('https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/stylejson/v20/taustakartta.json?TileMatrixSet=ETRS-TM35FIN&api-key=20f47beb-1ac0-41cb-a669-2e06990b59e6')
-              .then((response) => response.json())
-              .then((style) => {
-                newLayer.setStyle(stylefunction(newLayer, style, 'taustakartta'));
-              });
-            this.map.addLayer(newLayer, 0);
-          });
+        this.addMMLBackgroundMap();
       }
 
       this.timeStepButton = this.animator.querySelector('.fmi-metoclient-timeslider-step-button');
@@ -273,6 +231,73 @@ export default defineComponent({
         useSettingsStore().setWeatherRadar(true);
       });
     },
+    addMMLBackgroundMap() {
+      // Check if the map exists and already has the MML background map
+      if (this.map && this.map.getLayers().getArray().find((layer) => layer.get('name') === 'taustakartta')) {
+        console.log("MML background map already exists");
+        return Promise.resolve();
+      }
+      return new Promise(resolve => {
+        fetch(`https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/tilejson/taustakartta/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/tilejson.json?api-key=${MMLApiKey}`)
+          .then((response) => response.json())
+          .then(async (TileJSON) => {
+            const newLayer = new VectorTileLayer({
+              source: new VectorTileSource({
+                format: new MVT(),
+                projection: projection('EPSG:3067'),
+                maxZoom: TileJSON.maxzoom,
+                minZoom: TileJSON.minzoom,
+                extent: [-549049, 6291300, 890177, 8389549],
+                tileSize: 512,
+                url: TileJSON.tiles[0],
+                tileLoadFunction: (tile, src) => {
+                  tile.setLoader(async (extent, resolution, projection) => {
+                    if(!src.includes('api-key')) src += `?api-key=${MMLApiKey}`;
+                    fetch(src).then((response) => {
+                      response.arrayBuffer().then((data) => {
+                        const format = tile.getFormat();
+                        let features = format.readFeatures(data, {
+                          extent: extent,
+                          featureProjection: projection,
+                        });
+                        features = features.filter((feature) => {
+                          return [
+                            'vesisto_alue',
+                            'liikenne',
+                            'maankaytto',
+                            'vesisto_viiva',
+                            'nimisto',
+                            'alueraja'
+                          ].includes(feature.get('layer'));
+                        })
+                        tile.setFeatures(features);
+                      });
+                    })
+                  });
+                }
+              }),
+            });
+            fetch(`https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/stylejson/v20/taustakartta.json?TileMatrixSet=ETRS-TM35FIN&api-key=${MMLApiKey}`)
+              .then((response) => response.json())
+              .then((style) => {
+                newLayer.setStyle(stylefunction(newLayer, style, 'taustakartta'));
+                this.map.addLayer(newLayer, 0);
+                resolve();
+              });
+          });
+      });
+    },
+    visibilityListener() {
+      if (document.visibilityState === 'visible') {
+        setTimeout(() => {
+          this.addMMLBackgroundMap().then(() => {
+            if (this.map && this.map.getLayers().getArray().find((layer) => layer.get('name') === 'taustakartta') === undefined) {
+              this.reloadRadar();
+            }
+          });
+        }, 500);
+      }
+    }
   },
 })
 </script>
