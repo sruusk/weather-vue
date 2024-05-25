@@ -281,7 +281,8 @@ export default defineComponent({
               .then((response) => response.json())
               .then((style) => {
                 newLayer.setStyle(stylefunction(newLayer, style, 'taustakartta'));
-                this.map.addLayer(newLayer, 0);
+                // Add the MML background map to the bottom of the map
+                this.map.getLayers().insertAt(0, newLayer);
                 resolve();
               });
           });
