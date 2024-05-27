@@ -112,15 +112,17 @@ export default defineComponent({
         console.log(searchString);
       }
 
-      let weather;
+      let location;
 
       try {
-        weather = await Weather.getWeather(searchString);
+        location = await Weather.getLocation(searchString);
       } catch (e) {
         try {
           if(searchString.includes(','))
-            weather = await Weather.getWeather(searchString.replace(',', ' '));
-          else throw new Error('No location found');
+            location = await Weather.getLocation(searchString.replace(',', ' '));
+          else { // noinspection ExceptionCaughtLocallyJS
+            throw new Error('No location found');
+          }
         } catch (e) {
           const list = await findLocation(this.searchString);
           if (list?.length) this.selection = list;
@@ -128,11 +130,11 @@ export default defineComponent({
           return;
         }
       }
-      if(weather?.location?.region) {
+      if(location?.region) {
         if (this.$route.path === '/search') {
-          await this.favouritesStore.addHistory(weather.location);
+          await this.favouritesStore.addHistory(location);
           this.$router.push('/');
-        } else await this.favouritesStore.addFavourite(weather.location);
+        } else await this.favouritesStore.addFavourite(location);
       }
       this.searchString = "";
     },

@@ -9,7 +9,7 @@
         <FMIOpenDataIcon style="margin-top: -30px"/>
       </a>
     </CreditsItem>
-    <CreditsItem :content="$t('about.additionalData')"
+    <CreditsItem :content="$t('about.openWeather')"
                  title="OpenWeather"
     >
       <a href="https://openweathermap.org/" target="_blank">
@@ -17,6 +17,15 @@
           alt="OpenWeather Logo"
           src="@/assets/OpenWeather-Negative-Logo.webp"
           style="margin-top: -20px;"
+        />
+      </a>
+    </CreditsItem>
+    <CreditsItem title="OpenMeteo" :content="$t('about.openMeteo')">
+      <a href="https://open-meteo.com/" target="_blank">
+        <img
+          alt="OpenMeteo Logo"
+          src="@/assets/OpenMeteo-logo.svg"
+          style="height: 70px;"
         />
       </a>
     </CreditsItem>

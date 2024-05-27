@@ -1,5 +1,5 @@
 <template>
-  <div class="slider">
+  <div class="slider" ref="slider">
     <div v-for="day in days"
          :id="'ten-day-slider-' + day.getDate()"
          :key="day.getTime()"
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import {defineComponent, ref} from 'vue';
 import {useSettingsStore, useWeatherStore} from "@/stores";
 import type {Weather} from "@/types";
 import {BasePath} from "@/constants";
@@ -46,10 +46,12 @@ export default defineComponent({
   setup() {
     const weatherStore = useWeatherStore();
     const settingsStore = useSettingsStore();
+    const slider = ref(null);
     return {
       weatherStore,
       settingsStore,
-      BasePath
+      BasePath,
+      slider
     }
   },
   data() {
@@ -63,6 +65,28 @@ export default defineComponent({
     },
     hours() {
       return this.weatherStore.currentWeather?.precipitation.map(observation => observation.time) ?? [];
+    }
+  },
+  watch: {
+    selectedDay: {
+      deep: true,
+      handler: function () {
+        if(!this.slider) return;
+
+        const selectedDayElement = document.getElementById(`ten-day-slider-${this.selectedDay.getDate()}`);
+        const leftOffset = selectedDayElement?.offsetLeft;
+        if(!leftOffset) return;
+
+        // Check if the selected day is already in view
+        // @ts-ignore
+        if (leftOffset < this.slider.offsetWidth + this.slider.scrollLeft && leftOffset > this.slider.scrollLeft) return;
+
+        // @ts-ignore
+        this.slider.scrollTo({
+          left: leftOffset,
+          behavior: 'smooth'
+        });
+      }
     }
   },
   methods: {

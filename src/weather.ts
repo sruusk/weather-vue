@@ -5,11 +5,10 @@ import type {
     ForecastLocation,
     ObservationStation,
     ObservationStationLocation,
-    OpenWeather,
     TimeSeriesObservation,
     Weather
 } from './types';
-import {get5DayForecastLatLon, getHourlyForecastLatLon, reverseGeocoding} from "@/openweather";
+import { getWeather as getOpenMeteoWeather } from "@/openmeteo";
 import 'fast-xml-parser';
 import {XMLParser} from "fast-xml-parser";
 // @ts-ignore
@@ -52,30 +51,9 @@ function getBaseWithDays(offset: number, days: number) {
     return baseUrl + getStartAndEndTimeQuery(start, end);
 }
 
-function getWeatherNextHour(lat: number, lon: number): Promise<Weather> {
-    const url = getBaseWithDays(0, 3)
-        + `&latlon=${lat},${lon}`
-        + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
-        + `&parameters=${params.join(',')}`;
+const getWeatherNextHour = getWeatherByLatLon;
 
-    const xml = getXml(url);
-    const weather = parseWeather(xml);
-    return weather.catch(() => {
-        return getHourlyForecastLatLon(lat, lon).then((value) => {
-            return new Promise((resolve) => {
-                reverseGeocoding(lat, lon).then((location) => {
-                    resolve({
-                        ...value,
-                        location,
-                        updated: new Date()
-                    });
-                });
-            });
-        });
-    })
-}
-
-function getWeather(place: string) {
+function getLocation(place: string): Promise<ForecastLocation> {
     // https://opendata.fmi.fi/wfs
     // ?request=getFeature
     // &starttime=2023-02-06T23:00:00.000Z
@@ -89,93 +67,26 @@ function getWeather(place: string) {
         + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
         + `&parameters=${params.join(',')}`;
 
-    const xml = getXml(url);
-    return parseWeather(xml);
-}
+    return new Promise(async (resolve, reject) => {
+        const xml = await getXml(url);
+        if(xml['ExceptionReport']) {
+            const text = xml['ExceptionReport']['Exception']?.['ExceptionText'];
+            if (text) {
+                if (Array.isArray(text)) console.warn('FMI API returned exception report\n', text.join('\n'));
+                else console.warn('FMI API returned exception report\n', text);
+            } else console.warn('FMI API returned exception report\n', xml['ExceptionReport']);
+            reject('FMI API returned exception report');
+        }
 
-function getWeatherByLatLon(lat: number, lon: number) {
-    const url = getBaseWithDays(0, 3)
-        + `&latlon=${lat},${lon}`
-        + `&storedquery_id=fmi::forecast::harmonie::surface::point::timevaluepair`
-        + `&parameters=${params.join(',')}`;
-
-    const xml = getXml(url);
-    return mergeWeather(parseWeather(xml).then(weather => {
-        return weather;
-    }).catch(() => {
-        const forecast = getHourlyForecastLatLon(lat, lon);
-        const location = reverseGeocoding(lat, lon);
-
-        return new Promise((resolve) => {
-            Promise.all([forecast, location]).then((values) => {
-                resolve({
-                    ...values[0],
-                    location: values[1],
-                    updated: new Date()
-                });
-            });
-        }) as Promise<Weather>;
-    }), get5DayForecastLatLon(lat, lon)).catch((error) => {
-        console.error(error);
-        return new Promise((resolve, reject) => {
-            reject(error);
-        });
+        resolve(parseLocation(xml['wfs:FeatureCollection']['wfs:member'][0]));
     });
 }
 
-function mergeWeather(shortWeather: Promise<Weather>, longWeather: Promise<OpenWeather>) {
-    return new Promise((resolve, reject) => {
-        Promise.all([shortWeather, longWeather]).then((values) => {
-            let short = values[0];
-            let long = values[1];
-            if (Object.keys(long).length === 0) resolve(short);
-            else if (Object.keys(short).length <= 1) resolve({...short, ...long} as Weather);
-
-            // Clip long forecast to start at short forecast end
-            let shortEndTime = short.temperature[0].time;
-            for (const time of short.temperature.map((value) => value.time)) {
-                if (time.getTime() - shortEndTime.getTime() > 1000 * 60 * 60 * 3) break; // If there is a gap of more than 3 hours, stop
-                if (time > shortEndTime) shortEndTime = time;
-            }
-
-            long = {
-                humidity: long.humidity.filter((value) => value.time > shortEndTime),
-                temperature: long.temperature.filter((value) => value.time > shortEndTime),
-                windDirection: long.windDirection.filter((value) => value.time > shortEndTime),
-                windSpeed: long.windSpeed.filter((value) => value.time > shortEndTime),
-                windGust: long.windGust.filter((value) => value.time > shortEndTime),
-                precipitation: long.precipitation.filter((value) => value.time > shortEndTime),
-                probabilityOfPrecipitation: long.probabilityOfPrecipitation.filter((value) => value.time > shortEndTime),
-                weatherSymbol: long.weatherSymbol.filter((value) => value.time > shortEndTime),
-                feelsLike: long.feelsLike.filter((value) => value.time > shortEndTime)
-            } as OpenWeather;
-
-            const longEndTime = long.temperature[long.temperature.length - 1]?.time;
-            if (!longEndTime) reject('No long forecast end time');
-
-            const weather: Weather = {
-                humidity: short.humidity.filter((value) => value.time <= shortEndTime).concat(long.humidity).concat(short.humidity.filter((value) => value.time > longEndTime)),
-                temperature: short.temperature.filter((value) => value.time <= shortEndTime).concat(long.temperature).concat(short.temperature.filter((value) => value.time > longEndTime)),
-                windDirection: short.windDirection.filter((value) => value.time <= shortEndTime).concat(long.windDirection).concat(short.windDirection.filter((value) => value.time > longEndTime)),
-                windSpeed: short.windSpeed.filter((value) => value.time <= shortEndTime).concat(long.windSpeed).concat(short.windSpeed.filter((value) => value.time > longEndTime)),
-                windGust: short.windGust.filter((value) => value.time <= shortEndTime).concat(long.windGust).concat(short.windGust.filter((value) => value.time > longEndTime)),
-                precipitation: short.precipitation.filter((value) => value.time <= shortEndTime).concat(long.precipitation).concat(short.precipitation.filter((value) => value.time > longEndTime)),
-                probabilityOfPrecipitation: short.probabilityOfPrecipitation
-                    ? short.probabilityOfPrecipitation.filter((value) => value.time <= shortEndTime).concat(long.probabilityOfPrecipitation).concat(short.probabilityOfPrecipitation.filter((value) => value.time > longEndTime))
-                    : long.probabilityOfPrecipitation ? long.probabilityOfPrecipitation : undefined,
-                weatherSymbol: short.weatherSymbol.filter((value) => value.time <= shortEndTime).concat(long.weatherSymbol).concat(short.weatherSymbol.filter((value) => value.time > longEndTime)),
-                feelsLike: short.feelsLike.filter((value) => value.time <= shortEndTime).concat(long.feelsLike).concat(short.feelsLike.filter((value) => value.time > longEndTime)),
-                location: short.location,
-                updated: short.updated
-            }
-            resolve(weather);
-        }).catch((error) => {
-            reject(error);
-        });
-    }) as Promise<Weather>;
+function getWeatherByLatLon(lat: number, lon: number): Promise<Weather> {
+    return getOpenMeteoWeather(lat, lon);
 }
 
-function getXml(url: string, retries: number = 3, timeout: number = 60000) {
+function getXml(url: string, retries: number = 3, timeout: number = 60000): Promise<any> {
     return new Promise((resolve, reject) => {
         const controller = new AbortController();
         const signal = controller.signal;
@@ -207,68 +118,7 @@ function getXml(url: string, retries: number = 3, timeout: number = 60000) {
                     reject(error);
                 }
             });
-    }) as Promise<any>;
-}
-
-function parseWeather(xml: Promise<any>) {
-    return new Promise((resolve, reject) => {
-        xml.then(async (json) => {
-            if (json['ExceptionReport']) {
-                const text = json['ExceptionReport']['Exception']?.['ExceptionText'];
-                if (text) {
-                    if (Array.isArray(text)) console.warn('FMI API returned exception report\n', text.join('\n'));
-                    else console.warn('FMI API returned exception report\n', text);
-                } else console.warn('FMI API returned exception report\n', json['ExceptionReport']);
-                reject('FMI API returned exception report');
-            }
-
-            const data = json['wfs:FeatureCollection']['wfs:member'];
-            const weather: Weather = {
-                humidity: parseTimeSeriesObservation(data[0]),
-                temperature: parseTimeSeriesObservation(data[1]),
-                windDirection: parseTimeSeriesObservation(data[2]),
-                windSpeed: parseTimeSeriesObservation(data[3]),
-                windGust: parseTimeSeriesObservation(data[4]),
-                precipitation: parseTimeSeriesObservation(data[5]),
-                probabilityOfPrecipitation: undefined,
-                weatherSymbol: parseTimeSeriesObservation(data[6]),
-                feelsLike: parseTimeSeriesObservation(data[7]),
-                location: parseLocation(data[0]),
-                updated: parseDate(data[0])
-            }
-
-            const oneCall = await getHourlyForecastLatLon(weather.location.lat, weather.location.lon);
-            const lastTime = weather.temperature[weather.temperature.length - 1].time;
-            weather.probabilityOfPrecipitation = oneCall.probabilityOfPrecipitation.filter((value) => value.time <= lastTime);
-
-            // remove NaN values
-            weather.humidity = weather.humidity.filter((value) => !isNaN(value.value)).concat(oneCall.humidity.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-            weather.temperature = weather.temperature.filter((value) => !isNaN(value.value)).concat(oneCall.temperature.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-            weather.windDirection = weather.windDirection.filter((value) => !isNaN(value.value)).concat(oneCall.windDirection.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-            weather.windSpeed = weather.windSpeed.filter((value) => !isNaN(value.value)).concat(oneCall.windSpeed.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-            weather.windGust = weather.windGust.filter((value) => !isNaN(value.value)).concat(oneCall.windGust.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-            weather.precipitation = weather.precipitation.filter((value) => !isNaN(value.value)).concat(oneCall.precipitation.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-            weather.probabilityOfPrecipitation = weather.probabilityOfPrecipitation.filter((value) => !isNaN(value.value)).concat(oneCall.probabilityOfPrecipitation.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-            weather.weatherSymbol = weather.weatherSymbol.filter((value) => !isNaN(value.value)).concat(oneCall.weatherSymbol.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-            weather.feelsLike = weather.feelsLike.filter((value) => !isNaN(value.value)).concat(oneCall.feelsLike.filter((value) => new Date(value.time.getTime() - 1000 * 60 * 60 * 24) > lastTime));
-
-            // remove values from the past
-            const now = new Date();
-            weather.humidity = weather.humidity.filter((value) => value.time >= now);
-            weather.temperature = weather.temperature.filter((value) => value.time >= now);
-            weather.windDirection = weather.windDirection.filter((value) => value.time >= now);
-            weather.windSpeed = weather.windSpeed.filter((value) => value.time >= now);
-            weather.windGust = weather.windGust.filter((value) => value.time >= now);
-            weather.precipitation = weather.precipitation.filter((value) => value.time >= now);
-            weather.probabilityOfPrecipitation = weather.probabilityOfPrecipitation.filter((value) => value.time >= now);
-            weather.weatherSymbol = weather.weatherSymbol.filter((value) => value.time >= now);
-            weather.feelsLike = weather.feelsLike.filter((value) => value.time >= now);
-
-            resolve(weather);
-        }).catch((error) => {
-            reject(error);
-        });
-    }) as Promise<Weather>;
+    });
 }
 
 function parseTimeSeriesObservation(data: any) {
@@ -307,15 +157,10 @@ function parseLocation(data: any) {
     } as ForecastLocation;
 }
 
-function parseDate(data: any): Date {
-    const date = data['omso:PointTimeSeriesObservation']['om:resultTime']['gml:TimeInstant']['gml:timePosition'];
-    return new Date(date);
-}
-
-export function getObservationsForClosestStations(lat: number, lon: number, count: number) {
+export function getObservationsForClosestStations(lat: number, lon: number, count: number): Promise<ObservationStation[]> {
     return new Promise((resolve, reject) => {
-        getClosestStations(lat, lon, count).then((stations) => {
-            const promises = stations.map((station) => {
+        getClosestStations(lat, lon, count).then((stations: ObservationStationLocation[]) => {
+            const promises = stations.map((station: ObservationStationLocation) => {
                 return getObservationsForStation(station).catch((error) => {
                     console.log(error);
                     return null;
@@ -496,7 +341,7 @@ function calculateMidnightSun(location: ForecastLocation): { start: Date, end: D
 }
 
 export default {
-    getWeather,
+    getLocation,
     getWeatherByLatLon,
     getWeatherNextHour
 }

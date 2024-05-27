@@ -21,6 +21,7 @@ console.error = (...args) => {
         const event = new Event('reloadRadar');
         window.dispatchEvent(event);
     }
+    if(args.some((arg) => arg.toString().toLowerCase().includes("vue internals"))) window.location.reload();
     originalError.apply(console, args);
 };
 

@@ -1,3 +1,4 @@
+<!--suppress TypeScriptUnresolvedReference, TypeScriptValidateTypes -->
 <template>
   <div class="weather-radar-container">
     <div class="header">
@@ -168,6 +169,7 @@ export default defineComponent({
         delay: 1000,
         time: Date.now()
       });
+      else this.metoclient?.previous();
 
       this.map = this.metoclient.get('map');
       this.timeSlider = this.metoclient.get('timeSlider');
