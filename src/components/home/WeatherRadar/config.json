@@ -50,21 +50,6 @@
         7850125
       ],
       "tileSize": 1024
-    },
-    "smartmet-server-wms": {
-      "server": "SmartMet Server",
-      "type": "raster",
-      "tiles": [
-        "https://data.fmi.fi/fmi-apikey/3ffecd20-5246-480a-950f-4e7e736a4cac/wms"
-      ],
-      "bounds": [
-        -1214975,
-        6518785,
-        1179690,
-        7850125
-      ],
-      "tileSize": 512,
-      "capabilities": "https://data.fmi.fi/fmi-apikey/3ffecd20-5246-480a-950f-4e7e736a4cac/wms?service=wms&namespace=%2Ffmi:(tuliset|mobileweather)%2F"
     }
   },
   "layers": [
@@ -113,53 +98,6 @@
         "styles": "",
         "width": "1024",
         "height": "1024"
-      },
-      "time": {
-        "range": "every 15 minute for 4 times history"
-      }
-    },
-    {
-      "id": "forecast",
-      "previous": "radar",
-      "type": "raster",
-      "source": "smartmet-server-wms",
-      "metadata": {
-        "title": "obsfor15"
-      },
-      "url": {
-        "service": "WMS",
-        "layers": "fmi:tuliset:precipitationrate",
-        "version": "1.3.0",
-        "request": "GetMap",
-        "format": "image/png",
-        "transparent": "TRUE",
-        "crs": "EPSG:3067",
-        "styles": "",
-        "width": "512",
-        "height": "512"
-      },
-      "time": {
-        "range": "every 15 minute for 1 times history and every 15 minute for 4 times future"
-      }
-    },
-    {
-      "id": "flash",
-      "type": "raster",
-      "source": "smartmet-server-wms",
-      "metadata": {
-        "title": "Flash"
-      },
-      "url": {
-        "service": "WMS",
-        "layers": "fmi:mobileweather:flash15min",
-        "version": "1.3.0",
-        "request": "GetMap",
-        "format": "image/png",
-        "transparent": "TRUE",
-        "crs": "EPSG:3067",
-        "styles": "",
-        "width": "512",
-        "height": "512"
       },
       "time": {
         "range": "every 15 minute for 4 times history"

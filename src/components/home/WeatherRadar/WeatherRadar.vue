@@ -292,9 +292,11 @@ export default defineComponent({
       if (document.visibilityState === 'visible') {
         setTimeout(() => {
           this.addMMLBackgroundMap().then(() => {
-            if (this.map && this.map.getLayers().getArray().find((layer) => layer.get('name') === 'taustakartta') === undefined) {
-              this.reloadRadar();
-            }
+            this.$nextTick(() => {
+              if (this.map && this.map.getLayers().getArray().find((layer) => layer?.values_?.['mapbox-source'] === 'taustakartta') === undefined) {
+                this.reloadRadar();
+              }
+            });
           });
         }, 500);
       }
