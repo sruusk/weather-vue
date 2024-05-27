@@ -2,6 +2,15 @@ import {OpenWeatherApiKey} from "@/constants";
 import countries from "i18n-iso-countries";
 import type {ForecastLocation, OpenWeather, TimeSeriesObservation, Warnings} from "@/types";
 
+// Import country names
+Promise.all([
+    import('i18n-iso-countries/langs/en.json'),
+    import('i18n-iso-countries/langs/fi.json'),
+    import('i18n-iso-countries/langs/sv.json')
+]).then((c) => {
+    for (const country of c) countries.registerLocale(country);
+});
+
 if (!OpenWeatherApiKey) alert("OpenWeather API key not set!");
 
 export function search(str: string): Promise<{
