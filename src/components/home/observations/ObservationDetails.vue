@@ -29,7 +29,6 @@ export default defineComponent({
       measurements[this.$t('home.windGust')] = `${this.station.windGust} m/s`;
       measurements[this.$t('home.pressure')] = `${this.station.pressure} hPa`;
       measurements[this.$t('home.snowDepth')] = `${this.station.snowDepth ? Math.max(this.station.snowDepth, 0) : undefined} cm`;
-      measurements[this.$t('home.cloudiness')] = `${this.cloudinessText} (${this.station.cloudiness}/8)`;
       measurements[this.$t('home.visibility')] = this.formattedVisibility;
       measurements[this.$t('home.precipitationRate')] = `${this.station.precipitation} mm/h`;
       measurements[this.$t('home.weather')] = this.weatherText;
@@ -43,18 +42,6 @@ export default defineComponent({
       } else if (this.station.visibility >= 1000 && this.station.visibility < 5000) {
         return `${Math.round(this.station.visibility / 100) / 10} km`;
       } else return `${this.$t('home.over')} 50 km`;
-    },
-    cloudinessText() {
-      const cloudiness = this.station.cloudiness;
-      if (cloudiness === undefined) return undefined;
-
-      if (cloudiness < 1) return this.$t('home.cloudinessText.clear');
-      if (cloudiness === 1 || cloudiness === 2) return this.$t('home.cloudinessText.almostClear');
-      if (cloudiness >= 3 && cloudiness <= 5) return this.$t('home.cloudinessText.partlyCloudy');
-      if (cloudiness === 6 || cloudiness === 7) return this.$t('home.cloudinessText.almostCloudy');
-      if (cloudiness === 8) return this.$t('home.cloudinessText.cloudy');
-      if (cloudiness === 9) return this.$t('home.cloudinessText.skyObscured');
-      return '';
     },
     weatherText() {
       const code = this.station.weather;

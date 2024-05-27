@@ -346,7 +346,6 @@ const observationStationParameters = [
     "snowdepth", // snow depth
     "p_sea", // pressure at sea level
     "ch1_aws", // cloud height
-    "cla_pt1m_instant", // cloud amount (1/8)
     "vis", // visibility
     "wawa", // weather
 ]
@@ -378,9 +377,8 @@ function getObservationsForStation(station: ObservationStationLocation) {
                 snowDepth: lastObservation(parseTimeSeriesObservation(data[7])).value,
                 pressure: lastObservation(parseTimeSeriesObservation(data[8])).value,
                 cloudBase: lastObservation(parseTimeSeriesObservation(data[9])).value,
-                cloudiness: lastObservation(parseTimeSeriesObservation(data[10])).value,
-                visibility: lastObservation(parseTimeSeriesObservation(data[11])).value,
-                weather: lastObservation(parseTimeSeriesObservation(data[12])).value,
+                visibility: lastObservation(parseTimeSeriesObservation(data[10])).value,
+                weather: lastObservation(parseTimeSeriesObservation(data[11])).value,
                 temperatureHistory: temperatureHistory,
                 precipitationHistory: precipitationHistory
             } as any;

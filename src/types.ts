@@ -64,7 +64,6 @@ export type ObservationStation = {
     dewPoint: number,
     snowDepth: number | undefined,
     pressure: number | undefined,
-    cloudiness: number | undefined,
     visibility: number | undefined,
     precipitation: number | undefined,
     cloudBase: number | undefined,
