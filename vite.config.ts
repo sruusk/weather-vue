@@ -174,6 +174,7 @@ export default defineConfig({
                         if (url.href.includes('api.openweathermap.org/data/2.5/forecast')
                             || url.href.includes('api.openweathermap.org/data/3.0/onecall')) return true
                         if (url.href.includes('www.ilmatieteenlaitos.fi/geoserver/alert/')) return true
+                        if (url.hostname === 'api.open-meteo.com') return true
                     },
                     method: 'GET',
                     handler: 'CacheFirst',
