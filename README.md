@@ -1,7 +1,7 @@
 # weather-vue
 
 A simple weather app built with Vue.js utilizing the OpenData API from the Finnish Meteorological Institute
-and the OpenWeatherMap API.
+, the OpenWeatherMap API and OpenMeteo API.
 
 This uses FMI OpenData as the primary source of weather data,
 but OpenWeatherMap is used to complement the data when FMI OpenData does not have enough data available.
@@ -15,7 +15,6 @@ The icons are renamed according to the
 ### Environment variables
 
 This project uses environment variables to store the API keys and other configuration.  
-The environment variables are stored in a `.env` file in the root of the project.
 
 | Variable              | Description                                                                   | Default value |
 |-----------------------|-------------------------------------------------------------------------------|---------------|
