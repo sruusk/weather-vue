@@ -83,7 +83,7 @@
       "heavySnowShowers": "heavy snow showers",
       "hailShowers": "hail showers"
     },
-    "weatherProvider": "Weather and some forecast data provided by the Finnish Meteorological Institute (FMI) Open Data API",
+    "weatherProvider": "Weather radar images and observation data provided by the Finnish Meteorological Institute (FMI) Open Data API",
     "nextHourForecastFor": "Next hour forecast for",
     "loading": "Loading",
     "error": "Error",

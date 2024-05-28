@@ -83,7 +83,7 @@
       "heavySnowShowers": "voimakkaita lumikuuroja",
       "hailShowers": "raekuuroja"
     },
-    "weatherProvider": "Säähavainnot ja osan ennusteista tarjoaa Ilmatieteen laitoksen Avoin data -palvelu",
+    "weatherProvider": "Säähavainnot ja säätutkakuvat tarjoaa Ilmatieteen laitoksen Avoin data -palvelu",
     "nextHourForecastFor": "Seuraavan tunnin ennuste kohteeseen",
     "loading": "Ladataan",
     "error": "Virhe",

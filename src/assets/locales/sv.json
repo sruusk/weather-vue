@@ -83,7 +83,7 @@
       "heavySnowShowers": "kraftig snöskur",
       "hailShowers": "hagelskur"
     },
-    "weatherProvider": "Väder- och prognosdata tillhandahålls av Finlands meteorologiska institut (FMI) Open Data API.",
+    "weatherProvider": "Väderradarbilder och observationer från Meteorologiska institutets (FMI) Open Data API",
     "nextHourForecastFor": "Nästa timmes prognos för",
     "loading": "Laddar",
     "error": "Fel",

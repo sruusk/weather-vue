@@ -21,7 +21,7 @@
       </a>
     </CreditsItem>
     <CreditsItem title="OpenMeteo" :content="$t('about.openMeteo')">
-      <a href="https://open-meteo.com/" target="_blank">
+      <a href="https://open-meteo.com/en/license" target="_blank">
         <img
           alt="OpenMeteo Logo"
           src="@/assets/OpenMeteo-logo.svg"
