@@ -69,7 +69,6 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import Weather from "@/weather";
-import countries from "i18n-iso-countries";
 import {useFavouritesStore, useSettingsStore} from "@/stores";
 import {VueDraggableNext} from 'vue-draggable-next'
 import BackNavigation from "@/components/BackNavigation.vue";
@@ -139,7 +138,7 @@ export default defineComponent({
       this.searchString = "";
     },
     handleSelect(selected: any) {
-      const country = countries.getName(selected.country, 'en') as string;
+      const country = this.$countries.getName(selected.country, 'en') as string;
       const newEntry = {
         name: selected.name,
         country: country,
@@ -159,8 +158,8 @@ export default defineComponent({
     findLocation,
     translateRegion(location: ForecastLocation) {
       if (location.region === location.country) {
-        const countryCode = location.country.length === 2 ? location.country : countries.getAlpha2Code(location.country, 'en') as string;
-        return countries.getName(countryCode, this.settingsStore.language);
+        const countryCode = location.country.length === 2 ? location.country : this.$countries.getAlpha2Code(location.country, 'en') as string;
+        return this.$countries.getName(countryCode, this.settingsStore.language);
       }
       return location.region;
     },

@@ -1,15 +1,5 @@
 import {OpenWeatherApiKey} from "@/constants";
-import countries from "i18n-iso-countries";
 import type {ForecastLocation, OpenWeather, TimeSeriesObservation, Warnings} from "@/types";
-
-// Import country names
-Promise.all([
-    import('i18n-iso-countries/langs/en.json'),
-    import('i18n-iso-countries/langs/fi.json'),
-    import('i18n-iso-countries/langs/sv.json')
-]).then((c) => {
-    for (const country of c) countries.registerLocale(country);
-});
 
 if (!OpenWeatherApiKey) alert("OpenWeather API key not set!");
 
@@ -42,12 +32,11 @@ export function search(str: string): Promise<{
 export function reverseGeocoding(lat: number, lon: number): Promise<ForecastLocation> {
     const url = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${OpenWeatherApiKey}`;
     return fetch(url).then(response => response.json()).then(data => {
-        const country = countries.getName(data[0].country, 'en') as string;
         return {
             name: data[0].name,
             identifier: '',
-            region: data[0].state || country,
-            country: country,
+            region: data[0].state || data[0].country,
+            country: data[0].country,
             lat: data[0].lat,
             lon: data[0].lon,
         }

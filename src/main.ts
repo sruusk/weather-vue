@@ -49,6 +49,7 @@ const pinia = createPinia();
 pinia.use(({store}) => {
     store.$router = router;
     store.$i18n = i18n;
+    store.$countries = countries;
 });
 
 const app = createApp(App)
@@ -57,5 +58,6 @@ app.use(router)
 app.use(VueMobileDetection);
 app.use(i18n);
 app.use(VueSplide);
+app.config.globalProperties.$countries = countries;
 
 app.mount('#app')

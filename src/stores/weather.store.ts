@@ -107,6 +107,8 @@ export const useWeatherStore = defineStore('weather', {
                 const setLocation = (weather: WeatherType) => {
                     weather.location.lat = lat;
                     weather.location.lon = lon;
+                    weather.location = this.getCountryName(weather.location);
+                    console.log("Got GPS location", weather.location);
                     this.currentWeather = weather;
                     this.locationWeather = weather;
                     useObservationsStore().changeLocation(weather.location);
@@ -148,6 +150,13 @@ export const useWeatherStore = defineStore('weather', {
                     resolve();
                 });
             });
+        },
+        getCountryName(location: ForecastLocation): ForecastLocation {
+            if(location.country === location.region && location.region?.length === 2)
+                location.region = this.$countries?.getName(location.region, 'en') || location.region;
+            if(location.country.length === 2)
+                location.country = this.$countries?.getName(location.country, 'en') || location.country;
+            return location;
         }
     },
 
@@ -170,7 +179,7 @@ export const useWeatherStore = defineStore('weather', {
                     if (hour !== -1) {
                         let item = out[key].find((item: any) => item.time.getHours() >= hour);
                         hourOut[key] = item ? item.value : undefined;
-                    }
+                    } else out[key] = out[key].filter((item: any) => item.time.getTime() >= Date.now());
                 } else {
                     out[key] = value;
                     hourOut[key] = value;
@@ -185,7 +194,7 @@ export const useWeatherStore = defineStore('weather', {
             const i: string[] = [];
             state.currentWeather.temperature.forEach((item: any) => {
                 const dateString = item.time.toDateString();
-                if (!i.includes(dateString)) {
+                if (!i.includes(dateString) && item.time.getHours() >= 15) {
                     days.push(new Date(dateString));
                     i.push(dateString);
                 }

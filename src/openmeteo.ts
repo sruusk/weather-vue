@@ -80,7 +80,7 @@ export const getWeather = async (lat: number, lon: number): Promise<Weather> => 
     for(const key of Object.keys(out)) {
         if(Array.isArray(out[key as keyof Weather])) {
             // @ts-ignore
-            out[key as keyof Weather] = out[key as keyof Weather]?.filter((_, i) => i % 3 === 0);
+            out[key as keyof Weather] = out[key as keyof Weather]?.filter((_, i) => i < 70 || i % 3 === 0);
         }
     }
 

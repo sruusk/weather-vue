@@ -7,13 +7,13 @@
     </div>
     <CurrentWeather/>
     <Transition name="drop">
-      <WarningsBar v-if="weatherStore.currentLocation.country === 'Finland'"/>
+      <WarningsBar v-if="isFinland"/>
     </Transition>
     <TenDayForecast/>
     <WeatherRadar
-      v-if="settingsStore.weatherRadar && weatherStore.currentLocation.country === 'Finland'"
+      v-if="settingsStore.weatherRadar && isFinland"
     />
-    <Observations v-if="weatherStore.currentLocation.country === 'Finland'"/>
+    <Observations v-if="isFinland"/>
     <Footer/>
   </main>
 </template>
@@ -55,6 +55,11 @@ export default defineComponent({
     };
   },
   emits: ["open"],
+  computed: {
+    isFinland() {
+      return this.weatherStore.currentLocation.country === "Finland";
+    },
+  },
   methods: {
     open() {
       this.$emit("open");

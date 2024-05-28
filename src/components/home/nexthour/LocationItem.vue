@@ -34,7 +34,6 @@
 <script lang="ts">
 import type {HourWeather} from "@/types";
 import {defineComponent, ref} from 'vue';
-import countries from "i18n-iso-countries";
 import ClockIcon from "@/components/icons/ClockIcon.vue";
 import ShareButton from "@/components/home/nexthour/ShareButton.vue";
 import FeelsLike from "@/components/home/nexthour/FeelsLike.vue";
@@ -82,9 +81,9 @@ export default defineComponent({
       if (this.weather.location.region === this.weather.location.country) {
         const countryCode = this.weather.location.country.length === 2
           ? this.weather.location.country
-          : countries.getAlpha2Code(this.weather.location.country, 'en');
+          : this.$countries.getAlpha2Code(this.weather.location.country, 'en');
         if (!countryCode) return this.weather.location.region;
-        return countries.getName(countryCode, this.settingsStore.language);
+        return this.$countries.getName(countryCode, this.settingsStore.language);
       }
       return this.weather.location.region;
     },
