@@ -1,4 +1,4 @@
-import type {TimeSeriesObservation, Weather} from "./types";
+import type {ForecastLocation, TimeSeriesObservation, Weather} from "./types";
 import {reverseGeocoding} from "@/openweather";
 import {fetchWeatherApi} from "openmeteo";
 
@@ -89,4 +89,22 @@ export const getWeather = async (lat: number, lon: number): Promise<Weather> => 
     resolve!(out);
     cache.set(key, out);
     return out;
+};
+
+let controller: AbortController | undefined;
+export const getAutoCompleteResults = async (query: string, language: string): Promise<ForecastLocation[] | undefined> => {
+    if(controller) controller.abort();
+    controller = new AbortController();
+    const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${query}&language=${language}&count=50&language=en&format=json`, {signal: controller.signal});
+    if(!response?.ok) return undefined;
+    const data = await response.json();
+    const results = data.results.sort((a: any, b: any) => b.population - a.population);
+    return results.slice(0, 5).map((result: any) => ({
+        name: result.name,
+        country: result.country_code,
+        region: result.admin3,
+        lat: result.latitude,
+        lon: result.longitude,
+        identifier: result.id
+    }));
 };
