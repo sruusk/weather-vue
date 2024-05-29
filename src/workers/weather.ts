@@ -6,6 +6,8 @@ self.onmessage = (event) => {
     switch (type) {
         case "nextHour":
             Weather.getWeatherNextHour(lat, lon).then((weather) => {
+                for(const [key, value] of Object.entries(weather))
+                    if(Array.isArray(value)) weather[key] = value.filter(a => a.time.getTime() >= Date.now());
                 self.postMessage({
                     time: `${weather.temperature[0].time.getHours()}:00`,
                     temperature: weather.temperature[0].value,

@@ -22,6 +22,7 @@ export type Weather = {
     feelsLike: TimeSeriesObservation[],
     location: ForecastLocation,
     updated: Date,
+    [key: string]: TimeSeriesObservation[] | ForecastLocation | Date | undefined,
 }
 export type OpenWeather = {
     humidity: TimeSeriesObservation[],

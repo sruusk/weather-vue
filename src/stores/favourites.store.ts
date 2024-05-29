@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import type {ForecastLocation, HourWeather} from '@/types';
+import type {ForecastLocation, HourWeather, Weather as WeatherType} from '@/types';
 import Weather from "@/weather";
 import WeatherWorker from "@/workers/weather?worker";
 import {useWeatherStore} from "@/stores/weather.store";
@@ -127,7 +127,9 @@ export const useFavouritesStore = defineStore('favourites', {
                         type: "nextHour",
                     });
                 } else {
-                    Weather.getWeatherNextHour(favourite.lat, favourite.lon).then((weather) => {
+                    Weather.getWeatherNextHour(favourite.lat, favourite.lon).then((weather: WeatherType) => {
+                        for(const [key, value] of Object.entries(weather))
+                            if(Array.isArray(value)) weather[key] = value.filter(a => a.time.getTime() >= Date.now());
                         this.favouriteWeathers.push({
                             time: `${weather.temperature[0].time.getHours()}:00`,
                             location: favourite,

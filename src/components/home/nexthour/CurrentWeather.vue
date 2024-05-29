@@ -146,6 +146,8 @@ export default defineComponent({
     },
     getHourWeather(weather: WeatherType | undefined): HourWeather {
       if (!weather) return undefined as unknown as HourWeather;
+      for(const [key, value] of Object.entries(weather))
+        if(Array.isArray(value)) weather[key] = value.filter(a => a.time.getTime() >= Date.now());
       return {
         "time": `${(new Date(new Date().setHours(new Date().getHours() + 1))).getHours()}:00`,
         "location": weather.location,
