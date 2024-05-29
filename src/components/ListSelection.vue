@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <div v-for="item in items" :key="item.name" class="item" @click="select(item)">
-      <span>{{ item.name }}{{ item.state ? `, ${item.state}` : '' }}, {{ fullCountryName(item.country) }}</span>
+      <span>{{ item.name }}{{ item.region ? `, ${item.region}` : '' }}, {{ fullCountryName(item.country) }}</span>
       <div class="add-button">+</div>
     </div>
   </div>
@@ -16,7 +16,7 @@ export default defineComponent({
   name: "ListSelection",
   props: {
     items: {
-      type: Array as () => { name: string, lat: number, lon: number, country: string, state: string }[],
+      type: Array as () => { name: string, lat: number, lon: number, country: string, region: string }[],
       required: true
     }
   },

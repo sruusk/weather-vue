@@ -74,7 +74,7 @@ import {VueDraggableNext} from 'vue-draggable-next'
 import BackNavigation from "@/components/BackNavigation.vue";
 import type {ForecastLocation} from "@/types";
 import ListSelection from "@/components/ListSelection.vue";
-import {search as findLocation} from "@/openweather";
+import { getAutoCompleteResults } from "@/openmeteo";
 
 export default defineComponent({
   name: "FavouritesView",
@@ -90,13 +90,23 @@ export default defineComponent({
     return {
       searchInput,
       favouritesStore,
-      settingsStore
+      settingsStore,
+      getAutoCompleteResults
     };
   },
   data() {
     return {
       searchString: "",
       selection: [] as any[]
+    }
+  },
+  watch: {
+    searchString: async function (newVal) {
+      if (newVal.length > 2) {
+        this.selection = await this.getAutoCompleteResults(newVal, this.settingsStore.language) || [];
+      } else {
+        this.selection = [];
+      }
     }
   },
   methods: {
@@ -123,9 +133,7 @@ export default defineComponent({
             throw new Error('No location found');
           }
         } catch (e) {
-          const list = await findLocation(this.searchString);
-          if (list?.length) this.selection = list;
-          else alert(this.$t('settings.noneFound'));
+          alert(this.$t('settings.noneFound'));
           return;
         }
       }
@@ -155,7 +163,6 @@ export default defineComponent({
       this.selection = [];
       this.searchString = "";
     },
-    findLocation,
     translateRegion(location: ForecastLocation) {
       if (location.region === location.country) {
         const countryCode = location.country.length === 2 ? location.country : this.$countries.getAlpha2Code(location.country, 'en') as string;
