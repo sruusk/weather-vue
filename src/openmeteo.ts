@@ -26,7 +26,7 @@ export const getWeather = async (lat: number, lon: number): Promise<Weather> => 
     }
 
     let resolve: (value: Weather) => void;
-    cache.set(key, new Promise((r) => resolve = r));
+    cache.set(key, new Promise((r) => resolve = r) as Promise<Weather>);
 
     const responses = await fetchWeatherApi(url, {
         ...params,
@@ -93,7 +93,7 @@ export const getWeather = async (lat: number, lon: number): Promise<Weather> => 
 
 let controller: AbortController | undefined;
 export const getAutoCompleteResults = async (query: string, language: string): Promise<ForecastLocation[] | undefined> => {
-    if(controller) controller.abort();
+    if(controller) controller.abort("New request");
     controller = new AbortController();
     const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${query}&language=${language}&count=50&language=en&format=json`, {signal: controller.signal});
     if(!response?.ok) return undefined;

@@ -97,13 +97,17 @@ export default defineComponent({
   data() {
     return {
       searchString: "",
-      selection: [] as any[]
+      selection: [] as ForecastLocation[]
     }
   },
   watch: {
-    searchString: async function (newVal) {
+    searchString: function (newVal) {
       if (newVal.length > 2) {
-        this.selection = await this.getAutoCompleteResults(newVal, this.settingsStore.language) || [];
+        this.getAutoCompleteResults(newVal, this.settingsStore.language).then((results: ForecastLocation[] | undefined) => {
+          this.selection = results || [];
+        }).catch(() => {
+          // Do nothing
+        });
       } else {
         this.selection = [];
       }
@@ -146,12 +150,12 @@ export default defineComponent({
       }
       this.searchString = "";
     },
-    handleSelect(selected: any) {
+    handleSelect(selected: ForecastLocation) {
       const country = this.$countries.getName(selected.country, 'en') as string;
       const newEntry = {
         name: selected.name,
         country: country,
-        region: selected.state || country,
+        region: selected.region || country,
         lat: selected.lat,
         lon: selected.lon,
         identifier: ''
