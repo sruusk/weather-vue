@@ -295,7 +295,11 @@ export default defineComponent({
         setTimeout(() => {
           this.addMMLBackgroundMap().then(() => {
             this.$nextTick(() => {
+              // Reload radar component if the MML background map is still not found
               if (this.map && this.map.getLayers().getArray().find((layer) => layer?.values_?.['mapbox-source'] === 'taustakartta') === undefined) {
+                this.reloadRadar();
+              } // Reload radar component if there are multiple ol-viewport elements
+              else if(this.animator?.querySelectorAll('.ol-viewport')?.length > 1) {
                 this.reloadRadar();
               }
             });
