@@ -168,25 +168,6 @@ export default defineConfig({
                             statuses: [0, 200]
                         }
                     }
-                }, { // Cache the weather data for 10 minutes
-                    urlPattern: ({url}) => {
-                        if (url.hostname === 'opendata.fmi.fi') return true
-                        if (url.href.includes('api.openweathermap.org/data/2.5/forecast')
-                            || url.href.includes('api.openweathermap.org/data/3.0/onecall')) return true
-                        if (url.href.includes('www.ilmatieteenlaitos.fi/geoserver/alert/')) return true
-                        if (url.hostname === 'api.open-meteo.com') return true
-                    },
-                    method: 'GET',
-                    handler: 'CacheFirst',
-                    options: {
-                        cacheName: 'weather-data-cache',
-                        cacheableResponse: {
-                            statuses: [0, 200, 400]
-                        },
-                        expiration: {
-                            maxAgeSeconds: 60 * 10 // 10 minutes
-                        }
-                    }
                 }, {  // Cache the radar images for 30 minutes
                     urlPattern: ({url}) => {
                         if (url.hostname === 'data.fmi.fi') return true
