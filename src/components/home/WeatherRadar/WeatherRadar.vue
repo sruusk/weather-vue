@@ -115,7 +115,7 @@ export default defineComponent({
     // Reload radar at even 15 minutes
     const now = new Date();
     const minutes = now.getMinutes();
-    const timeToNext = 15 - (minutes % 15);
+    const timeToNext = 15 - (minutes % 15) + 1;
     this.refresh = setTimeout(() => {
       this.reloadRadar();
       setInterval(() => {
