@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <div v-for="item in items" :key="item.name" class="item" @click="select(item)">
+    <div v-for="item in items" :key="item.lat + item.lon" class="item" @click="select(item)">
       <span>{{ item.name }}{{ item.region ? `, ${item.region}` : '' }}, {{ fullCountryName(item.country) }}</span>
       <div class="add-button">+</div>
     </div>
@@ -10,13 +10,14 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import countries from "i18n-iso-countries";
+import type {ForecastLocation} from "@/types";
 import {useSettingsStore} from "@/stores";
 
 export default defineComponent({
   name: "ListSelection",
   props: {
     items: {
-      type: Array as () => { name: string, lat: number, lon: number, country: string, region: string }[],
+      type: Array as () => ForecastLocation[],
       required: true
     }
   },
@@ -28,7 +29,7 @@ export default defineComponent({
     };
   },
   methods: {
-    select(item: any) {
+    select(item: ForecastLocation) {
       this.$emit("select", item);
     },
     fullCountryName(countryCode: string) {

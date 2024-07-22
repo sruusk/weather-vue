@@ -168,42 +168,6 @@ export default defineConfig({
                             statuses: [0, 200]
                         }
                     }
-                }, { // Cache the weather data for 10 minutes
-                    urlPattern: ({url}) => {
-                        if (url.hostname === 'opendata.fmi.fi') return true
-                        if (url.href.includes('api.openweathermap.org/data/2.5/forecast')
-                            || url.href.includes('api.openweathermap.org/data/3.0/onecall')) return true
-                        if (url.href.includes('www.ilmatieteenlaitos.fi/geoserver/alert/')) return true
-                        if (url.hostname === 'api.open-meteo.com') return true
-                    },
-                    method: 'GET',
-                    handler: 'CacheFirst',
-                    options: {
-                        cacheName: 'weather-data-cache',
-                        cacheableResponse: {
-                            statuses: [0, 200, 400]
-                        },
-                        expiration: {
-                            maxAgeSeconds: 60 * 10 // 10 minutes
-                        }
-                    }
-                }, { // Cache the alerts for 3 hours
-                    urlPattern: ({url}) => {
-                        if (url.hostname === 'alerts.fmi.fi') return true
-                        if (url.hostname === 'corsproxy.io') return true
-                        if (url.hostname === 'wwwi2.ymparisto.fi') return true
-                    },
-                    method: 'GET',
-                    handler: 'CacheFirst',
-                    options: {
-                        cacheName: 'alert-cache',
-                        cacheableResponse: {
-                            statuses: [0, 200]
-                        },
-                        expiration: {
-                            maxAgeSeconds: 60 * 60 * 3 // 3 hours
-                        }
-                    }
                 }, {  // Cache the radar images for 30 minutes
                     urlPattern: ({url}) => {
                         if (url.hostname === 'data.fmi.fi') return true
@@ -223,6 +187,7 @@ export default defineConfig({
                     }
                 }, {
                     urlPattern: ({url}) => {
+                        if (url.hostname === 'geocoding-api.open-meteo.com') return true
                         if (url.href.includes('api.openweathermap.org/geo/1.0')) return true
                     },
                     method: 'GET',

@@ -27,7 +27,7 @@ const languageMap: any = {
 };
 
 export function getAlerts(): Promise<FmiAlerts> {
-    const url = `https://corsproxy.io/?${encodeURIComponent("https://alerts.fmi.fi/cap/feed/atom_fi-FI.xml")}`
+    const url = ` https://a32.fi/proxy/proxy?apiKey=c2cf681ee102a815d7d8800a6aaa1de96998e66cb17bbcc8beb2a2d0268fd918&method=GET&url=${encodeURIComponent("https://alerts.fmi.fi/cap/feed/atom_fi-FI.xml")}`
     return new Promise((resolve, reject) => {
         fetch(url).then(response => {
             if (response.ok) return response.text();
