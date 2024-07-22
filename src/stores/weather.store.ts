@@ -194,7 +194,7 @@ export const useWeatherStore = defineStore('weather', {
             const i: string[] = [];
             state.currentWeather.temperature.forEach((item: any) => {
                 const dateString = item.time.toDateString();
-                if (!i.includes(dateString) && item.time.getHours() >= 15) {
+                if (!i.includes(dateString) && item.time.getHours() >= 15 && item.time.getTime() >= Date.now()) {
                     days.push(new Date(dateString));
                     i.push(dateString);
                 }
