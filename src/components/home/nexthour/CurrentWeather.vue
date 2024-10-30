@@ -15,10 +15,12 @@
           :key="fav.name + fav.gps ? '-gps' : fav.region"
         >
           <LocationItem
-            v-if="!fav.gps"
-            :weather="favouritesStore.locations.length
-              ? favouritesStore.getFavouriteWeather(fav)
-              : getHourWeather(weatherStore.currentWeather)"
+            v-if="!fav.gps && favouritesStore.locations?.length"
+            :weather="favouritesStore.getFavouriteWeather(fav)"
+          />
+          <LocationItem
+            v-else-if="!fav.gps"
+            :weather="currentWeather"
           />
           <LocationItem
             v-else
@@ -112,9 +114,12 @@ export default defineComponent({
         this.runAfterActive = undefined;
       }
       if (this.active) this.runAfterActive();
-    }
+    },
   },
   computed: {
+    currentWeather(): HourWeather {
+      return this.getHourWeather(this.weatherStore.currentWeather);
+    },
     locations(): any[] {
       if (this.weatherStore.gpsLocation) {
         return [
