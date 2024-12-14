@@ -22,3 +22,6 @@ This project uses environment variables to store the API keys and other configur
 | VITE_MML              | National Land Survey of Finland API key                                       |               |
 | VITE_DEFAULT_LANGUAGE | Default language for the app.                                                 | `fi`          |
 | VITE_EXECUTION_NUMBER | App version/run number.<br/>Displayed at the bottom of the navigation drawer. | `dev`         |
+
+### Screenshot
+![SC](/public/screenshots/screenshot-1.webp)
